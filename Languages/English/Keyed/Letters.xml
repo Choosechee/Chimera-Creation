@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+	<AnAl_ChimeraBetrayal_Label>Chimera betrayal</AnAl_ChimeraBetrayal_Label>
+	<AnAl_ChimeraBetrayal_Text>Chimera {PAWN_definite} has been driven mad by {PAWN_possessive} ravenous hunger for raw meat!</AnAl_ChimeraBetrayal_Text>
+	<AnAl_ChimeraBetrayal_Text_ChimeraIsNormalCarnivore>Chimera {PAWN_definite} has been driven mad by {PAWN_possessive} ravenous hunger for meat!</AnAl_ChimeraBetrayal_Text_ChimeraIsNormalCarnivore>
+	<AnAl_ChimeraBetrayal_Extended_Multiple> Your other hungry chimeras have joined them in their attack. The other chimeras attacking are:\n\n{AFFECTEDPAWNS}</AnAl_ChimeraBetrayal_Extended_Multiple>
+	<AnAl_ChimeraBetrayal_Extended_BondBroken_Single>\n{BONDEDANIMAL_definite} has broken {BONDEDANIMAL_possessive} bond with {BONDEDPAWN_labelShort}. {BONDEDPAWN_pronoun} will be unhappy about this.</AnAl_ChimeraBetrayal_Extended_BondBroken_Single>
+	<AnAl_ChimeraBetrayal_Extended_BondBroken_Multiple>\nAdditionally, these chimeras have broken their bonds with your colonists:\n\n{BONDSBROKEN}\n\nThese colonists will be unhappy about this.</AnAl_ChimeraBetrayal_Extended_BondBroken_Multiple>
+	<AnAl_ChimeraBetrayal_Extended_BondBroken_Multiple_Line>{BONDEDANIMAL_definite} broke bond with {BONDEDPAWN_labelShort}</AnAl_ChimeraBetrayal_Extended_BondBroken_Multiple_Line>
+	
+	<AnAl_RevengeFromAttemptedSlaughter_Label>{VICTIM} revenge</AnAl_RevengeFromAttemptedSlaughter_Label>
+	<AnAl_RevengeFromAttemptedSlaughter_Text>{VICTIM_definite} is attacking! {VICTIM_pronoun} sensed that {SLAUGHTERER_labelShort} was attempting to kill {VICTIM_pronoun}, and no longer trusts your colony. {VICTIM_pronoun} will calm down when {VICTIM_pronoun} goes to sleep, but won't rejoin unless retamed.</AnAl_RevengeFromAttemptedSlaughter_Text>
+	<AnAl_RevengeFromAttemptedSlaughter_Bond>\nSince {SLAUGHTERER_labelShort} was the one trying to slaughter {VICTIM_label}, their bond has been broken.</AnAl_RevengeFromAttemptedSlaughter_Bond>
+	
+	<AnAl_EntityRevengeFromAttemptedSlaughter_Text>{VICTIM_definite} is attacking! {VICTIM_pronoun} sensed that {SLAUGHTERER_labelShort} was attempting to kill {VICTIM_pronoun}, and no longer trusts your colony. {VICTIM_pronoun} has permanently turned hostile, and will attack everyone {VICTIM_pronoun} can until stopped.</AnAl_EntityRevengeFromAttemptedSlaughter_Text>
+	<AnAl_EntityRevengeFromAttemptedSlaughter_Bond>\n{VICTIM_definite} has broken {VICTIM_possessive} bond with {BONDEDPAWN_labelShort}. {BONDEDPAWN_pronoun} will be unhappy about this.</AnAl_EntityRevengeFromAttemptedSlaughter_Bond>
+	<AnAl_EntityRevengeFromAttemptedSlaughter_Bond_Multiple>\n{VICTIM_definite} has broken {VICTIM_possessive} bonds with {BONDEDPAWNS}. They will be unhappy about this.</AnAl_EntityRevengeFromAttemptedSlaughter_Bond_Multiple>
+	
+	<AnAl_CreateChimera_Success>{INVOKER_nameDef} has completed {RITUAL_definite} ritual and created a chimera. The {MEATREFUNDED} excess meat have been converted into twisted meat.</AnAl_CreateChimera_Success>
+	<AnAl_CreateChimera_Nothing>{INVOKER_nameDef} has completed {RITUAL_definite} ritual, but there wasn't enough meat to create a chimera. The {MEATREFUNDED} meat have been converted into twisted meat instead.</AnAl_CreateChimera_Nothing>
+	<AnAl_CreateChimera_Failure>{INVOKER_nameDef} has completed {RITUAL_definite} ritual. However, something has gone horribly wrong, and {INVOKER_pronoun} created a hostile {FLESHBEAST_label} instead of a chimera! The {MEATREFUNDED} excess meat have still been converted into twisted meat.</AnAl_CreateChimera_Failure>
+</LanguageData>

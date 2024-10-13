@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<TaleDef Name="AnAl_ChimeraBetrayalTale_Single" Abstract="True">
+		<label>chimera betrayal</label>
+		<taleClass>Tale_SinglePawn</taleClass>
+		<type>Volatile</type>
+		<baseInterest>10</baseInterest>
+		<colonistOnly>false</colonistOnly>
+		<rulePack>
+			<rulesStrings>
+				<li>tale_noun->[PAWN_indefinite] betraying the colony</li>
+				<li>image->[PAWN_nameFull] viciously attacking a colonist [circumstance_group]</li>
+				<li>image->[PAWN_nameFull] mercilessly biting and clawing a colonist [circumstance_group]</li>
+				<li>image->[PAWN_nameFull] attempting to tear down a door being held closed by a colonist [circumstance_group]</li>
+				<li>image->[PAWN_nameFull] pouncing towards a colonist with the intent to kill, [circumstance_group]</li>
+				<li>circumstance_phrase->with no remorse</li>
+				<li>circumstance_phrase->as others watch in shock</li>
+				<li>circumstance_phrase->as others cower in fear</li>
+				<li>circumstance_phrase->as others attempt to stop it</li>
+				<li>circumstance_phrase->as others shoot at it</li>
+				<li>desc_sentence->[PAWN_pronoun] is filled with unfathomable rage.</li>
+				<li>desc_sentence->[PAWN_possessive] expression is twisted with rage and unbearable to look at.</li>
+				<li>desc_sentence->[PAWN_possessive] eyes have a crazed expression and are filled with an unnatural, inky blackness.</li>
+				<li>desc_sentence->A dark cloud is closing in on [PAWN_possessive] head.</li>
+			</rulesStrings>
+		</rulePack>
+	</TaleDef>
+	
+	<TaleDef ParentName="AnAl_ChimeraBetrayalTale_Single">
+		<defName>AnAl_ChimeraBetrayal_Hunger</defName>
+		<rulePack Inherit="true">
+			<rulesStrings Inherit="true">
+				<li>circumstance_phrase->with intense hunger in [PAWN_possessive] eyes</li>
+				<li>desc_sentence->[PAWN_pronoun] is heavily salivating, almost as if [PAWN_pronoun] was affected by rabies, but there is no froth.</li>
+				<li>desc_sentence->[PAWN_possessive] body is skinny and [PAWN_possessive] ribs are showing.</li>
+				<li>desc_sentence->[PAWN_pronoun] looks almost skeletal in appearance; only a thin skin seems to surround [PAWN_possessive] skeleton.</li>
+			</rulesStrings>
+		</rulePack>
+	</TaleDef>
+	
+	<TaleDef Name="AnAl_ChimeraBetrayalTale_Multiple" ParentName="AnAl_ChimeraBetrayalTale_Single" Abstract="True">
+		<label>chimeras betraying</label>
+		<baseInterest>12</baseInterest>
+		<rulePack Inherit="true">
+			<rulesStrings Inherit="false">
+				<li>tale_noun->[PAWN_indefinite] and other chimeras betraying the colony</li>
+				<li>image->[PAWN_nameFull] and [PAWN_possessive] pack viciously attacking a colonist [circumstance_group]</li>
+				<li>image->[PAWN_nameFull] mercilessly shredding a colonist to pieces with the help of {PAWN_possessive} pack mates, [circumstance_group]</li>
+				<li>image->[PAWN_nameFull] and [PAWN_possessive] pack attempting to break into a building with a colonist inside, [circumstance_group]</li>
+				<li>image->[PAWN_nameFull] and [PAWN_possessive] pack surrounding a colonist with the intent to kill, [circumstance_group]</li>
+				<li>circumstance_phrase->without any remorse</li>
+				<li>circumstance_phrase->as others watch in shock</li>
+				<li>circumstance_phrase->as others run away screaming</li>
+				<li>circumstance_phrase->as others desperately attempt to stop them</li>
+				<li>circumstance_phrase->as others futiley shoot at them</li>
+				<li>desc_sentence->Every pack member is filled with rage, but [PAWN_nameDef]'s anger seems unfathomable in its intensity.</li>
+				<li>desc_sentence->[PAWN_nameDef]'s expression is twisted with rage and unbearable to look at, and the other chimeras' faces aren't much better.</li>
+				<li>desc_sentence->[PAWN_nameDef]'s eyes have a crazed expression and are filled with an unnatural, inky blackness. {PAWN_possessive} gaze seems to command the others.</li>
+				<li>desc_sentence->Tendrils are attached behind the pack members' necks. The source is a tentacle growing out of [PAWN_nameDef]'s head.</li>
+			</rulesStrings>
+		</rulePack>
+	</TaleDef>
+	
+	<TaleDef ParentName="AnAl_ChimeraBetrayalTale_Multiple">
+		<defName>AnAl_ChimeraBetrayal_Hunger_Multiple</defName>
+		<rulePack Inherit="true">
+			<rulesStrings Inherit="true">
+				<li>circumstance_phrase->with intense hunger in their eyes</li>
+				<li>desc_sentence->All pack members are salivating heavily, desperate to consume the colonist's flesh.</li>
+				<li>desc_sentence->The pack members are emaciated, with [PAWN_nameDef] the skinniest.</li>
+				<li>desc_sentence->All pack members are skin and bone. [PAWN_nameDef], however, makes them look fat in comparison.</li>
+			</rulesStrings>
+		</rulePack>
+	</TaleDef>
+</Defs>

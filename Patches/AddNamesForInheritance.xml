@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+	<Operation Class="AnomalyAllies.Misc.PatchOperationAddNameOrReplaceAllUses">
+		<xpath>Defs/ThingDef[defName="Chimera"]</xpath>
+		<value>ChimeraThing</value>
+	</Operation>
+	
+	<Operation Class="AnomalyAllies.Misc.PatchOperationAddNameOrReplaceAllUses">
+		<xpath>Defs/PawnKindDef[defName="Chimera"]</xpath>
+		<value>ChimeraKind</value>
+	</Operation>
+	
+	<Operation Class="AnomalyAllies.Misc.PatchOperationAddNameOrReplaceAllUses">
+		<xpath>Defs/ThinkTreeDef[defName="Animal"]</xpath>
+		<value>AnimalThinkTree</value>
+	</Operation>
+	
+	<Operation Class="AnomalyAllies.Misc.PatchOperationAddNameOrReplaceAllUses">
+		<xpath>Defs/ThinkTreeDef[defName="AnimalConstant"]</xpath>
+		<value>AnimalConstantThinkTree</value>
+	</Operation>
+	
+	<Operation Class="AnomalyAllies.Misc.PatchOperationAddNameOrReplaceAllUses">
+		<xpath>Defs/HediffDef[defName="MeatHunger"]</xpath>
+		<value>MeatHunger_Original</value>
+	</Operation>
+</Patch>

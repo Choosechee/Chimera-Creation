@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<AnomalyAllies.ChimeraTame.PsychicRitualDef_CreateChimera>
+		<defName>AnAl_CreateChimera</defName>
+		<label>chimera creation</label>
+		<description>Induce a dark archotech to morph target animal(s) into a friendly chimera. The chimera can be trained to guard, attack, rescue, and haul. The total meat yield of the animal(s) must be at least equal to the meat yield of a chimera; any excess will be refunded as twisted meat. If the ritual isn't done properly, the animal(s) will morph into a hostile fleshbeast. The chance of this happening can be reduced by using more animals, along with the other ways of increasing ritual quality.</description>
+		<researchPrerequisite>AnAl_ChimeraCreation</researchPrerequisite>
+		<outcomeDescription>With the current ritual quality, there is a {0} chance that the target will morph into a fleshbeast. {1} meat will be refunded.</outcomeDescription>
+		<outcomeDescriptionPlural>With the current ritual quality, there is a {0} chance that the targets will morph into a fleshbeast. {1} meat will be refunded.</outcomeDescriptionPlural>
+		<hoursUntilOutcome>4</hoursUntilOutcome>
+		<targetRole>AnAl_CreateChimeraTarget</targetRole>
+		<fleshbeastChanceFromQualityCurve>
+			<points>
+				<li>(0, 0.5)</li>
+				<li>(0.25, 0.3)</li>
+				<li>(0.6, 0.1)</li>
+				<li>(0.9, 0.05)</li>
+				<li>(1, 0.01)</li>
+			</points>
+		</fleshbeastChanceFromQualityCurve>
+		<requiredOffering>
+			<filter>
+				<thingDefs>
+					<li>Shard</li>
+				</thingDefs>
+			</filter>
+			<count>1</count>
+		</requiredOffering>
+		<chimeraTypeAnimals>
+			<li> <!-- Type A that looks like a boar bear -->
+				<li>boar</li>
+				<li>pig</li>
+				<li>hog</li>
+				<li>swine</li>
+				<li>babirusa</li>
+				<li>peccary</li>
+				<li>javelina</li>
+				<li>saino</li>
+				<li>taitetu</li>
+				<li>baquiro</li>
+				<li>báquiro</li>
+				<li>quenk</li>
+				<li>daeodon</li>
+			</li>
+			<li> <!-- Type D (not B, blame Ludeon) that looks like a rat lion walrus thing -->
+				<li>rat</li>
+				<li>squirrel</li>
+				<li>guineapig</li>
+				<li>chinchilla</li>
+				<li>capybara</li>
+				<li>josephoartigasia</li>
+				<li>cougar</li>
+				<li>panther</li>
+				<li>lynx</li>
+				<li>cat</li>
+				<li>lion</li>
+				<li>smilodon</li>
+				<li>sabertooth</li>
+				<li>tiger</li>
+				<li>leopard</li>
+				<li>jaguar</li>
+				<li>cheetah</li>
+				<li>ocelot</li>
+				<li>serval</li>
+				<li>britishshorthair</li>
+				<li>british_shorthair</li>
+				<li>mainecoon</li>
+				<li>maine_coon</li>
+				<li>walrus</li>
+			</li>
+			<li> <!-- Type C that looks like a hyena bear -->
+				<li>racoon</li>
+				<li>hyena</li>
+				<li>dinocrocuta</li>
+				<li>AnAlrdwolf</li>
+				<li>mongoose</li>
+				<li>meerkat</li>
+				<li>civet</li>
+				<li>ferret</li>
+				<li>genet</li>
+				<li>oyan</li>
+				<li>binturong</li>
+				<li>bearcat</li>
+				<li>weasel</li>
+				<li>tayra</li>
+				<li>mink</li>
+				<li>stoat</li>
+				<li>ermine</li>
+				<li>otter</li>
+				<li>marten</li>
+				<li>grison</li>
+				<li>wolverine</li>
+				<li>fossa</li>
+			</li>
+			<li> <!-- Type B that looks like a bigger warg -->
+				<li>warg</li>
+				<li>wolf</li>
+				<li>fox</li>
+				<li>dog</li>
+				<li>labrador</li>
+				<li>husky</li>
+				<li>terrier</li>
+				<li>coyote</li>
+				<li>jackal</li>
+				<li>dhole</li>
+				<li>maikong</li>
+				<li>racoondog</li>
+				<li>racoon_dog</li>
+				<li>hound</li>
+				<li>mutt</li>
+				<li>beagle</li>
+				<li>chihuahua</li>
+				<li>corgi</li>
+				<li>germanshepherd</li>
+				<li>german_shepherd</li>
+				<li>australianshepherd</li>
+				<li>australian_shepherd</li>
+				<li>greatdane</li>
+				<li>great_dane</li>
+				<li>poodle</li>
+				<li>pug</li>
+				<li>rottweiler</li>
+				<li>shihtzu</li>
+				<li>shih-tzu</li>
+				<li>shih_tzu</li>
+				<li>maltese</li>
+				<li>dingo</li>
+			</li>
+		</chimeraTypeAnimals>
+		<cooldownHours>120</cooldownHours>
+		<!-- <chanterRole>ChanterAdvanced</chanterRole> -->
+		<iconPath>AnomalyAllies/UI/PsychicRituals/PsychicRitual_CreateChimera</iconPath>
+	</AnomalyAllies.ChimeraTame.PsychicRitualDef_CreateChimera>
+</Defs>

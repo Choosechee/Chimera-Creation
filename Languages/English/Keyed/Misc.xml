@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+	<AnAl_BondedPawn_Separator>{BONDEDPAWN_labelShort}, </AnAl_BondedPawn_Separator>
+	<AnAl_BondedPawn_Separator_Final>and {BONDEDPAWN_labelShort}</AnAl_BondedPawn_Separator_Final>
+</LanguageData>

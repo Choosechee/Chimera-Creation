@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<ThoughtDef>
+		<defName>AnAl_BondedAnimalEntityBetrayed</defName>
+		<showBubble>true</showBubble>
+		<durationDays>40</durationDays>
+		<stackLimit>5</stackLimit>
+		<stackLimitForSameOtherPawn>1</stackLimitForSameOtherPawn>
+		<nullifyingTraits>
+			<li>Psychopath</li>
+		</nullifyingTraits>
+		<stages>
+			<li>
+				<label>bonded animal {0} betrayed us</label>
+				<description>It's like {1_pronoun} doesn't even recognize me anymore. We should have taken better care of {1_objective}.</description>
+				<baseMoodEffect>-10</baseMoodEffect>
+			</li>
+		</stages>
+	</ThoughtDef>
+	<ThoughtDef Name="AnAl_BondedAnimalEntityBetrayedInhumanizedThought">
+		<defName>AnAl_BondedAnimalEntityBetrayedInhumanized</defName>
+		<showBubble>true</showBubble>
+		<durationDays>10</durationDays>
+		<stackLimit>5</stackLimit>
+		<stackLimitForSameOtherPawn>1</stackLimitForSameOtherPawn>
+		<stages>
+			<li>
+				<label>bonded entity {0} betrayed us</label>
+				<description>A shame my entity betrayed us. The void is fickle, and we should do a better job of pleasing it.</description>
+				<baseMoodEffect>-5</baseMoodEffect>
+			</li>
+		</stages>
+	</ThoughtDef>
+	<ThoughtDef>
+		<defName>AnAl_BondedAnimalEntityBetrayedVoidFascinated</defName>
+		<requiredTraits>
+			<li>VoidFascination</li>
+		</requiredTraits>
+		<showBubble>true</showBubble>
+		<durationDays>40</durationDays>
+		<stackLimit>5</stackLimit>
+		<stackLimitForSameOtherPawn>1</stackLimitForSameOtherPawn>
+		<nullifyingTraits>
+			<li>Psychopath</li>
+		</nullifyingTraits> <!-- sorta, it becomes the below thought instead -->
+		<stages>
+			<li>
+				<label>bonded entity {0} betrayed us</label>
+				<description>My {1_label}, my poor, poor {1_label}. {1_pronoun} was just scared, but now there's nothing we can do. We could've done better!</description>
+				<baseMoodEffect>-15</baseMoodEffect>
+			</li>
+		</stages>
+	</ThoughtDef>
+	<ThoughtDef ParentName="AnAl_BondedAnimalEntityBetrayedInhumanizedThought">
+		<defName>AnAl_BondedAnimalEntityBetrayedVoidFascinatedPsychopath</defName>
+		<requiredTraits>
+			<li>VoidFascination</li>
+		</requiredTraits>
+		<durationDays>20</durationDays>
+	</ThoughtDef>
+</Defs>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[defName="Chimera"]/comps</xpath>
+		<value>
+			<li Class="AnomalyAllies.Comps.CompProperties_Transform">
+				<pawnKindToTransformInto>AnAl_ChimeraTame</pawnKindToTransformInto>
+				<initializeTransformedPawnOnCreation>false</initializeTransformedPawnOnCreation>
+			</li>
+		</value>
+	</Operation>
+	
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/EntityCodexEntryDef[defName="Chimera"]/discoveredResearchProjects</xpath>
+		<value>
+			<li>AnAl_ChimeraCreation</li>
+		</value>
+	</Operation>
+	
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/HediffDef[defName="RageSpeed"]/stages/li</xpath>
+		<order>Prepend</order>
+		<value>
+			<minSeverity>0.4</minSeverity>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/HediffDef[defName="RageSpeed"]/stages</xpath>
+		<order>Prepend</order>
+		<value>
+			<li>
+				<label>weakened</label>
+				<minSeverity>0.0</minSeverity>
+				<painFactor>0.2</painFactor>
+				<statFactors>
+					<MoveSpeed>1.5</MoveSpeed>
+					<StaggerDurationFactor>0</StaggerDurationFactor>
+				</statFactors>
+			</li>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/HediffDef[defName="RageSpeed"]/stages</xpath>
+		<value>
+			<li>
+				<label>enhanced</label>
+				<minSeverity>0.6</minSeverity>
+				<painFactor>0</painFactor>
+				<statFactors>
+					<MoveSpeed>2</MoveSpeed>
+					<StaggerDurationFactor>0</StaggerDurationFactor>
+					<MeleeCooldownFactor>0.7</MeleeCooldownFactor>
+				</statFactors>
+			</li>
+		</value>
+	</Operation>
+	
+	<Operation Class="PatchOperationConditional">
+		<xpath>/Defs/ThingDef[defName="AdrenalHeart"]/comps</xpath>
+		<nomatch Class="PatchOperationAdd">
+			<xpath>/Defs/ThingDef[defName="AdrenalHeart"]</xpath>
+			<value>
+				<comps>
+					<li Class="AnomalyAllies.Comps.CompProperties_TransformItem">
+						<thingDefToTransformInto>AnAl_AdrenalHeartChimera</thingDefToTransformInto>
+						<label>Convert</label>
+						<description>Convert this ghoul adrenal heart to a chimera adrenal heart.</description>
+						<researchPrerequisite>AnAl_ChimeraCreation</researchPrerequisite>
+					</li>
+				</comps>
+			</value>
+		</nomatch>
+		<match Class="PatchOperationAdd">
+			<xpath>/Defs/ThingDef[defName="AdrenalHeart"]/comps</xpath>
+			<value>
+				<li Class="AnomalyAllies.Comps.CompProperties_TransformItem">
+					<thingDefToTransformInto>AnAl_AdrenalHeartChimera</thingDefToTransformInto>
+					<label>Convert</label>
+					<description>Convert this ghoul adrenal heart to a chimera adrenal heart.</description>
+					<researchPrerequisite>AnAl_ChimeraCreation</researchPrerequisite>
+				</li>
+			</value>
+		</match>
+	</Operation>
+	
+	<!--
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/HediffDef[defName="RageSpeed"]/comps/li[@Class="HediffCompProperties_Disappears"]</xpath>
+		<value>
+			<minSeveritiesForSpeed>
+				<li>
+					<first>0.0</first>
+					<second>2</second>
+				</li>
+				<li>
+					<first>0.6</first>
+					<second>1</second>
+				</li>
+			</minSeveritiesForSpeed>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/HediffDef[defName="RageSpeed"]/comps/li[@Class="HediffCompProperties_Disappears"]</xpath>
+		<value>
+			<maxIsNormalSpeed>true</maxIsNormalSpeed>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationAttributeSet">
+		<xpath>Defs/HediffDef[defName="RageSpeed"]/comps/li[@Class="HediffCompProperties_Disappears"]</xpath>
+		<attribute>Class</attribute>
+		<value>AnomalyAllies.Comps.HediffCompProperties_DisappearsSpeedBasedOnSeverity</value>
+	</Operation>
+	-->
+</Patch>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<ThingCategoryDef>
+		<defName>AnAl_BodyPartsEntity</defName>
+		<label>entity</label>
+		<parent>BodyParts</parent>
+	</ThingCategoryDef>
+	
+	<ThingCategoryDef>
+		<defName>AnAl_BodyPartsChimera</defName>
+		<label>chimera</label>
+		<parent>AnAl_BodyPartsEntity</parent>
+	</ThingCategoryDef>
+</Defs>

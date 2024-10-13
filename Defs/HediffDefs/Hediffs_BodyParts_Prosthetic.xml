@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<ThingDef Name="AnAl_BodyPartChimeraBase" ParentName="BodyPartGhoulBase" Abstract="True">
+		<thingCategories Inherit="false">
+			<li>AnAl_BodyPartsChimera</li>
+		</thingCategories>
+		<graphicData>
+			<texPath>Things/Item/Health/HealthItem</texPath>
+			<color>(160, 117, 119)</color>
+			<graphicClass>Graphic_Single</graphicClass>
+			<drawSize>0.80</drawSize>
+		</graphicData>
+	</ThingDef>
+	
+	<ThingDef ParentName="UnfinishedBase">
+		<defName>AnAl_UnfinishedHealthItemChimera</defName>
+		<label>unfinished chimera prosthetic</label>
+		<description>An unfinished chimera prosthetic.</description>
+		<statBases>
+			<Flammability>0.5</Flammability>
+		</statBases>
+		<graphicData>
+			<texPath>Things/Item/Unfinished/UnfinishedHealthItem</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<color>(160, 117, 119)</color>
+		</graphicData>
+		<stuffCategories Inherit="false" />
+	</ThingDef>
+	
+	<HediffDef ParentName="AddedBodyPartBase">
+		<defName>AnAl_AdrenalHeartChimera</defName>
+		<label>adrenal heart (chimera)</label>
+		<description>A modified animal heart that can release stress hormones and liquid energy into the bloodstream, enhancing a chimera's rage speed to attack faster and move even faster.</description>
+		<stages>
+			<li>
+				<hungerRateFactorOffset>0.25</hungerRateFactorOffset>
+				<painOffset>0.2</painOffset>
+			</li>
+		</stages>
+		<spawnThingOnRemoved>AnAl_AdrenalHeartChimera</spawnThingOnRemoved>
+		<addedPartProps>
+			<solid>true</solid>
+		</addedPartProps>
+		<comps>
+			<li Class="AnomalyAllies.Comps.HediffCompProperties_ChangeOtherHediffSeverityOnDamaged">
+				<otherHediff>RageSpeed</otherHediff>
+				<severityChange>0.25</severityChange>
+				<onlyOnce>true</onlyOnce>
+			</li>
+		</comps>
+	</HediffDef>
+	
+	<ThingDef ParentName="AnAl_BodyPartChimeraBase">
+		<defName>AnAl_AdrenalHeartChimera</defName>
+		<label>adrenal heart (chimera)</label>
+		<description>A special bioferrite prosthetic that allows a chimera to further saturate its bloodstream with stress hormones and liquid energy during its rage speed. The chimera will be able to attack faster and move faster compared to normal rage speed. The prosthetic somewhat increases the chimera's metabolism, causing it to eat more.\n\nThis prosthetic is too painful to be installed on normal animals. It's still painful for chimeras when not in rage speed, but they can handle it due to their body being used to large quantities of stress hormones and liquid energy.</description>
+		<descriptionHyperlinks><RecipeDef>AnAl_InstallAdrenalHeartChimera</RecipeDef></descriptionHyperlinks>
+		<statBases>
+			<Mass>0.3</Mass>
+			<WorkToMake>13200</WorkToMake>
+		</statBases>
+		<costList>
+			<Bioferrite>20</Bioferrite>
+			<ComponentIndustrial>1</ComponentIndustrial>
+		</costList>
+		<recipeMaker>
+			<workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+			<workSkill>Crafting</workSkill>
+			<effectWorking>Smith</effectWorking>
+			<soundWorking>Recipe_Smith</soundWorking>
+			<unfinishedThingDef>AnAl_UnfinishedHealthItemChimera</unfinishedThingDef>
+			<skillRequirements>
+				<Crafting>4</Crafting>
+			</skillRequirements>
+			<researchPrerequisite>AnAl_ChimeraCreation</researchPrerequisite>
+			<recipeUsers>
+				<li>BioferriteShaper</li>
+			</recipeUsers>
+			<displayPriority>161</displayPriority>
+		</recipeMaker>
+		<comps>
+			<li Class="AnomalyAllies.Comps.CompProperties_TransformItem">
+				<thingDefToTransformInto>AdrenalHeart</thingDefToTransformInto>
+				<label>Convert</label>
+				<description>Convert this chimera adrenal heart to a ghoul adrenal heart.</description>
+				<researchPrerequisite>GhoulEnhancements</researchPrerequisite>
+			</li>
+		</comps>
+	</ThingDef>
+	
+	<RecipeDef ParentName="SurgeryInstallBodyPartArtificialBase">
+		<defName>AnAl_InstallAdrenalHeartChimera</defName>
+		<label>install adrenal heart (chimera)</label>
+		<description>Install adrenal heart.</description>
+		<descriptionHyperlinks>
+			<ThingDef>AnAl_AdrenalHeartChimera</ThingDef>
+			<HediffDef>AnAl_AdrenalHeartChimera</HediffDef>
+		</descriptionHyperlinks>
+		<jobString>Installing adrenal heart (chimera).</jobString>
+		<humanlikeOnly>false</humanlikeOnly>
+		<recipeUsers IsNull="True"/>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>AnAl_AdrenalHeartChimera</li>
+					</thingDefs>
+				</filter>
+				<count>1</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>AnAl_AdrenalHeartChimera</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<appliedOnFixedBodyParts>
+			<li>Heart</li>
+		</appliedOnFixedBodyParts>
+		<addsHediff>AnAl_AdrenalHeartChimera</addsHediff>
+	</RecipeDef>
+	
+	<!-- you can't change an individual pawn's wildness :(
+	<HediffDef ParentName="ImplantHediffBase">
+		<defName>AnAl_AmygdalaInhibitor</defName>
+		<label>amygdala inhibitor</label>
+		<description>An installed amygdala inhibitor. It inhibits the fear and aggression centers of the amygdala, reducing wildness. However, it also makes a chimera's rage speed less effective.</description>
+		<spawnThingOnRemoved>AnAl_AmygdalaInhibitor</spawnThingOnRemoved>
+		<comps>
+			<li Class="AnomalyAllies.Comps.HediffCompProperties_ChangeOtherHediffSeverityOnDamaged">
+				<otherHediff>RageSpeed</otherHediff>
+				<severityChange>-0.25</severityChange>
+				<onlyOnce>true</onlyOnce>
+			</li>
+		</comps>
+		<modExtensions>
+			<li Class="AnomalyAllies.DefModExtensions.ChangeWildness">
+				<changeBy>-0.15</changeBy>
+			</li>
+		</modExtensions>
+	</HediffDef>
+	
+	<ThingDef ParentName="AnAl_BodyPartChimeraBase">
+		<defName>AnAl_AmygdalaInhibitor</defName>
+		<label>amygdala inhibitor</label>
+		<description>A special bioferrite implant installed into the brain of a chimera. The implant reduces stimulation of the fear and aggression centers of the amygdala, making the chimera calmer and easier to train. However, this also reduces the effect of their adrenaline response, weakening the effect of the chimera's rage speed. If combined with an adrenal heart, the chimera's rage speed will be similar to with a chimera without any modifications. Requires bioferrite supplied by the body to stay active, so it cannot be installed on regular animals.</description>
+		<descriptionHyperlinks><RecipeDef>AnAl_InstallAmygdalaInhibitor</RecipeDef></descriptionHyperlinks>
+		<statBases>
+			<Mass>0.3</Mass>
+			<WorkToMake>13200</WorkToMake>
+		</statBases>
+		<costList>
+			<Bioferrite>10</Bioferrite>
+			<ComponentIndustrial>2</ComponentIndustrial>
+		</costList>
+		<recipeMaker>
+			<workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+			<workSkill>Crafting</workSkill>
+			<effectWorking>Smith</effectWorking>
+			<soundWorking>Recipe_Smith</soundWorking>
+			<unfinishedThingDef>AnAl_UnfinishedHealthItemChimera</unfinishedThingDef>
+			<skillRequirements>
+				<Crafting>4</Crafting>
+			</skillRequirements>
+			<researchPrerequisite>AnAl_ChimeraCreation</researchPrerequisite>
+			<recipeUsers>
+				<li>BioferriteShaper</li>
+			</recipeUsers>
+			<displayPriority>200</displayPriority>
+		</recipeMaker>
+	</ThingDef>
+	
+	<RecipeDef ParentName="SurgeryInstallImplantBase">
+		<defName>AnAl_InstallAmygdalaInhibitor</defName>
+		<label>install amygdala inhibitor</label>
+		<description>Install amygdala inhibitor.</description>
+		<descriptionHyperlinks>
+			<ThingDef>AnAl_AmygdalaInhibitor</ThingDef>
+			<HediffDef>AnAl_AmygdalaInhibitor</HediffDef>
+		</descriptionHyperlinks>
+		<jobString>Installing amygdala inhibitor.</jobString>
+		<humanlikeOnly>false</humanlikeOnly>
+		<recipeUsers IsNull="True"/>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>AnAl_AmygdalaInhibitor</li>
+					</thingDefs>
+				</filter>
+				<count>1</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>AnAl_AmygdalaInhibitor</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<appliedOnFixedBodyParts>
+			<li>Brain</li>
+		</appliedOnFixedBodyParts>
+		<addsHediff>AnAl_AmygdalaInhibitor</addsHediff>
+	</RecipeDef>
+	-->
+</Defs>

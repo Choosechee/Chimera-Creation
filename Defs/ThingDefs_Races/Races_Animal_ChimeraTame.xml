@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<ThingDef ParentName="ChimeraThing">
+		<defName>AnAl_ChimeraTame</defName>
+		<description>A huge creature that resembles a disfigured combination of a bear and other animals. It is vicious without limit.\n\nIt's not known if this is a combination of natural animals or a poor imitation of animal life created by an insane machine mind.\n\nThis one was made using a ritual to serve a colony. If fed, it will continue to serve the colony. Otherwise, it will turn hostile.</description>
+		<statBases>
+			<MarketValue>700</MarketValue>
+			<FilthRate>12</FilthRate>
+		</statBases>
+		<race>
+			<thinkTreeMain>AnAl_ChimeraTame</thinkTreeMain>
+			<thinkTreeConstant>AnAl_ChimeraTameConstant</thinkTreeConstant>
+			<nameGenerator>NamerAnimalUtility</nameGenerator>
+			<petness>0</petness>
+			<predator>true</predator>
+			<maxPreyBodySize>3</maxPreyBodySize>
+			<baseHungerRate>0.625</baseHungerRate>
+			<foodType>CarnivoreAnimalStrict</foodType>
+			<wildness>0.95</wildness>
+			<trainability>Advanced</trainability>
+			<nuzzleMtbHours>120</nuzzleMtbHours> <!-- I had to. -->
+			<manhunterOnTameFailChance>0.80</manhunterOnTameFailChance>
+			<manhunterOnDamageChance>1.00</manhunterOnDamageChance>
+			<hediffGiverSets>
+				<li>AnAl_MeatHungerGiverChimera</li>
+			</hediffGiverSets>
+			<soundEating>PredatorLarge_Eat</soundEating>
+		</race>
+		<thingCategories>
+			<li>Animals</li>
+		</thingCategories>
+		<entityCodexEntry>Chimera</entityCodexEntry>
+		<recipes>
+			<li>AnAl_InstallAdrenalHeartChimera</li>
+		</recipes>
+		<comps>
+			<li Class="AnomalyAllies.Comps.CompProperties_Transform">
+				<pawnKindToTransformInto>Chimera</pawnKindToTransformInto>
+				<hediffDefsToDiscard>
+					<li>Malnutrition</li>
+					<li>AnAl_MeatHungerChimera</li>
+				</hediffDefsToDiscard>
+			</li>
+			<li Class="AnomalyAllies.Comps.CompProperties_RevengeOnSlaughter">
+				<compClass>AnomalyAllies.Comps.CompEntityRevengeOnSlaughter</compClass>
+				<chanceToRevengeOnSlaughter>1</chanceToRevengeOnSlaughter>
+				<chanceToRevengeOnSlaughterBonded>0.5</chanceToRevengeOnSlaughterBonded>
+			</li>
+		</comps>
+		<modExtensions>
+			<li Class="AnomalyAllies.DefModExtensions.ForceAnimal"/>
+		</modExtensions>
+	</ThingDef>
+	
+	<PawnKindDef ParentName="ChimeraKind">
+		<defName>AnAl_ChimeraTame</defName>
+		<race>AnAl_ChimeraTame</race>
+	</PawnKindDef>
+</Defs>

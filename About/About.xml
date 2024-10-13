@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Chimera Creation</name>
+  <author>Choosechee</author>
+  <url>https://steamcommunity.com/sharedfiles/filedetails/?id=3331963520</url>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld.Anomaly</packageId>
+      <displayName>Anomaly</displayName>
+	  <downloadUrl>https://rimworldgame.com/anomaly/</downloadUrl>
+	  <steamWorkshopUrl>steam://store/2380740</steamWorkshopUrl> <!-- close enough -->
+    </li>
+	<li>
+      <packageId>zetrith.prepatcher</packageId>
+      <displayName>Prepatcher</displayName>
+	  <downloadUrl>https://github.com/Zetrith/Prepatcher/archive/refs/heads/master.zip</downloadUrl>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2934420800</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <forceLoadAfter>
+    <li>zetrith.prepatcher</li>
+	<li>brrainz.harmony</li>
+	<li>Ludeon.RimWorld.Anomaly</li>
+  </forceLoadAfter>
+  <supportedVersions>
+    <li>1.5</li>
+  </supportedVersions>
+  <packageId>Choosechee.AnomalyAllies</packageId>
+  <description>REQUIRES PREPATCHER (or Harmony, but I recommend Prepatcher for this mod)!\n\nThis mod adds a psychic ritual that turns animals into friendly chimeras. They can be used like normal animals with advanced trainability, but can only eat raw meat and corpses and will become hostile if not fed. Includes one new prosthetic for your tame chimeras, some mod settings, and cross-compatibility with More Archotech Garbage to let you tame wild chimeras!</description>
+</ModMetaData>

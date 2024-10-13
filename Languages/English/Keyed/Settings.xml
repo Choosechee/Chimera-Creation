@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+	<AnAl_EntitiesCanBetray_Label>Chimeras can betray</AnAl_EntitiesCanBetray_Label>
+	<AnAl_EntitiesCanBetray_Tooltip>This setting controls whether chimeras can betray the colony. Tame chimeras can betray if they are hungry for too long (similarly to ghouls), or a colonist tries to slaughter them while mobile.\n\n(Default: ON)</AnAl_EntitiesCanBetray_Tooltip>
+	
+	<AnAl_BetrayalIsPermanent_Label>Betrayal is permanent</AnAl_BetrayalIsPermanent_Label>
+	<AnAl_BetrayalIsPermanent_Tooltip>This setting controls whether chimeras can be retamed after betrayal. With this setting turned on, chimeras can't be retamed after betraying.\n\n(Default: ON)</AnAl_BetrayalIsPermanent_Tooltip>
+	
+	<AnAl_ChimeraIsNormalCarnivore_Label>Chimeras are normal carnivores</AnAl_ChimeraIsNormalCarnivore_Label>
+	<AnAl_ChimeraIsNormalCarnivore_Tooltip>This setting controls whether chimeras can only eat raw meat and corpses, or can also eat cooked foods like meals, pemmican, kibble, etc. Turn this setting on if you want them to be able to eat cooked foods.\n\n(Default: OFF)</AnAl_ChimeraIsNormalCarnivore_Tooltip>
+	
+	<AnAl_ChimeraMeatRequirementOffset_Label>Chimera creation ritual meat offset:</AnAl_ChimeraMeatRequirementOffset_Label>
+	<AnAl_ChimeraMeatRequirementOffset_Tooltip>An offset for the meat yield requirement of the chimera creation ritual. With the current settings, the meat yield required is {MEATREQUIRED}.\n\n(Default: 0)</AnAl_ChimeraMeatRequirementOffset_Tooltip>
+	
+	<AnAl_WildChimerasAreTameable_Label>Wild chimeras are tameable</AnAl_WildChimerasAreTameable_Label>
+	<AnAl_WildChimerasAreTameable_Tooltip>This setting controls whether wild chimeras can be tamed, instead of having to use the chimera creation ritual to get one. They can be tamed after they have been downed the first time with this setting on. (This setting could be problematic, because internally, the base Anomaly chimera and tame chimeras are separate entities. This setting makes normal chimeras become this mod's chimeras when they are downed. They behave differently, and so they might act strangely when used for normal entity things. I've done some testing to make sure there aren't any obvious issues, but can't guarantee that everything will work as expected. Be warned!)\n\n(Default: OFF)</AnAl_WildChimerasAreTameable_Tooltip>
+	
+	<AnAl_NotRecommendedWarning>    Warning: Could cause issues!</AnAl_NotRecommendedWarning>
+	
+	<AnAl_ResetSettings>Reset settings to default</AnAl_ResetSettings>
+</LanguageData>

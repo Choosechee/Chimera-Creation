@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<TaleDef Name="AnAl_ChimeraBetrayalTale_SingleAndSpecificPawn" Abstract="True">
+		<label>chimera betrayal</label>
+		<taleClass>Tale_DoublePawn</taleClass>
+		<type>Volatile</type>
+		<baseInterest>10</baseInterest>
+		<firstPawnSymbol>CHIMERA</firstPawnSymbol>
+		<secondPawnSymbol>PAWN</secondPawnSymbol>
+		<colonistOnly>false</colonistOnly>
+		<rulePack>
+			<rulesStrings>
+				<li>image->[CHIMERA_nameFull] viciously attacking [PAWN_nameFull] [circumstance_group]</li>
+				<li>image->[CHIMERA_nameFull] mercilessly biting and clawing [PAWN_nameFull] [circumstance_group]</li>
+				<li>image->[CHIMERA_nameFull] attempting to tear down a door being held closed by [PAWN_nameFull] [circumstance_group]</li>
+				<li>image->[CHIMERA_nameFull] pouncing towards [PAWN_nameFull] with the intent to kill, [circumstance_group]</li>
+				<li>circumstance_phrase->as others watch in shock</li>
+				<li>circumstance_phrase->as others attempt to stop it</li>
+				<li>circumstance_phrase->as others shoot at it</li>
+				<li>desc_sentence->[CHIMERA_pronoun] is filled with unfathomable rage.</li>
+				<li>desc_sentence->[CHIMERA_possessive] expression is twisted with rage and unbearable to look at.</li>
+				<li>desc_sentence->Despite the static nature of the medium, it is clear that [PAWN_nameDef] is shaking in fear.</li>
+			</rulesStrings>
+		</rulePack>
+	</TaleDef>
+	
+	<TaleDef Name="AnAl_ChimeraBetrayalTale_Slaughter" ParentName="AnAl_ChimeraBetrayalTale_SingleAndSpecificPawn" Abstract="True">
+		<rulePack Inherit="true">
+			<rulesStrings Inherit="true">
+				<li>tale_noun->[CHIMERA_indefinite] fighting back after an attempted slaughter by [PAWN_nameDef]</li>
+				<li>circumstance_phrase->with a look of betrayal on [CHIMERA_possessive] face</li>
+				<li>desc_sentence->There is a knife on the ground nearby.</li>
+				<li>desc_sentence->[PAWN_nameDef] is tightly holding a knife in [PAWN_possesive] hands.</li>
+				<li>desc_sentence->There is a small cut on [CHIMERA_nameDef]'s neck.</li>
+			</rulesStrings>
+		</rulePack>
+	</TaleDef>
+	
+	<TaleDef Name="AnAl_ChimeraBetrayalTale_Slaughter_Temporary" ParentName="AnAl_ChimeraBetrayalTale_Slaughter">
+		<defName>AnAl_ChimeraBetrayal_Slaughter_Temporary</defName>
+		<rulePack Inherit="true">
+			<rulesStrings Inherit="true">
+				<li>desc_sentence->In the distance, a [Animal] is calling towards [CHIMERA_nameDef].</li>
+			</rulesStrings>
+		</rulePack>
+	</TaleDef>
+	
+	<TaleDef Name="AnAl_ChimeraBetrayalTale_Slaughter_Permanent" ParentName="AnAl_ChimeraBetrayalTale_Slaughter">
+		<defName>AnAl_ChimeraBetrayal_Slaughter_Permanent</defName>
+		<rulePack Inherit="true">
+			<rulesStrings Inherit="true">
+				<li>desc_sentence->In the distance, a tentacle is beckoning [CHIMERA_nameDef] towards it.</li>
+			</rulesStrings>
+		</rulePack>
+	</TaleDef>
+	
+	<TaleDef ParentName="AnAl_ChimeraBetrayalTale_Slaughter_Temporary">
+		<defName>AnAl_ChimeraBetrayal_Slaughter_Bonded_Temporary</defName>
+		<baseInterest>15</baseInterest>
+		<rulePack Inherit="true">
+			<rulesStrings Inherit="true">
+				<li>tale_noun->[CHIMERA_indefinite] fighting back after an attempted slaughter by [CHIMERA_possessive] owner [PAWN_nameDef]</li>
+				<li>desc_sentence->[PAWN_nameDef] has a deeply regretful look on [PAWN_possesive] face.</li>
+				<li>desc_sentence->[PAWN_nameDef]'s face is anguished, with tears rolling down [PAWN_possesive] face.</li>
+				<li>desc_sentence->[PAWN_nameDef] is despondent and ready to accept [PAWN_possesive] fate.</li>
+				<li>desc_sentence->There is a single tear rolling down both [CHIMERA_nameDef]'s and [PAWN_nameDef]'s faces.</li>
+			</rulesStrings>
+		</rulePack>
+	</TaleDef>
+	
+	<TaleDef ParentName="AnAl_ChimeraBetrayalTale_Slaughter_Permanent">
+		<defName>AnAl_ChimeraBetrayal_Slaughter_Bonded_Permanent</defName>
+		<baseInterest>15</baseInterest>
+		<rulePack Inherit="true">
+			<rulesStrings Inherit="true">
+				<li>tale_noun->[CHIMERA_indefinite] fighting back after an attempted slaughter by [CHIMERA_possessive] owner [PAWN_nameDef]</li>
+				<li>desc_sentence->[PAWN_nameDef] has a deeply regretful look on [PAWN_possesive] face.</li>
+				<li>desc_sentence->[PAWN_nameDef]'s face is anguished, with tears rolling down [PAWN_possesive] face.</li>
+				<li>desc_sentence->[PAWN_nameDef] is despondent and ready to accept [PAWN_possesive] fate.</li>
+				<li>desc_sentence->There is a single tear rolling down [PAWN_nameDef]'s face.</li>
+			</rulesStrings>
+		</rulePack>
+	</TaleDef>
+	
+	<TaleDef ParentName="AnAl_ChimeraBetrayalTale_SingleAndSpecificPawn">
+		<defName>AnAl_ChimeraBetrayal_Hunger_Bonded</defName>
+		<baseInterest>15</baseInterest>
+		<rulePack Inherit="true">
+			<rulesStrings Inherit="true">
+				<li>tale_noun->[CHIMERA_indefinite] betraying the colony and [CHIMERA_possessive] owner, [PAWN_nameDef]</li>
+				<li>circumstance_phrase->as others cower in fear</li>
+				<li>circumstance_phrase->with intense hunger in [CHIMERA_possessive] eyes</li>
+				<li>desc_sentence->[CHIMERA_pronoun] is heavily salivating, almost as if [CHIMERA_pronoun] was affected by rabies, but there is no froth.</li>
+				<li>desc_sentence->[CHIMERA_possessive] body is skinny and [CHIMERA_possessive] ribs are showing.</li>
+				<li>desc_sentence->[CHIMERA_pronoun] looks almost skeletal in appearance; only a thin skin seems to surround [CHIMERA_possessive] skeleton.</li>
+				<li>desc_sentence->[PAWN_nameDef]'s face is anguished, with tears rolling down [PAWN_possesive] face.</li>
+				<li>desc_sentence->[PAWN_nameDef] is despondent and ready to accept [PAWN_possesive] fate.</li>
+				<li>desc_sentence->There is a single tear rolling down [PAWN_nameDef]'s face.</li>
+				<li>desc_sentence->[PAWN_nameDef] is looking towards the rest of the colony with anger and sadness in [PAWN_possesive] eyes.</li>
+			</rulesStrings>
+		</rulePack>
+	</TaleDef>
+	
+	<TaleDef ParentName="AnAl_ChimeraBetrayalTale_SingleAndSpecificPawn">
+		<defName>AnAl_ChimeraBetrayal_Hunger_Bonded_Multiple</defName>
+		<label>chimeras betraying</label>
+		<baseInterest>18</baseInterest>
+		<rulePack Inherit="true">
+			<rulesStrings Inherit="false">
+				<li>tale_noun->[CHIMERA_indefinite] and other chimeras betraying the colony and [CHIMERA_possessive] owner, [PAWN_nameDef]</li>
+				<li>image->[CHIMERA_nameFull] and [CHIMERA_possessive] pack viciously attacking [PAWN_nameFull] [circumstance_group]</li>
+				<li>image->[CHIMERA_nameFull] mercilessly shredding [PAWN_nameFull] to pieces with the help of {CHIMERA_possessive} pack mates, [circumstance_group]</li>
+				<li>image->[CHIMERA_nameFull] and [CHIMERA_possessive] pack attempting to break into a building with [PAWN_nameFull] inside, [circumstance_group]</li>
+				<li>image->[CHIMERA_nameFull] and [CHIMERA_possessive] pack surrounding [PAWN_nameFull] with the intent to kill, [circumstance_group]</li>
+				<li>circumstance_phrase->as others watch in shock</li>
+				<li>circumstance_phrase->as others run away screaming</li>
+				<li>circumstance_phrase->as others desperately attempt to stop them</li>
+				<li>circumstance_phrase->as others futiley shoot at them</li>
+				<li>circumstance_phrase->with intense hunger in their eyes</li>
+				<li>desc_sentence->Every pack member is filled with rage, but [CHIMERA_nameDef]'s anger seems unfathomable in its intensity.</li>
+				<li>desc_sentence->[CHIMERA_nameDef]'s expression is twisted with rage and unbearable to look at, and the other chimeras' faces aren't much better.</li>
+				<li>desc_sentence->[CHIMERA_nameDef]'s eyes have a crazed expression and are filled with an unnatural, inky blackness. {CHIMERA_possessive} gaze seems to command the others.</li>
+				<li>desc_sentence->Tendrils are attached behind the pack members' necks. The source is a tentacle growing out of [CHIMERA_nameDef]'s head.</li>
+				<li>desc_sentence->All pack members are salivating heavily, desperate to consume [PAWN_nameDef]'s flesh.</li>
+				<li>desc_sentence->The pack members are emaciated, with [CHIMERA_nameDef] the skinniest.</li>
+				<li>desc_sentence->All pack members are skin and bone. [CHIMERA_nameDef], however, makes them look fat in comparison.</li>
+				<li>desc_sentence->[PAWN_nameDef]'s face is anguished, with tears rolling down [PAWN_possesive] face.</li>
+				<li>desc_sentence->[PAWN_nameDef] is despondent and ready to accept [PAWN_possesive] fate.</li>
+				<li>desc_sentence->There is a single tear rolling down [PAWN_nameDef]'s face.</li>
+				<li>desc_sentence->[PAWN_nameDef] is looking towards the rest of the colony with anger and sadness in [PAWN_possesive] eyes.</li>
+			</rulesStrings>
+		</rulePack>
+	</TaleDef>
+</Defs>

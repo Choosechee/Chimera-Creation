@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<HediffDef ParentName="MeatHunger_Original">
+		<defName>AnAl_MeatHungerChimera</defName>
+		<hediffClass>AnomalyAllies.ChimeraTame.Hediff_MeatHunger_Chimera</hediffClass>
+	</HediffDef>
+</Defs>

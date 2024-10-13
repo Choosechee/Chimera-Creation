@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+	<AnAl_AlertMeatHungerChimera>Chimera starvation</AnAl_AlertMeatHungerChimera>
+	<AnAl_AlertMeatHungerChimera_Desc>These chimeras hunger for raw meat:\n{AFFECTEDPAWNS}\n\n</AnAl_AlertMeatHungerChimera_Desc>
+	<AnAl_AlertMeatHungerChimera_Desc_ChimeraIsNormalCarnivore>These chimeras hunger for meat:\n{AFFECTEDPAWNS}\n\n</AnAl_AlertMeatHungerChimera_Desc_ChimeraIsNormalCarnivore>
+	<AnAl_AlertMeatHungerChimera_Desc_Appended>They may attack as a group if they're not fed soon. Get them some meat.</AnAl_AlertMeatHungerChimera_Desc_Appended>
+</LanguageData>

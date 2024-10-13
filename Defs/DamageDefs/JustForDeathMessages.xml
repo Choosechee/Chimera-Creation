@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<DamageDef>
+		<defName>AnAl_MorphedIntoChimera</defName>
+		<label>morphed</label>
+		<deathMessage>{0} morphed into a chimera.</deathMessage>
+	</DamageDef>
+	
+	<DamageDef>
+		<defName>AnAl_MorphedIntoFleshbeast</defName>
+		<label>morphed</label>
+		<deathMessage>{0} morphed into a fleshbeast.</deathMessage>
+	</DamageDef>
+	
+	<DamageDef>
+		<defName>AnAl_MorphedIntoMeat</defName>
+		<label>morphed</label>
+		<deathMessage>{0} turned into a pile of meat.</deathMessage>
+	</DamageDef>
+</Defs>

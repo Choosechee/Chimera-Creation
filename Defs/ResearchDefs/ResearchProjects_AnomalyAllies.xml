@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<ResearchProjectDef>
+		<defName>AnAl_ChimeraCreation</defName>
+		<label>chimera creation</label>
+		<description>Perform a psychic ritual which creates a friendly chimera by transforming target animals. The chimera can be trained like a normal animal, but can only eat raw meat and will go mad if not fed.</description>
+		<tab>Anomaly</tab>
+		<prerequisites>
+			<li>AdvancedPsychicRituals</li>
+		</prerequisites>
+		<knowledgeCost>30</knowledgeCost>
+		<knowledgeCategory>Advanced</knowledgeCategory>
+		<researchViewX>6.50</researchViewX>
+		<researchViewY>1.90</researchViewY>
+		<generalRules>
+			<rulesStrings>
+				<li>subject->chimera creation</li>
+
+				<li>subject_story->investigated tales of strange animals</li>
+				<li>subject_story->researched the effects of radiation on wild animals</li>
+				<li>subject_story->spoke with a man who performed experiments on his pets to make them immortal</li>
+				<li>subject_story->studied alchemical procedures to create homunculi</li>
+
+				<li>subject_gerund->creating a chimera</li>
+
+				<li>subject_gerund->combining animals to make a chimera</li>
+			</rulesStrings>
+		</generalRules>
+	</ResearchProjectDef>
+</Defs>

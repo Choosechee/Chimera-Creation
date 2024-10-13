@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<AnomalyAllies.ChimeraTame.PsychicRitualRoleDef_CreateChimeraTarget>
+		<defName>AnAl_CreateChimeraTarget</defName>
+		<label>target</label>
+		<category>animal target</category>
+		<allowedCount>1~3</allowedCount>
+		<allowedConditions>NonHumanlike, Freeman, Sleeping, Downed, MentalState, Baby, Child, Adult, NoPsychicSensitivity</allowedConditions>
+		<psychicRitualLeaveReason_AlreadyAChimera>{PAWN_nameDef} is already a chimera.</psychicRitualLeaveReason_AlreadyAChimera>
+		<psychicRitualLeaveReason_HostileMentalBreak>{PAWN_nameDef} has gone {MENTALSTATE_label}.</psychicRitualLeaveReason_HostileMentalBreak>
+		<applyPowerOffset>true</applyPowerOffset>
+	</AnomalyAllies.ChimeraTame.PsychicRitualRoleDef_CreateChimeraTarget>
+</Defs>

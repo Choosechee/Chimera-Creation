@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<ThinkTreeDef ParentName="AnimalThinkTree">
+		<defName>AnAl_ChimeraTame</defName>
+		<thinkRoot Class="ThinkNode_Priority" Inherit="true">
+			<subNodes Inherit="true">
+				<!-- Escaping -->
+				<!-- Is reordered to be earlier using C#. If you put anything after or before this, it'll also be moved! -->
+				<li Class="ThinkNodeConditional_EscapingHoldingPlatform">
+					<subNodes>
+						<li Class="JobGiver_EscapingHoldingPlatform" />
+					</subNodes>
+				</li>
+			</subNodes>
+		</thinkRoot>
+	</ThinkTreeDef>
+	
+	<!-- Is modified using C# -->
+	<ThinkTreeDef ParentName="AnimalConstantThinkTree">
+		<defName>AnAl_ChimeraTameConstant</defName>
+	</ThinkTreeDef>
+</Defs>

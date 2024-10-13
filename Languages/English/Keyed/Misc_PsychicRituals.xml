@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+	<AnAl_StatsReport_MeatRequired>Meat yield required</AnAl_StatsReport_MeatRequired>
+	<AnAl_StatsReport_MeatRequired_Desc>The total meat yield required from the target animal(s) for the ritual to be able to create a chimera.</AnAl_StatsReport_MeatRequired_Desc>
+	
+	<AnAl_PsychicRitualCreateChimera_NotEnoughMeatWarning_Single>The target selected doesn't have enough meat to create a chimera. You need {MEATSTILLREQUIRED} more meat. If you perform the ritual anyways, the target will only become twisted meat on a success. A failure can still create a fleshbeast.</AnAl_PsychicRitualCreateChimera_NotEnoughMeatWarning_Single>
+	<AnAl_PsychicRitualCreateChimera_NotEnoughMeatWarning_Multiple>The targets selected don't have enough meat to create a chimera. You need {MEATSTILLREQUIRED} more meat. If you perform the ritual anyways, the targets will only become twisted meat on a success. A failure can still create a fleshbeast.</AnAl_PsychicRitualCreateChimera_NotEnoughMeatWarning_Multiple>
+	
+	<AnAl_PsychicRitualCreateChimera_BondedTargetWarning_Single>The target {TARGET_nameDef} is bonded to {BONDEDPAWN_definite}. {BONDEDPAWN_pronoun} will be unhappy if {TARGET_nameDef} is used in the ritual.</AnAl_PsychicRitualCreateChimera_BondedTargetWarning_Single>
+	<AnAl_PsychicRitualCreateChimera_BondedTargetWarning_Multiple>The target {TARGET_nameDef} is bonded to colonists {BONDEDPAWNS}. They will be unhappy if {TARGET_nameDef} is used in the ritual.</AnAl_PsychicRitualCreateChimera_BondedTargetWarning_Multiple>
+</LanguageData>
