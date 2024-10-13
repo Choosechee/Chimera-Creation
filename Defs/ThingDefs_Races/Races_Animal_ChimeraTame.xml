@@ -55,5 +55,6 @@
 	<PawnKindDef ParentName="ChimeraKind">
 		<defName>AnAl_ChimeraTame</defName>
 		<race>AnAl_ChimeraTame</race>
+		<canArriveManhunter>false</canArriveManhunter>
 	</PawnKindDef>
 </Defs>
