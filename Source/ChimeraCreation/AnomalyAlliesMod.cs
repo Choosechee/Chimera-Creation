@@ -49,7 +49,8 @@ namespace AnomalyAllies
                 fieldProviderAssembly = loadedAssemblies.Find((Assembly a) => a.GetName().Name == "NoPrepatcherFieldProvider");
             }
             Type fieldProviderType = fieldProviderAssembly.ExportedTypes.FirstOrDefault();
-            logger.Message(fieldProviderType.FullName);
+            if (fieldProviderType.Name.Contains("Dictionary"))
+                fieldProviderType = fieldProviderAssembly.ExportedTypes.ElementAt(1);
             fieldProvider = (ICustomFieldsProvider)Activator.CreateInstance(fieldProviderType, "AnAl");
 
             modInstance = this;
