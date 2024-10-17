@@ -14,7 +14,7 @@ namespace AnomalyAllies.Patches
 {
     public static class InhumanizedCanTrainEntitiesPatches
     {
-        private static readonly MethodInfo inhumanizedMasterAndEntityAnimalMethod = typeof(InhumanizedCanTrainEntitiesPatches).Method("InhumanizedMasterAndEntityAnimal");
+        private static readonly MethodInfo inhumanizedMasterAndEntityAnimalMethod = typeof(InhumanizedCanTrainEntitiesPatches).Method(nameof(InhumanizedMasterAndEntityAnimal));
 
         public static bool InhumanizedOrVoidTouched(Pawn pawn)
         {
@@ -33,7 +33,7 @@ namespace AnomalyAllies.Patches
         {
             static MethodBase TargetMethod()
             {
-                return typeof(WorkGiver_InteractAnimal).GetMethod("CanInteractWithAnimal", BindingFlags.Public | BindingFlags.Static);
+                return typeof(WorkGiver_InteractAnimal).GetMethod(nameof(WorkGiver_InteractAnimal.CanInteractWithAnimal), BindingFlags.Public | BindingFlags.Static);
             }
             
             static void Prefix(Pawn pawn, Pawn animal, ref bool ignoreSkillRequirements)
@@ -47,7 +47,7 @@ namespace AnomalyAllies.Patches
         //[HarmonyDebug]
         public static class CanBeMaster
         {
-            private static readonly MethodInfo directRelationExistsMethod = typeof(Pawn_RelationsTracker).Method("DirectRelationExists");
+            private static readonly MethodInfo directRelationExistsMethod = typeof(Pawn_RelationsTracker).Method(nameof(Pawn_RelationsTracker.DirectRelationExists));
 
             static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
             {
@@ -88,10 +88,10 @@ namespace AnomalyAllies.Patches
         //[HarmonyDebug]
         public static class NoWarningIfEntityAnimalAndInumanizedPawnAvailable
         {
-            private static readonly FieldInfo animalsSkillDefField = typeof(SkillDefOf).Field("Animals");
-            private static readonly MethodInfo racePropsGetter = typeof(Pawn).PropertyGetter("RaceProps");
-            private static readonly MethodInfo isAnomalyEntityGetter = typeof(RaceProperties).PropertyGetter("IsAnomalyEntity");
-            private static readonly MethodInfo validPawnsHasInhumanizedPawnMethod = typeof(NoWarningIfEntityAnimalAndInumanizedPawnAvailable).Method("ValidPawnsHasInhumanizedPawn");
+            private static readonly FieldInfo animalsSkillDefField = typeof(SkillDefOf).Field(nameof(SkillDefOf.Animals));
+            private static readonly MethodInfo racePropsGetter = typeof(Pawn).PropertyGetter(nameof(Pawn.RaceProps));
+            private static readonly MethodInfo isAnomalyEntityGetter = typeof(RaceProperties).PropertyGetter(nameof(RaceProperties.IsAnomalyEntity));
+            private static readonly MethodInfo validPawnsHasInhumanizedPawnMethod = typeof(NoWarningIfEntityAnimalAndInumanizedPawnAvailable).Method(nameof(ValidPawnsHasInhumanizedPawn));
 
             static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
             {
@@ -139,7 +139,7 @@ namespace AnomalyAllies.Patches
 
         public static class AnimalStatsOffset
         {
-            private static readonly MethodInfo getStatValueMethod = typeof(StatExtension).Method("GetStatValue");
+            private static readonly MethodInfo getStatValueMethod = typeof(StatExtension).Method(nameof(StatExtension.GetStatValue));
 
             public static int minSkillLevel = SkillRecord.MinLevel;
             public static int maxSkillLevel = SkillRecord.MaxLevel;
@@ -176,13 +176,12 @@ namespace AnomalyAllies.Patches
             [HarmonyPatch]
             static class TrainStat
             {
-                private static readonly MethodInfo tryTrainMethod = typeof(Toils_Interpersonal).Method("TryTrain");
-                private static readonly FieldInfo initActionField = typeof(Toil).Field("initAction");
+                private static readonly MethodInfo tryTrainMethod = typeof(Toils_Interpersonal).Method(nameof(Toils_Interpersonal.TryTrain));
+                private static readonly FieldInfo initActionField = typeof(Toil).Field(nameof(Toil.initAction));
                 private const string targetMethodFail = "Could not find delegate method in TryTrain";
 
-
-                private static readonly FieldInfo actorField = typeof(Toil).Field("actor");
-                private static readonly MethodInfo newTrainStatMethod = typeof(TrainStat).Method("NewTrainStat");
+                private static readonly FieldInfo actorField = typeof(Toil).Field(nameof(Toil.actor));
+                private static readonly MethodInfo newTrainStatMethod = typeof(TrainStat).Method(nameof(NewTrainStat));
 
                 // get the delegate method created by TryTrain
                 static MethodBase TargetMethod()
@@ -246,7 +245,7 @@ namespace AnomalyAllies.Patches
             [HarmonyPatch(typeof(InteractionWorker_RecruitAttempt), nameof(InteractionWorker_RecruitAttempt.Interacted))]
             static class TameStat
             {
-                private static readonly MethodInfo newTameStatMethod = typeof(TameStat).Method("NewTameStat");
+                private static readonly MethodInfo newTameStatMethod = typeof(TameStat).Method(nameof(NewTameStat));
                 
                 static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
                 {

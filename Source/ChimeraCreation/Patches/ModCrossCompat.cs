@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using AnomalyAllies.Comps;
+﻿using AnomalyAllies.Comps;
 using AnomalyAllies.DefOfs;
 using HarmonyLib;
 using RimWorld;
+using System;
+using System.Linq;
+using System.Reflection;
 using Verse;
 
 namespace AnomalyAllies.Patches
@@ -48,6 +45,9 @@ namespace AnomalyAllies.Patches
             MethodInfo forcedRecruitDoEffectOn = forcedReruit.GetMethod("DoEffectOn", BindingFlags.Public | BindingFlags.Instance);
             MoreArchotechGarbagePatch.targetMethod = forcedRecruitDoEffectOn;
 
+            // this fixes a null reference exception from an effect attempting
+            // to be applied at the location of the chimera after it despawns
+            // and is replaced by the tame version
             ThingDef psychicRecruiter = DefDatabase<ThingDef>.GetNamed("RecruitArtifact");
             int forcedRecruitCompIndex = psychicRecruiter.comps.FindIndex((CompProperties comp) => comp.compClass == forcedReruit);
             psychicRecruiter.comps.Swap(forcedRecruitCompIndex, psychicRecruiter.comps.Count - 1);

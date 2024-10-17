@@ -50,9 +50,9 @@ namespace AnomalyAllies.Patches
         [HarmonyPatch(typeof(StatWorker), nameof(StatWorker.ShouldShowFor))]
         static class StatsNotForEntities
         {
-            private static readonly MethodInfo isAnomalyEntityGetter = AccessTools.PropertyGetter(typeof(RaceProperties), "IsAnomalyEntity");
-            private static readonly MethodInfo fieldProviderGetter = AccessTools.PropertyGetter(typeof(AnomalyAlliesMod), "FieldProvider");
-            private static readonly MethodInfo forcedAnimalMethod = AccessTools.Method(typeof(ICustomFieldsProvider), "ForcedAnimal");
+            private static readonly MethodInfo isAnomalyEntityGetter = AccessTools.PropertyGetter(typeof(RaceProperties), nameof(RaceProperties.IsAnomalyEntity));
+            private static readonly MethodInfo fieldProviderGetter = AccessTools.PropertyGetter(typeof(AnomalyAlliesMod), nameof(AnomalyAlliesMod.FieldProvider));
+            private static readonly MethodInfo forcedAnimalMethod = AccessTools.Method(typeof(ICustomFieldsProvider), nameof(ICustomFieldsProvider.ForcedAnimal));
 
             static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
             {
