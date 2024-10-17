@@ -1,6 +1,5 @@
 ﻿using LudeonTK;
 using RimWorld;
-using System.Reflection;
 using Verse;
 
 namespace AnomalyAllies
@@ -15,10 +14,7 @@ namespace AnomalyAllies
             // ChimeraCreationMod.myLogger.Message(chimera.def.defName);
 
             GenSpawn.Spawn(chimera, UI.MouseCell(), Find.CurrentMap);
-
-            object[] forPostPawnSpawn = new object[1];
-            forPostPawnSpawn[0] = chimera;
-            typeof(DebugToolsSpawning).GetMethod("PostPawnSpawn", (BindingFlags)60).Invoke(null, forPostPawnSpawn);
+            typeof(DebugToolsSpawning).ForceInvokeStaticMethod("PostPawnSpawn", chimera);
         }
     }
 }

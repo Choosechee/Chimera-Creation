@@ -3,7 +3,7 @@
 namespace AnomalyAllies.DefModExtensions
 {
     // purely a marker
-    public class ForceAnimal : DefModExtension
+    public class EntityAnimal : DefModExtension
     {
     }
 }

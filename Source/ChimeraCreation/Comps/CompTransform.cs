@@ -253,17 +253,7 @@ namespace AnomalyAllies.Comps
             }
         }
 
-        private static MethodInfo copyAbilities = typeof(GameComponent_PawnDuplicator).GetMethod("CopyAbilities", BindingFlags.NonPublic | BindingFlags.Static);
-        protected static void CopyAbilities(Pawn firstPawn, Pawn secondPawn)
-        {
-            if (copyAbilities is null)
-            {
-                AnomalyAlliesMod.Logger.Error("CompTransform: copyAbilities is null");
-                return;
-            }
-            
-            copyAbilities.Invoke(null, new object[] { firstPawn, secondPawn });
-        }
+        protected static void CopyAbilities(Pawn firstPawn, Pawn secondPawn) => typeof(GameComponent_PawnDuplicator).ForceInvokeStaticMethod("CopyAbilities");
 
         private static FieldInfo recordsField = typeof(Pawn_RecordsTracker).GetField("records", BindingFlags.NonPublic | BindingFlags.Instance);
         protected static void CopyRecords(Pawn firstPawn, Pawn secondPawn)
@@ -275,8 +265,8 @@ namespace AnomalyAllies.Comps
             }
 
             DefMap<RecordDef, float> firstPawnRecords = (DefMap<RecordDef, float>)recordsField.GetValue(firstPawn.records);
-
             DefMap<RecordDef, float> firstPawnRecordsCopy = new DefMap<RecordDef, float>();
+
             foreach (KeyValuePair<RecordDef, float> keyValuePair in firstPawnRecords)
             {
                 firstPawnRecordsCopy[keyValuePair.Key] = keyValuePair.Value;

@@ -1,14 +1,13 @@
 ﻿using RimWorld;
 using RimWorld.Planet;
 using System.Collections.Generic;
-using System.Reflection;
 using Verse;
 
 namespace AnomalyAllies.BetrayalHungerBases
 {
     public abstract class Hediff_BetrayalHunger : Hediff_MeatHunger
     {
-        protected static Dictionary<int, int> StageIndexToBetrayalMTBHours = (Dictionary<int, int>)typeof(Hediff_MeatHunger).GetField("StageIndexToBetrayalMTBHours", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+        protected static Dictionary<int, int> StageIndexToBetrayalMTBHours = typeof(Hediff_MeatHunger).ForceGetStaticField<Dictionary<int, int>>("StageIndexToBetrayalMTBHours");
         protected abstract string BetrayalLabel { get; }
         protected abstract string BetrayalText { get; }
 

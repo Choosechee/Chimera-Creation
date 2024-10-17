@@ -18,7 +18,7 @@ namespace AnomalyAllies.Patches
     {
         static void Postfix(ThingDef __instance)
         {
-            if (__instance.HasModExtension<ForceAnimal>() && __instance.race is not null)
+            if (__instance.HasModExtension<EntityAnimal>() && __instance.race is not null)
             {
                 AnomalyAlliesMod.FieldProvider.ForcedAnimal(__instance.race) = true;
                 Log.Message($"Set ForcedAnimal to true for {__instance.defName}");

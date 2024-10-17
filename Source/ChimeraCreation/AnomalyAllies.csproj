@@ -55,7 +55,7 @@
     <Compile Include="Comps\CompRevengeOnSlaughter.cs" />
     <Compile Include="Comps\CompTransform.cs" />
     <Compile Include="Comps\HediffComp_ChangeOtherHediffSeverityOnDamaged.cs" />
-    <Compile Include="DefModExtensions\ForceAnimal.cs" />
+    <Compile Include="DefModExtensions\EntityAnimal.cs" />
     <Compile Include="DefModExtensions\ChangeWildness.cs" />
     <Compile Include="DefOfs\AnAl_RecipeDefOf.cs" />
     <Compile Include="DefOfs\AnAl_PsychicRitualDefOf.cs" />
@@ -65,7 +65,7 @@
     <Compile Include="DefOfs\AlliedEntityDefOf.cs" />
     <Compile Include="DefOfs\DeathMessageOf.cs" />
     <Compile Include="DefOfs\VanillaDefOf.cs" />
-    <Compile Include="ForceGet.cs" />
+    <Compile Include="EasyReflection.cs" />
     <Compile Include="Misc\BondBreakHelper.cs" />
     <Compile Include="Misc\OpcodeUtility.cs" />
     <Compile Include="Misc\PatchOperationAttributeAddCustom.cs" />
@@ -79,7 +79,6 @@
     <Compile Include="ChimeraTame\Hediff_MeatHunger_Chimera.cs" />
     <Compile Include="DebugActions.cs" />
     <Compile Include="BetrayalHungerBases\Hediff_BetrayalHunger.cs" />
-    <Compile Include="Patches\ForcedAnimalGoesManhunterOnEscape.cs" />
     <Compile Include="Patches\ForcedAnimalShows.cs" />
     <Compile Include="Patches\ForceSpecificGraphic.cs" />
     <Compile Include="Patches\InhumanizedCanTrainEntities.cs" />

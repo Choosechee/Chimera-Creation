@@ -32,7 +32,7 @@ namespace AnomalyAllies.Patches
                 return true;
 
             CompRevengeOnSlaughter victimComp;
-            if (victim.TryGetComp<CompRevengeOnSlaughter>(out victimComp))
+            if (victim.TryGetComp(out victimComp))
             {
                 bool tookRevenge = victimComp.TryRevenge(executioner);
                 return !tookRevenge;
