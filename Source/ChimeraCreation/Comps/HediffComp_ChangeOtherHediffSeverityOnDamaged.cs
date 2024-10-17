@@ -40,7 +40,7 @@ namespace AnomalyAllies.Comps
                 }
                 hediffsChangedAlready?.Add(hediffToChange);
             }
-            if (hediffsChangedAlready != null)
+            if (hediffsChangedAlready is not null)
             {
                 List<Hediff> currentHediffs = parent.pawn.health.hediffSet.hediffs;
                 List<Hediff> oldHediffsToRemove = new List<Hediff>();

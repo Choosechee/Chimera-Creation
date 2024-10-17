@@ -1,5 +1,4 @@
-﻿using Prepatcher;
-using Verse;
+﻿using Verse;
 
 namespace AnomalyAllies.DefModExtensions
 {

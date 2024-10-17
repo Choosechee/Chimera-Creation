@@ -53,7 +53,7 @@ namespace AnomalyAllies.Patches
         private static bool IsExecutionMethod(MethodInfo method)
         {
             IEnumerable<KeyValuePair<OpCode, object>> methodBody = PatchProcessor.ReadMethodBody(method);
-            return methodBody.Any(x => x.Value != null && x.Value.Equals(doExecutionByCut));
+            return methodBody.Any(x => x.Value is not null && x.Value.Equals(doExecutionByCut));
         }
     }
 }

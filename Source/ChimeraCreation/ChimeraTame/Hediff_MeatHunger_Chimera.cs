@@ -30,7 +30,7 @@ namespace AnomalyAllies.ChimeraTame
             {
                 List<Pawn> pawnsinSameLocation;
                 bool locationIsCaravan = false;
-                if (pawn.MapHeld != null)
+                if (pawn.MapHeld is not null)
                     pawnsinSameLocation = pawn.MapHeld.mapPawns.PawnsInFaction(Faction.OfPlayer);
                 else
                 {
@@ -189,11 +189,11 @@ namespace AnomalyAllies.ChimeraTame
             else
             {
                 Need_Food hunger = pawn.needs.food;
-                if (hunger != null)
+                if (hunger is not null)
                     hunger.CurLevelPercentage = 1f;
 
                 Hediff malnutrition = pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.Malnutrition);
-                if (malnutrition != null)
+                if (malnutrition is not null)
                     pawn.health.RemoveHediff(malnutrition);
 
                 Hediff meatHunger = pawn.health.hediffSet.GetFirstHediffOfDef(AnAl_HediffDefOf.AnAl_MeatHungerChimera);

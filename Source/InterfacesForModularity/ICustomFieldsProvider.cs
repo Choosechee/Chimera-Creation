@@ -4,11 +4,9 @@ namespace InterfacesForModularity
 {
     public interface ICustomFieldsProvider
     {
-        bool IsForcedAnimal(RaceProperties raceProperties);
-        void SetForcedAnimal(RaceProperties raceProperties, bool value);
+        ref bool ForcedAnimal(RaceProperties raceProperties);
 
-        int? GetForcedGraphic(Pawn pawn);
-        void SetForcedGraphic(Pawn pawn, int? value);
+        ref int? ForcedGraphic(Pawn pawn);
 
         void ExposeData(Pawn pawn);
     }

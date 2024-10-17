@@ -49,7 +49,7 @@ namespace AnomalyAllies.ChimeraTame
             }
 
             MentalStateDef mentalState = pawn.MentalStateDef;
-            if (mentalState != null && mentalState.IsAggro)
+            if (mentalState is not null && mentalState.IsAggro)
             {
                 reason = AnyEnum.FromEnum(CreateChimeraTargetReason.HostileMentalBreak);
                 return false;

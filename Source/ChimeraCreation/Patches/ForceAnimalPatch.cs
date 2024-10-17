@@ -9,7 +9,7 @@ namespace AnomalyAllies.Patches
     {
         static bool Postfix(bool __result, RaceProperties __instance)
         {
-            return __result || AnomalyAlliesMod.FieldProvider.IsForcedAnimal(__instance);
+            return __result || AnomalyAlliesMod.FieldProvider.ForcedAnimal(__instance);
         }
     }
 
@@ -18,10 +18,10 @@ namespace AnomalyAllies.Patches
     {
         static void Postfix(ThingDef __instance)
         {
-            if (__instance.HasModExtension<ForceAnimal>() && __instance.race != null)
+            if (__instance.HasModExtension<ForceAnimal>() && __instance.race is not null)
             {
-                AnomalyAlliesMod.FieldProvider.SetForcedAnimal(__instance.race, true);
-                Log.Message($"Set ForceAnimal to true for {__instance.defName}");
+                AnomalyAlliesMod.FieldProvider.ForcedAnimal(__instance.race) = true;
+                Log.Message($"Set ForcedAnimal to true for {__instance.defName}");
             }
         }
     }

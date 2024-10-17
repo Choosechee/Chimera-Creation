@@ -38,7 +38,7 @@ namespace AnomalyAllies
 
             Assembly fieldProviderAssembly;
             List<Assembly> loadedAssemblies = Content.assemblies.loadedAssemblies;
-            if (ModLister.GetActiveModWithIdentifier("zetrith.prepatcher", ignorePostfix: true) != null)
+            if (ModLister.GetActiveModWithIdentifier("zetrith.prepatcher", ignorePostfix: true) is not null)
             {
                 logger.Message("Found Prepatcher. Accessing PrepatcherFieldProvider.dll");
                 fieldProviderAssembly = loadedAssemblies.Find((Assembly a) => a.GetName().Name == "PrepatcherFieldProvider");

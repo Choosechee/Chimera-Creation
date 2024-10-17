@@ -27,7 +27,7 @@ namespace AnomalyAllies.Comps
             base.PostSpawnSetup(respawningAfterLoad);
             activePawn = ActivePawn.ThisPawn;
 
-            if (TransformedPawn != null)
+            if (TransformedPawn is not null)
             {
                 // AnomalyAlliesMod.Logger.Message("CompTransform: transformedPawn already exists. No initialization required");
                 if (transformedPawn.HasComp<CompTransform>())
@@ -76,15 +76,15 @@ namespace AnomalyAllies.Comps
             transformedPawnRequest.DontGivePreArrivalPathway = true;
 
             Pawn newPawn = PawnGenerator.GeneratePawn(transformedPawnRequest);
-            if (Pawn.kindDef.alternateGraphics is object && AlternateGraphicsEqual(Pawn.kindDef.alternateGraphics, newPawn.kindDef.alternateGraphics))
+            if (Pawn.kindDef.alternateGraphics is not null && AlternateGraphicsEqual(Pawn.kindDef.alternateGraphics, newPawn.kindDef.alternateGraphics))
             {
                 int graphicIndex = Pawn.GetGraphicIndex();
-                AnomalyAlliesMod.FieldProvider.SetForcedGraphic(newPawn, graphicIndex);
+                AnomalyAlliesMod.FieldProvider.ForcedGraphic(newPawn) = graphicIndex;
             }
             else
                 AnomalyAlliesMod.Logger.Error("The only transformable creature right now are the chimeras. Their alternateGraphics should be equal, so this should never appear.");
 
-            if (Pawn.Name != null)
+            if (Pawn.Name is not null)
                 newPawn.Name = new NameSingle(Pawn.Name.ToStringFull);
             else
                 newPawn.Name = null;
@@ -111,7 +111,7 @@ namespace AnomalyAllies.Comps
 
         public Pawn TransformPawn()
         {
-            if (!(Pawn.MapHeld != null || Pawn.IsCaravanMember()))
+            if (!(Pawn.MapHeld is not null || Pawn.IsCaravanMember()))
             {
                 AnomalyAlliesMod.Logger.Error($"CompTransform: TransformPawn was called when Pawn was in a {Pawn?.ParentHolder?.GetType()?.Name}. Returning null");
                 return null;
@@ -120,7 +120,7 @@ namespace AnomalyAllies.Comps
             if (TransformedPawn is null)
                 transformedPawn = CreateTransformedPawn();
 
-            if (Pawn.Name != null)
+            if (Pawn.Name is not null)
                 TransformedPawn.Name = new NameSingle(Pawn.Name.ToStringFull);
             else
                 TransformedPawn.Name = null;
@@ -135,7 +135,7 @@ namespace AnomalyAllies.Comps
             Selector selector = Find.Selector;
             bool pawnSelected = selector.IsSelected(Pawn); // I have to do this here because despawning unselects them
 
-            if (Pawn.MapHeld != null)
+            if (Pawn.MapHeld is not null)
             {
                 Pawn.DropAndForbidEverything();
                 Rot4 rot4 = Pawn.Rotation;
@@ -239,7 +239,7 @@ namespace AnomalyAllies.Comps
             foreach (Need need in firstPawnNeeds)
             {
                 Need needCopy = secondPawn.needs.TryGetNeed(need.def);
-                if (needCopy != null)
+                if (needCopy is not null)
                 {
                     needCopy.CurLevel = need.CurLevel;
                     secondPawnNeedDefsAffected.Add(needCopy.def);
@@ -339,7 +339,7 @@ namespace AnomalyAllies.Comps
         public override IEnumerable<string> ConfigErrors(ThingDef parentDef)
         {
             var baseErrors = base.ConfigErrors(parentDef);
-            if (baseErrors != null)
+            if (baseErrors is not null)
             {
                 foreach (string error in baseErrors)
                     yield return error;

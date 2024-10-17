@@ -121,7 +121,7 @@ namespace AnomalyAllies.ChimeraTame
 
         public override TaggedString TimeAndOfferingLabel()
         {
-            if (timeAndOfferingLabelCached != null)
+            if (timeAndOfferingLabelCached is not null)
                 return timeAndOfferingLabelCached;
             
             StringBuilder timeAndOfferingLabelBuilder = new StringBuilder(base.TimeAndOfferingLabel());

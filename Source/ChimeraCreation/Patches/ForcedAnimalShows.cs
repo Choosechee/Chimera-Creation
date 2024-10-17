@@ -16,7 +16,7 @@ namespace AnomalyAllies.Patches
             static bool Postfix(bool __result, ITab_Pawn_Social __instance)
             {
                 Pawn selPawnForSocialInfo = __instance.ForceGetProperty<Pawn>("SelPawnForSocialInfo");
-                return __result || AnomalyAlliesMod.FieldProvider.IsForcedAnimal(selPawnForSocialInfo.RaceProps);
+                return __result || AnomalyAlliesMod.FieldProvider.ForcedAnimal(selPawnForSocialInfo.RaceProps);
             }
         }
 
@@ -25,7 +25,7 @@ namespace AnomalyAllies.Patches
         {
             static IEnumerable<StatDrawEntry> Postfix(IEnumerable<StatDrawEntry> __result, RaceProperties __instance)
             {
-                if (!AnomalyAlliesMod.FieldProvider.IsForcedAnimal(__instance))
+                if (!AnomalyAlliesMod.FieldProvider.ForcedAnimal(__instance))
                     return __result;
 
                 List<StatDrawEntry> statDrawEntries = new List<StatDrawEntry>(__result);
@@ -35,7 +35,7 @@ namespace AnomalyAllies.Patches
                 string dietDesc = "Stat_Race_Diet_Desc".Translate(dietText);
                 statDrawEntries.Add(new StatDrawEntry(StatCategoryDefOf.BasicsPawn, dietLabel, dietText, dietDesc, StatDisplayOrder.Race_Diet));
 
-                if ((int)__instance.intelligence < 2 && __instance.trainability != null)
+                if ((int)__instance.intelligence < 2 && __instance.trainability is not null)
                 {
                     string trainabilityLabel = "Trainability".Translate();
                     string trainabilityText = __instance.trainability.LabelCap;
@@ -50,9 +50,9 @@ namespace AnomalyAllies.Patches
         [HarmonyPatch(typeof(StatWorker), nameof(StatWorker.ShouldShowFor))]
         static class StatsNotForEntities
         {
-            private static MethodInfo isAnomalyEntityGetter = AccessTools.PropertyGetter(typeof(RaceProperties), "IsAnomalyEntity");
-            private static MethodInfo fieldProviderGetter = AccessTools.PropertyGetter(typeof(AnomalyAlliesMod), "FieldProvider");
-            private static MethodInfo isForcedAnimalMethod = AccessTools.Method(typeof(ICustomFieldsProvider), "IsForcedAnimal");
+            private static readonly MethodInfo isAnomalyEntityGetter = AccessTools.PropertyGetter(typeof(RaceProperties), "IsAnomalyEntity");
+            private static readonly MethodInfo fieldProviderGetter = AccessTools.PropertyGetter(typeof(AnomalyAlliesMod), "FieldProvider");
+            private static readonly MethodInfo forcedAnimalMethod = AccessTools.Method(typeof(ICustomFieldsProvider), "ForcedAnimal");
 
             static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
             {
@@ -81,7 +81,8 @@ namespace AnomalyAllies.Patches
                     new CodeInstruction(OpCodes.Call, fieldProviderGetter),
                     loadThingDefVar,
                     loadRacePropertiesField,
-                    new CodeInstruction(OpCodes.Callvirt, isForcedAnimalMethod),
+                    new CodeInstruction(OpCodes.Callvirt, forcedAnimalMethod),
+                    new CodeInstruction(OpCodes.Ldind_I1),
                     new CodeInstruction(OpCodes.Brtrue_S, escapeReturningFalseLabel)
                 };
                 codeMatcher.Insert(newInstructions);

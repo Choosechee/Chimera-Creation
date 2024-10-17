@@ -53,11 +53,11 @@ namespace AnomalyAllies.Patches
     //            }
     //            if (ModsConfig.AnomalyActive)
     //            {
-    //                if (__instance.recipe.mutantBlacklist != null && pawn.IsMutant && __instance.recipe.mutantBlacklist.Contains(pawn.mutant.Def))
+    //                if (__instance.recipe.mutantBlacklist is not null && pawn.IsMutant && __instance.recipe.mutantBlacklist.Contains(pawn.mutant.Def))
     //                {
     //                    reasonNotAvailable.AppendLine($"{pawn} is a {pawn.mutant.Def.defName}, but this recipe blacklists them");
     //                }
-    //                if (__instance.recipe.mutantPrerequisite != null && (!pawn.IsMutant || !__instance.recipe.mutantPrerequisite.Contains(pawn.mutant.Def)))
+    //                if (__instance.recipe.mutantPrerequisite is not null && (!pawn.IsMutant || !__instance.recipe.mutantPrerequisite.Contains(pawn.mutant.Def)))
     //                {
     //                    reasonNotAvailable.AppendLine($"{pawn} is not a mutant required for the recipe. The eligible mutant types are: ");
     //                    foreach (MutantDef mutantDef in __instance.recipe.mutantPrerequisite)

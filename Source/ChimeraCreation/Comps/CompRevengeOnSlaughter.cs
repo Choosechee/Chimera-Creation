@@ -42,7 +42,7 @@ namespace AnomalyAllies.Comps
             TaggedString text = "AnAl_RevengeFromAttemptedSlaughter_Text".Translate(Pawn.Named("VICTIM"), executioner.Named("SLAUGHTERER"));
 
             DirectPawnRelation bond = Pawn.relations.GetDirectRelation(PawnRelationDefOf.Bond, executioner);
-            if (bond != null)
+            if (bond is not null)
             {
                 Pawn.relations.RemoveDirectRelation(bond);
                 if (Pawn.IsEntity)
@@ -101,7 +101,7 @@ namespace AnomalyAllies.Comps
         public override IEnumerable<string> ConfigErrors(ThingDef parentDef)
         {
             var baseErrors = base.ConfigErrors(parentDef);
-            if (baseErrors != null)
+            if (baseErrors is not null)
             {
                 foreach (string error in baseErrors)
                     yield return error;

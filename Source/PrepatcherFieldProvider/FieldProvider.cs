@@ -13,24 +13,14 @@ namespace PrepatcherFieldProvider
             this.prefix = prefix;
         }
 
-        public bool IsForcedAnimal(RaceProperties raceProperties)
+        public ref bool ForcedAnimal(RaceProperties raceProperties)
         {
-            return raceProperties.ForcedAnimalField();
+            return ref raceProperties.ForcedAnimalField();
         }
 
-        public void SetForcedAnimal(RaceProperties raceProperties, bool value)
+        public ref int? ForcedGraphic(Pawn pawn)
         {
-            raceProperties.ForcedAnimalField() = value;
-        }
-
-        public int? GetForcedGraphic(Pawn pawn)
-        {
-            return pawn.ForcedGraphicField();
-        }
-
-        public void SetForcedGraphic(Pawn pawn, int? value)
-        {
-            pawn.ForcedGraphicField() = value;
+            return ref pawn.ForcedGraphicField();
         }
 
         public void ExposeData(Pawn pawn)

@@ -131,7 +131,7 @@ namespace AnomalyAllies.ChimeraTame
                 && compTransform.pawnKindToTransformInto == AlliedEntityDefOf.AnAl_ChimeraTame
             );
 
-            if (compToRemove != null)
+            if (compToRemove is not null)
                 comps.Remove(compToRemove);
         }
     }

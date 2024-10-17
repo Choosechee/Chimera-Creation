@@ -52,7 +52,7 @@ namespace AnomalyAllies.ChimeraTame
             float meatYieldRequired = def.MeatYieldNeededForChimeraWithOffset;
             float failureChance = def.fleshbeastChanceFromQualityCurve.Evaluate(psychicRitual.PowerPercent);
 
-            if (invoker != null && targets.Count() > 0)
+            if (invoker is not null && targets.Count() > 0)
                 ApplyOutcome(psychicRitual, invoker, targets, meatYieldRequired, failureChance, def);
         }
 
@@ -125,7 +125,7 @@ namespace AnomalyAllies.ChimeraTame
                 creation = PawnGenerator.GeneratePawn(pawnGenerationRequest.Value);
                 creation.health.hediffSet.hediffs.RemoveAll(h => h.def.HasComp(typeof(HediffCompProperties_GetsPermanent)));
                 if (validForcedChimeraTypes.Count > 0)
-                    AnomalyAlliesMod.FieldProvider.SetForcedGraphic(creation, validForcedChimeraTypes.RandomElement());
+                    AnomalyAlliesMod.FieldProvider.ForcedGraphic(creation) = validForcedChimeraTypes.RandomElement();
 
                 GenSpawn.Spawn(creation, spawningCell, invoker.Map);
 
