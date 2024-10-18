@@ -1,5 +1,6 @@
 ﻿using AnomalyAllies.Misc;
 using HarmonyLib;
+using InterfacesForModularity;
 using RimWorld;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace AnomalyAllies.Patches
         public static bool InhumanizedMasterAndEntityAnimal(Pawn master, Pawn animal)
         {
             // AnomalyAlliesMod.Logger.Message($"Master is {master}, animal is {animal}");
-            return animal.RaceProps.IsAnomalyEntity && InhumanizedOrVoidTouched(master);
+            return AnomalyAlliesMod.FieldProvider.EntityAnimal(animal.RaceProps) && InhumanizedOrVoidTouched(master);
         }
 
         [HarmonyPatch]
@@ -90,7 +91,8 @@ namespace AnomalyAllies.Patches
         {
             private static readonly FieldInfo animalsSkillDefField = typeof(SkillDefOf).Field(nameof(SkillDefOf.Animals));
             private static readonly MethodInfo racePropsGetter = typeof(Pawn).PropertyGetter(nameof(Pawn.RaceProps));
-            private static readonly MethodInfo isAnomalyEntityGetter = typeof(RaceProperties).PropertyGetter(nameof(RaceProperties.IsAnomalyEntity));
+            private static readonly MethodInfo fieldProviderGetter = typeof(AnomalyAlliesMod).PropertyGetter(nameof(AnomalyAlliesMod.FieldProvider));
+            private static readonly MethodInfo entityAnimalMethod = typeof(ICustomFieldsProvider).Method(nameof(ICustomFieldsProvider.EntityAnimal));
             private static readonly MethodInfo validPawnsHasInhumanizedPawnMethod = typeof(NoWarningIfEntityAnimalAndInumanizedPawnAvailable).Method(nameof(ValidPawnsHasInhumanizedPawn));
 
             static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -115,9 +117,11 @@ namespace AnomalyAllies.Patches
 
                 List<CodeInstruction> newInstructions = new List<CodeInstruction>()
                 {
+                    new CodeInstruction(OpCodes.Call, fieldProviderGetter),
                     new CodeInstruction(OpCodes.Ldarg_0),
                     new CodeInstruction(OpCodes.Callvirt, racePropsGetter),
-                    new CodeInstruction(OpCodes.Callvirt, isAnomalyEntityGetter),
+                    new CodeInstruction(OpCodes.Callvirt, entityAnimalMethod),
+                    new CodeInstruction(OpCodes.Ldind_I1),
                     new CodeInstruction(OpCodes.Brfalse_S, skillCheckLabel),
 
                     loadValidPawnsVar,
@@ -231,7 +235,7 @@ namespace AnomalyAllies.Patches
 
                 public static float NewTrainStat(float stat, Pawn trainer, Pawn animal)
                 {
-                    if (!animal.RaceProps.IsAnomalyEntity)
+                    if (!AnomalyAlliesMod.FieldProvider.EntityAnimal(animal.RaceProps))
                         return stat;
 
                     if (trainer.health.hediffSet.HasHediff(HediffDefOf.VoidTouched))
@@ -269,7 +273,7 @@ namespace AnomalyAllies.Patches
 
                 public static float NewTameStat(float stat, Pawn trainer, Pawn animal)
                 {
-                    if (!animal.RaceProps.IsAnomalyEntity)
+                    if (!AnomalyAlliesMod.FieldProvider.EntityAnimal(animal.RaceProps))
                         return stat;
 
                     if (trainer.health.hediffSet.HasHediff(HediffDefOf.VoidTouched))

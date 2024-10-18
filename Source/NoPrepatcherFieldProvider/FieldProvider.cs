@@ -19,7 +19,7 @@ namespace NoPrepatcherFieldProvider
             this.prefix = prefix;
         }
 
-        public ref bool ForcedAnimal(RaceProperties raceProperties)
+        public ref bool EntityAnimal(RaceProperties raceProperties)
         {
             return ref forcedAnimalRaces[raceProperties];
         }

@@ -48,7 +48,7 @@
 			</li>
 		</comps>
 		<modExtensions>
-			<li Class="AnomalyAllies.DefModExtensions.ForceAnimal"/>
+			<li Class="AnomalyAllies.DefModExtensions.EntityAnimal"/>
 		</modExtensions>
 	</ThingDef>
 	

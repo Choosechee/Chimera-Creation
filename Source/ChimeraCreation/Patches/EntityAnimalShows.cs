@@ -8,7 +8,7 @@ using Verse;
 
 namespace AnomalyAllies.Patches
 {
-    static class ForcedAnimalShows
+    static class EntityAnimalShows
     {
         [HarmonyPatch(typeof(ITab_Pawn_Social), nameof(ITab_Pawn_Social.IsVisible), MethodType.Getter)]
         static class SocialTab
@@ -16,7 +16,7 @@ namespace AnomalyAllies.Patches
             static bool Postfix(bool __result, ITab_Pawn_Social __instance)
             {
                 Pawn selPawnForSocialInfo = __instance.ForceGetProperty<Pawn>("SelPawnForSocialInfo");
-                return __result || AnomalyAlliesMod.FieldProvider.ForcedAnimal(selPawnForSocialInfo.RaceProps);
+                return __result || AnomalyAlliesMod.FieldProvider.EntityAnimal(selPawnForSocialInfo.RaceProps);
             }
         }
 
@@ -25,7 +25,7 @@ namespace AnomalyAllies.Patches
         {
             static IEnumerable<StatDrawEntry> Postfix(IEnumerable<StatDrawEntry> __result, RaceProperties __instance)
             {
-                if (!AnomalyAlliesMod.FieldProvider.ForcedAnimal(__instance))
+                if (!AnomalyAlliesMod.FieldProvider.EntityAnimal(__instance))
                     return __result;
 
                 List<StatDrawEntry> statDrawEntries = new List<StatDrawEntry>(__result);
@@ -52,7 +52,7 @@ namespace AnomalyAllies.Patches
         {
             private static readonly MethodInfo isAnomalyEntityGetter = AccessTools.PropertyGetter(typeof(RaceProperties), nameof(RaceProperties.IsAnomalyEntity));
             private static readonly MethodInfo fieldProviderGetter = AccessTools.PropertyGetter(typeof(AnomalyAlliesMod), nameof(AnomalyAlliesMod.FieldProvider));
-            private static readonly MethodInfo forcedAnimalMethod = AccessTools.Method(typeof(ICustomFieldsProvider), nameof(ICustomFieldsProvider.ForcedAnimal));
+            private static readonly MethodInfo forcedAnimalMethod = AccessTools.Method(typeof(ICustomFieldsProvider), nameof(ICustomFieldsProvider.EntityAnimal));
 
             static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
             {

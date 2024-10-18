@@ -79,7 +79,7 @@
     <Compile Include="ChimeraTame\Hediff_MeatHunger_Chimera.cs" />
     <Compile Include="DebugActions.cs" />
     <Compile Include="BetrayalHungerBases\Hediff_BetrayalHunger.cs" />
-    <Compile Include="Patches\ForcedAnimalShows.cs" />
+    <Compile Include="Patches\EntityAnimalShows.cs" />
     <Compile Include="Patches\ForceSpecificGraphic.cs" />
     <Compile Include="Patches\InhumanizedCanTrainEntities.cs" />
     <Compile Include="Patches\ModCrossCompat.cs" />
