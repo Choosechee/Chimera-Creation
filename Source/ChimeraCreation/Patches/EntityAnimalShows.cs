@@ -2,6 +2,7 @@
 using InterfacesForModularity;
 using RimWorld;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using Verse;
@@ -10,6 +11,10 @@ namespace AnomalyAllies.Patches
 {
     static class EntityAnimalShows
     {
+        private static readonly MethodInfo isAnomalyEntityGetter = AccessTools.PropertyGetter(typeof(RaceProperties), nameof(RaceProperties.IsAnomalyEntity));
+        private static readonly MethodInfo fieldProviderGetter = AccessTools.PropertyGetter(typeof(AnomalyAlliesMod), nameof(AnomalyAlliesMod.FieldProvider));
+        private static readonly MethodInfo forcedAnimalMethod = AccessTools.Method(typeof(ICustomFieldsProvider), nameof(ICustomFieldsProvider.EntityAnimal));
+
         [HarmonyPatch(typeof(ITab_Pawn_Social), nameof(ITab_Pawn_Social.IsVisible), MethodType.Getter)]
         static class SocialTab
         {
@@ -20,40 +25,52 @@ namespace AnomalyAllies.Patches
             }
         }
 
-        [HarmonyPatch(typeof(RaceProperties), nameof(RaceProperties.SpecialDisplayStats))]
+        [HarmonyPatch(typeof(RaceProperties), nameof(RaceProperties.SpecialDisplayStats), MethodType.Enumerator)]
+        //[HarmonyDebug]
         static class AnimalStats
         {
-            static IEnumerable<StatDrawEntry> Postfix(IEnumerable<StatDrawEntry> __result, RaceProperties __instance)
+            private static readonly FieldInfo raceField = typeof(ThingDef).Field(nameof(ThingDef.race));
+            
+            static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
             {
-                if (!AnomalyAlliesMod.FieldProvider.EntityAnimal(__instance))
-                    return __result;
+                CodeMatcher codeMatcher = new CodeMatcher(instructions);
+                codeMatcher.Start();
 
-                List<StatDrawEntry> statDrawEntries = new List<StatDrawEntry>(__result);
+                codeMatcher.MatchStartForward(CodeMatch.Calls(isAnomalyEntityGetter));
+                codeMatcher.ThrowIfInvalid("Could not find call for IsAnomalyEntity getter");
+
+                codeMatcher.MatchStartBackwards(new CodeMatch((ci) => ci.opcode == OpCodes.Ldfld && !ci.OperandIs(raceField)));
+                codeMatcher.ThrowIfInvalid("Could not find parentDef field");
+                AnomalyAlliesMod.Logger.Message(codeMatcher.Instruction.operand);
+                CodeInstruction loadParentDef = codeMatcher.Instruction.Clone();
+
+                codeMatcher.MatchStartForward(CodeMatch.Calls(isAnomalyEntityGetter));
+                codeMatcher.MatchStartForward(CodeMatch.Branches());
+                codeMatcher.ThrowIfInvalid("Could not find branch after IsAnomalyEntity getter");
+
+                Label showAnimalStats = generator.DefineLabel();
+                codeMatcher.InsertAndAdvance(new CodeInstruction(OpCodes.Brfalse_S, showAnimalStats));
                 
-                string dietLabel = "Diet".Translate();
-                string dietText = __instance.foodType.ToHumanString().CapitalizeFirst();
-                string dietDesc = "Stat_Race_Diet_Desc".Translate(dietText);
-                statDrawEntries.Add(new StatDrawEntry(StatCategoryDefOf.BasicsPawn, dietLabel, dietText, dietDesc, StatDisplayOrder.Race_Diet));
-
-                if ((int)__instance.intelligence < 2 && __instance.trainability is not null)
+                List<CodeInstruction> newInstructions = new List<CodeInstruction>()
                 {
-                    string trainabilityLabel = "Trainability".Translate();
-                    string trainabilityText = __instance.trainability.LabelCap;
-                    string trainabilityDesc = "Stat_Race_Trainability_Desc".Translate();
-                    statDrawEntries.Add(new StatDrawEntry(StatCategoryDefOf.BasicsPawn, trainabilityLabel, trainabilityText, trainabilityDesc, StatDisplayOrder.Race_Trainability));
-                }
+                    new CodeInstruction(OpCodes.Call, fieldProviderGetter),
+                    new CodeInstruction(OpCodes.Ldarg_0),
+                    loadParentDef,
+                    new CodeInstruction(OpCodes.Ldfld, raceField),
+                    new CodeInstruction(OpCodes.Callvirt, forcedAnimalMethod),
+                    new CodeInstruction(OpCodes.Ldind_I1),
+                };
+                codeMatcher.InsertAndAdvance(newInstructions);
+                codeMatcher.SetOpcodeAndAdvance(OpCodes.Brfalse_S);
+                codeMatcher.Instruction.labels.Add(showAnimalStats);
 
-                return statDrawEntries;
+                return codeMatcher.InstructionEnumeration();
             }
         }
 
         [HarmonyPatch(typeof(StatWorker), nameof(StatWorker.ShouldShowFor))]
         static class StatsNotForEntities
         {
-            private static readonly MethodInfo isAnomalyEntityGetter = AccessTools.PropertyGetter(typeof(RaceProperties), nameof(RaceProperties.IsAnomalyEntity));
-            private static readonly MethodInfo fieldProviderGetter = AccessTools.PropertyGetter(typeof(AnomalyAlliesMod), nameof(AnomalyAlliesMod.FieldProvider));
-            private static readonly MethodInfo forcedAnimalMethod = AccessTools.Method(typeof(ICustomFieldsProvider), nameof(ICustomFieldsProvider.EntityAnimal));
-
             static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
             {
                 CodeMatcher codeMatcher = new CodeMatcher(instructions);
