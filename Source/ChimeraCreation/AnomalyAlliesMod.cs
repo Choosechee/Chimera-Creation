@@ -79,7 +79,10 @@ namespace AnomalyAllies
             string editBuffer = settings.chimeraMeatRequirementOffset.ToString();
             settingsList.TextFieldNumeric(ref settings.chimeraMeatRequirementOffset, ref editBuffer, min: float.NegativeInfinity, max: float.PositiveInfinity);
 
+            settingsList.CheckboxLabeled("AnAl_MultipleChimeraCreation_Label".Translate(), ref settings.multipleChimeraCreation, tooltip: "AnAl_MultipleChimeraCreation_Tooltip".Translate());
+
             settingsList.CheckboxLabeled("AnAl_WildChimerasAreTameable_Label".Translate(), ref settings.wildChimerasAreTameable, "AnAl_WildChimerasAreTameable_Tooltip".Translate());
+            settingsList.Indent();
             settingsList.Label("AnAl_NotRecommendedWarning".Translate().Colorize(Color.yellow));
 
             float buttonWidth = inRect.width / 4f;
@@ -135,6 +138,7 @@ namespace AnomalyAllies
 
             public bool chimeraIsNormalCarnivore = false;
             public int chimeraMeatRequirementOffset = 0;
+            public bool multipleChimeraCreation = false;
             public bool wildChimerasAreTameable = false; // heavily unrecommended
 
             public override void ExposeData()
@@ -146,6 +150,7 @@ namespace AnomalyAllies
 
                 Scribe_Values.Look(ref chimeraIsNormalCarnivore, "chimeraIsNormalCarnivore");
                 Scribe_Values.Look(ref chimeraMeatRequirementOffset, "chimeraMeatRequirementOffset");
+                Scribe_Values.Look(ref multipleChimeraCreation, "multipleChimeraCreation");
                 Scribe_Values.Look(ref wildChimerasAreTameable, "wildChimerasAreTameable");
             }
         }

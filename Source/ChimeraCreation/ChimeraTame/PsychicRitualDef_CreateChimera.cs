@@ -12,6 +12,13 @@ namespace AnomalyAllies.ChimeraTame
     public class PsychicRitualDef_CreateChimera : PsychicRitualDef_InvocationCircle
     {
         public string outcomeDescriptionPlural;
+
+        public string outcomeDescriptionMultiplePart1;
+        public string outcomeDescriptionMultiplePart1Plural;
+
+        public string outcomeDescriptionMultiplePart2;
+        public string outcomeDescriptionMultiplePart2Plural;
+
         public SimpleCurve fleshbeastChanceFromQualityCurve;
 
         protected float? meatYieldNeededForChimera;
@@ -52,18 +59,33 @@ namespace AnomalyAllies.ChimeraTame
         public override IEnumerable<string> GetPawnTooltipExtras(Pawn pawn)
         {
             if (pawn.IsNonMutantAnimal)
-                yield return $"{StatDefOf.MeatAmount.LabelCap}: {pawn.GetStatValue(StatDefOf.MeatAmount, cacheStaleAfterTicks: 1)}";
+                yield return $"{StatDefOf.MeatAmount.LabelCap}: {(int)pawn.GetStatValue(StatDefOf.MeatAmount, cacheStaleAfterTicks: 1)}";
         }
 
         public override TaggedString OutcomeDescription(FloatRange qualityRange, string qualityNumber, PsychicRitualRoleAssignments assignments)
         {
-            string outcomeDescriptionSelected = (assignments.RoleAssignedCount(TargetRole) != 1) ? outcomeDescriptionPlural : outcomeDescription;
+            if (!AnomalyAlliesMod.Settings.multipleChimeraCreation)
+            {
+                string outcomeDescriptionSelected = (assignments.RoleAssignedCount(TargetRole) != 1) ? outcomeDescriptionPlural : outcomeDescription;
 
-            float meatRefunded = TotalMeatYieldOfTargets(assignments);
-            if (meatRefunded >= MeatYieldNeededForChimeraWithOffset)
-                meatRefunded -= MeatYieldNeededForChimeraWithOffset;
+                float meatRefunded = TotalMeatYieldOfTargets(assignments);
+                if (meatRefunded >= MeatYieldNeededForChimeraWithOffset)
+                    meatRefunded -= MeatYieldNeededForChimeraWithOffset;
 
-            return outcomeDescriptionSelected.Formatted(fleshbeastChanceFromQualityCurve.Evaluate(qualityRange.min).ToStringPercent(), meatRefunded);
+                return outcomeDescriptionSelected.Formatted(fleshbeastChanceFromQualityCurve.Evaluate(qualityRange.min).ToStringPercent(), meatRefunded);
+            }
+            else
+            {
+                float totalMeatYield = TotalMeatYieldOfTargets(assignments);
+                int numberOfChimeras = (int)(totalMeatYield / MeatYieldNeededForChimeraWithOffset);
+                float meatRefunded = totalMeatYield - (numberOfChimeras * MeatYieldNeededForChimeraWithOffset);
+
+                string outcomeDescriptionSelectedPart1 = (assignments.RoleAssignedCount(TargetRole) != 1) ? outcomeDescriptionMultiplePart1Plural : outcomeDescriptionMultiplePart1;
+                string outcomeDescriptionSelectedPart2 = (numberOfChimeras > 1) ? outcomeDescriptionMultiplePart2Plural : outcomeDescriptionMultiplePart2;
+                string outcomeDescriptionSelected = outcomeDescriptionSelectedPart1 + outcomeDescriptionSelectedPart2;
+
+                return outcomeDescriptionSelected.Formatted(fleshbeastChanceFromQualityCurve.Evaluate(qualityRange.min).ToStringPercent(), numberOfChimeras, meatRefunded);
+            }
         }
 
         public override IEnumerable<TaggedString> OutcomeWarnings(PsychicRitualRoleAssignments assignments)

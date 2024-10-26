@@ -5,8 +5,16 @@
 		<label>chimera creation</label>
 		<description>Induce a dark archotech to morph target animal(s) into a friendly chimera. The chimera can be trained to guard, attack, rescue, and haul. The total meat yield of the animal(s) must be at least equal to the meat yield of a chimera; any excess will be refunded as twisted meat. If the ritual isn't done properly, the animal(s) will morph into a hostile fleshbeast. The chance of this happening can be reduced by using more animals, along with the other ways of increasing ritual quality.</description>
 		<researchPrerequisite>AnAl_ChimeraCreation</researchPrerequisite>
+		
 		<outcomeDescription>With the current ritual quality, there is a {0} chance that the target will morph into a fleshbeast. {1} meat will be refunded.</outcomeDescription>
 		<outcomeDescriptionPlural>With the current ritual quality, there is a {0} chance that the targets will morph into a fleshbeast. {1} meat will be refunded.</outcomeDescriptionPlural>
+		
+		<outcomeDescriptionMultiplePart1>With the current ritual quality, there is a {0} chance that the target will morph into</outcomeDescriptionMultiplePart1>
+		<outcomeDescriptionMultiplePart1Plural>With the current ritual quality, there is a {0} chance that the targets will morph into</outcomeDescriptionMultiplePart1Plural>
+		
+		<outcomeDescriptionMultiplePart2> a fleshbeast. {1} chimera will be created, and {2} meat will be refunded.</outcomeDescriptionMultiplePart2>
+		<outcomeDescriptionMultiplePart2Plural> fleshbeast(s). {1} chimeras will be created, and {2} meat will be refunded.</outcomeDescriptionMultiplePart2Plural>
+		
 		<hoursUntilOutcome>4</hoursUntilOutcome>
 		<targetRole>AnAl_CreateChimeraTarget</targetRole>
 		<fleshbeastChanceFromQualityCurve>

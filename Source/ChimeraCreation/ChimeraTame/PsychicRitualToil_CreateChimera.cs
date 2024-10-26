@@ -4,6 +4,7 @@ using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Verse;
 using Verse.AI.Group;
 
@@ -41,6 +42,112 @@ namespace AnomalyAllies.ChimeraTame
                 return PawnKindDefOf.Bulbfreak;
         }
 
+        // It is Unbounded Knapsack Problem time
+        // bodySize is the "weight", and combatPower is the "value"
+        // The "weight capacity" will be the cumulative body size of selected animals
+        internal record FleshbeastItem
+        {
+            public readonly PawnKindDef fleshbeast;
+            public readonly float bodySize;
+            public readonly float combatPower;
+
+            public FleshbeastItem(PawnKindDef fleshbeast) : this(fleshbeast, fleshbeast.combatPower)
+            {
+            }
+
+            public FleshbeastItem(PawnKindDef fleshbeast, float customCombatPower)
+            {
+                this.fleshbeast = fleshbeast;
+                bodySize = fleshbeast.RaceProps.baseBodySize;
+                combatPower = customCombatPower;
+            }
+        }
+
+        private static readonly float toughTriSpikeAverageCombatPower =
+            (PawnKindDefOf.Toughspike.combatPower + PawnKindDefOf.Trispike.combatPower) / 2;
+
+        private static readonly List<FleshbeastItem> fleshbeastItems = new List<FleshbeastItem>()
+        {
+            new FleshbeastItem(PawnKindDefOf.Fingerspike),
+            /*
+             * I averaged the combat power of the toughspike and trispike
+             * and made them the same item because toughspikes have lower
+             * combat power but the same body size as trispikes, so they 
+             * would never get picked otherwise. Which one will be chosen
+             * for each fleshbeast will be random.
+            */
+            new FleshbeastItem(PawnKindDefOf.Toughspike, toughTriSpikeAverageCombatPower),
+            new FleshbeastItem(PawnKindDefOf.Bulbfreak)
+        };
+
+        private static List<PawnKindDef> FleshbeastsForAnimals(IEnumerable<Pawn> animals)
+        {
+            float bodySizeSum = animals.Sum(p => p.BodySize);
+            return FleshbeastsForBodySize(bodySizeSum);
+        }
+
+        internal static List<PawnKindDef> FleshbeastsForBodySize(float bodySize)
+        {
+            List<FleshbeastItem> bestFleshbeasts = SolveFleshbeastKnapsack(bodySize).bestFleshbeasts;
+
+            List<PawnKindDef> fleshbeastsForAnimals = new List<PawnKindDef>();
+            foreach (FleshbeastItem fleshbeastItem in bestFleshbeasts)
+            {
+                if (fleshbeastItem.fleshbeast == PawnKindDefOf.Toughspike)
+                    fleshbeastsForAnimals.Add(Rand.Bool ? fleshbeastItem.fleshbeast : PawnKindDefOf.Trispike);
+                else
+                    fleshbeastsForAnimals.Add(fleshbeastItem.fleshbeast);
+            }
+
+            fleshbeastsForAnimals.Shuffle();
+            return fleshbeastsForAnimals;
+        }
+
+        internal static (List<FleshbeastItem> bestFleshbeasts, float totalCombatPower) SolveFleshbeastKnapsack(float totalSize)
+        {
+            float totalCombatPower = FleshbeastKnapsackRecursive(totalSize);
+            List<FleshbeastItem> bestFleshbeasts = new List<FleshbeastItem>();
+            float sizeRemaining = totalSize;
+
+            while (sizeRemaining > 0 && lookupTable.TryGetValue(sizeRemaining, out var computedValue) && computedValue.itemUsed is not null)
+            {
+                bestFleshbeasts.Add(computedValue.itemUsed);
+                sizeRemaining -= computedValue.itemUsed.bodySize;
+            }
+
+            return (bestFleshbeasts, totalCombatPower);
+        }
+
+        private static readonly Dictionary<float, (float computedMax, FleshbeastItem itemUsed)> lookupTable = new();
+        private static float FleshbeastKnapsackRecursive(float sizeRemaining)
+        {
+            if (sizeRemaining == 0f)
+                return 0f;
+
+            if (lookupTable.TryGetValue(sizeRemaining, out var computedValue))
+                return computedValue.computedMax;
+
+            float maxCombatPower = 0f;
+            FleshbeastItem itemUsed = null;
+            foreach (FleshbeastItem fleshbeastItem in fleshbeastItems)
+            {
+                if (fleshbeastItem.bodySize <= sizeRemaining)
+                {
+                    float newCombatPower = fleshbeastItem.combatPower + FleshbeastKnapsackRecursive(sizeRemaining - fleshbeastItem.bodySize);
+                    if (newCombatPower > maxCombatPower)
+                    {
+                        maxCombatPower = newCombatPower;
+                        itemUsed = fleshbeastItem;
+                    }
+                }
+            }
+
+            lookupTable[sizeRemaining] = (maxCombatPower, itemUsed);
+            return maxCombatPower;
+        }
+
+        // End of knapsack problem stuff
+
         public override void Start(PsychicRitual psychicRitual, PsychicRitualGraph parent)
         {
             base.Start(psychicRitual, parent);
@@ -65,19 +172,27 @@ namespace AnomalyAllies.ChimeraTame
             var chimeraTypeAnimals = def.chimeraTypeAnimals;
             List<int> validForcedChimeraTypes = new List<int>();
 
+            int numberOfChimerasToCreate = 0;
+            if (AnomalyAlliesMod.Settings.multipleChimeraCreation)
+                numberOfChimerasToCreate = (int)(totalMeatYield / meatYieldRequired);
+            else if (totalMeatYield >= meatYieldRequired)
+                numberOfChimerasToCreate = 1;
+
             foreach (Pawn target in targets)
                 target.DeSpawn();
 
-            PawnGenerationRequest? pawnGenerationRequest = null;
+            List<PawnGenerationRequest> pawnGenerationRequests = new List<PawnGenerationRequest>();
             LetterDef outcomeLetterDef;
             TaggedString outcomeText;
             DamageDef deathMessage;
             if (!Rand.Chance(failureChance))
             {
-                if (totalMeatYield >= meatYieldRequired)
+                if (numberOfChimerasToCreate > 0)
                 {
-                    totalMeatYield -= meatYieldRequired;
-                    pawnGenerationRequest = new PawnGenerationRequest(AlliedEntityDefOf.AnAl_ChimeraTame, Faction.OfPlayer, fixedBiologicalAge: 0f, fixedChronologicalAge: 0f);
+                    totalMeatYield -= meatYieldRequired * numberOfChimerasToCreate;
+                    for (int i = 0; i < numberOfChimerasToCreate; i++)
+                        pawnGenerationRequests.Add(new PawnGenerationRequest(AlliedEntityDefOf.AnAl_ChimeraTame, Faction.OfPlayer, fixedBiologicalAge: 0f, fixedChronologicalAge: 0f));
+
                     outcomeLetterDef = LetterDefOf.PositiveEvent;
                     deathMessage = DeathMessageOf.AnAl_MorphedIntoChimera;
 
@@ -105,40 +220,62 @@ namespace AnomalyAllies.ChimeraTame
             }
             else
             {
-                PawnKindDef fleshbeast = FleshbeastForAnimals(targets);
-                pawnGenerationRequest = new PawnGenerationRequest(fleshbeast, Faction.OfEntities, fixedBiologicalAge: 0f, fixedChronologicalAge: 0f);
+                float meatAmountOfFleshbeasts = 0f;
+                if (numberOfChimerasToCreate < 2)
+                {
+                    PawnKindDef fleshbeast = FleshbeastForAnimals(targets);
+                    pawnGenerationRequests.Add(new PawnGenerationRequest(fleshbeast, Faction.OfEntities, fixedBiologicalAge: 0f, fixedChronologicalAge: 0f));
+                    meatAmountOfFleshbeasts = AnimalProductionUtility.AdultMeatAmount(fleshbeast.race);
+                }
+                else
+                {
+                    List<PawnKindDef> fleshbeasts = FleshbeastsForAnimals(targets);
+                    if (fleshbeasts.Empty())
+                        fleshbeasts.Add(PawnKindDefOf.Fingerspike);
+
+                    foreach (PawnKindDef fleshbeast in fleshbeasts)
+                    {
+                        pawnGenerationRequests.Add(new PawnGenerationRequest(fleshbeast, Faction.OfEntities, fixedBiologicalAge: 0f, fixedChronologicalAge: 0f));
+                        meatAmountOfFleshbeasts += AnimalProductionUtility.AdultMeatAmount(fleshbeast.race);
+                    }
+                }
+
                 deathMessage = DeathMessageOf.AnAl_MorphedIntoFleshbeast;
-                if (fleshbeast == PawnKindDefOf.Bulbfreak)
+                if (pawnGenerationRequests.Count > 1 || pawnGenerationRequests[0].KindDef == PawnKindDefOf.Bulbfreak)
                     outcomeLetterDef = LetterDefOf.ThreatBig;
                 else
                     outcomeLetterDef = LetterDefOf.ThreatSmall;
 
-                float meatAmountOfFleshbeast = AnimalProductionUtility.AdultMeatAmount(fleshbeast.race);
-                totalMeatYield = Math.Max(totalMeatYield - meatAmountOfFleshbeast, 0f);
+                totalMeatYield = Math.Max(totalMeatYield - meatAmountOfFleshbeasts, 0f);
             }
 
-            Pawn creation = null;
+            List<Pawn> creations = new List<Pawn>();
             FleshbeastUtility.MeatExplosionSize meatExplosionSize = FleshbeastUtility.MeatExplosionSize.Small;
             IntRange filthRange = new IntRange(1, 2);
-            if (pawnGenerationRequest.HasValue)
+            if (pawnGenerationRequests.Any())
             {
-                creation = PawnGenerator.GeneratePawn(pawnGenerationRequest.Value);
-                creation.health.hediffSet.hediffs.RemoveAll(h => h.def.HasComp(typeof(HediffCompProperties_GetsPermanent)));
-                if (validForcedChimeraTypes.Count > 0)
-                    AnomalyAlliesMod.FieldProvider.ForcedGraphic(creation) = validForcedChimeraTypes.RandomElement();
-
-                GenSpawn.Spawn(creation, spawningCell, invoker.Map);
-
-                int stunTicks = 300;
-                bool creationHostile = false;
-                if (creation.Faction.HostileTo(Faction.OfPlayer))
+                foreach (PawnGenerationRequest pawnGenerationRequest in pawnGenerationRequests)
                 {
-                    stunTicks = 180;
-                    creationHostile = true;
-                }
-                creation.stances.stunner.StunFor(stunTicks, innvocation, addBattleLog: creationHostile);
+                    Pawn creation = PawnGenerator.GeneratePawn(pawnGenerationRequest);
+                    creation.health.hediffSet.hediffs.RemoveAll(h => h.def.HasComp(typeof(HediffCompProperties_GetsPermanent)));
+                    if (validForcedChimeraTypes.Count > 0)
+                        AnomalyAlliesMod.FieldProvider.ForcedGraphic(creation) = validForcedChimeraTypes.RandomElement();
 
-                meatExplosionSize = FleshbeastUtility.ExplosionSizeFor(creation);
+                    GenSpawn.Spawn(creation, spawningCell, invoker.Map);
+
+                    int stunTicks = 300;
+                    bool creationHostile = false;
+                    if (creation.Faction.HostileTo(Faction.OfPlayer))
+                    {
+                        stunTicks = 180;
+                        creationHostile = true;
+                    }
+                    creation.stances.stunner.StunFor(stunTicks, innvocation, addBattleLog: creationHostile);
+
+                    creations.Add(creation);
+                }
+
+                meatExplosionSize = FleshbeastUtility.ExplosionSizeFor(creations.MaxBy((c) => c.RaceProps.baseBodySize));
                 filthRange = new IntRange(targets.Count * 3, targets.Count * 4);
             }
             FleshbeastUtility.MeatSplatter(filthRange.RandomInRange, spawningCell, invoker.Map, meatExplosionSize);
@@ -155,17 +292,23 @@ namespace AnomalyAllies.ChimeraTame
             switch (outcomeLetterDef.defName)
             {
                 case "PositiveEvent":
-                    outcomeText = "AnAl_CreateChimera_Success".Translate(invoker.Named("INVOKER"), psychicRitual.def.Named("RITUAL"), creation.Named("CHIMERA"), totalMeatYield.Named("MEATREFUNDED"));
-                    Find.TickManager.Pause();
+                    if (creations.Count == 1)
+                        outcomeText = "AnAl_CreateChimera_Success".Translate(invoker.Named("INVOKER"), psychicRitual.def.Named("RITUAL"), totalMeatYield.Named("MEATREFUNDED"));
+                    else
+                        outcomeText = "AnAl_CreateChimera_Multiple_Success".Translate(invoker.Named("INVOKER"), psychicRitual.def.Named("RITUAL"), creations.Count.Named("CHIMERASCREATED"), totalMeatYield.Named("MEATREFUNDED"));
+                    //Find.TickManager.Pause(); I forgot to remove this before the first release !!!
                     break;
                 case "NeutralEvent":
-                    outcomeText = "AnAl_CreateChimera_Nothing".Translate(invoker.Named("INVOKER"), psychicRitual.def.Named("RITUAL"), totalMeatYield.Named("MEATREFUNDED"));
+                    outcomeText = "AnAl_CreateChimera_Nothing".Translate(invoker.Named("INVOKER"), psychicRitual.def.Named("RITUAL"), totalMeatYield.Named("MEATREFUNDED"), innvocation);
                     break;
                 case "ThreatSmall": case "ThreatBig":
-                    outcomeText = "AnAl_CreateChimera_Failure".Translate(invoker.Named("INVOKER"), psychicRitual.def.Named("RITUAL"), creation.Named("FLESHBEAST"), totalMeatYield.Named("MEATREFUNDED"));
+                    if (creations.Count == 1)
+                        outcomeText = "AnAl_CreateChimera_Failure".Translate(invoker.Named("INVOKER"), psychicRitual.def.Named("RITUAL"), creations[0].Named("FLESHBEAST"), totalMeatYield.Named("MEATREFUNDED"));
+                    else
+                        outcomeText = "AnAl_CreateChimera_Multiple_Failure".Translate(invoker.Named("INVOKER"), psychicRitual.def.Named("RITUAL"), creations.Count.Named("FLESHBEASTSCREATED"), totalMeatYield.Named("MEATREFUNDED"));
                     break;
                 default:
-                    outcomeText = "SOMETHING HAS GONE TERRIBLY WRONG. PLEASE CONTACT CHOOSECHEE";
+                    outcomeText = "SOMETHING HAS GONE TERRIBLY WRONG. PLEASE CONTACT CHOOSECHEE".Colorize(ColorLibrary.LogError);
                     break;
             }
 
@@ -173,7 +316,7 @@ namespace AnomalyAllies.ChimeraTame
             for (int i = targets.Count - 1; i >= 0; i--)
                 targets[i].Kill(new DamageInfo(deathMessage, 9999f, instigator: innvocation, intendedTarget: targets[i], instigatorGuilty: false, spawnFilth: false, checkForJobOverride: false));
 
-            Find.LetterStack.ReceiveLetter("PsychicRitualCompleteLabel".Translate(psychicRitual.def.label), outcomeText, outcomeLetterDef, creation);
+            Find.LetterStack.ReceiveLetter("PsychicRitualCompleteLabel".Translate(psychicRitual.def.label), outcomeText, outcomeLetterDef, creations);
         }
 
         public override void UpdateAllDuties(PsychicRitual psychicRitual, PsychicRitualGraph parent)

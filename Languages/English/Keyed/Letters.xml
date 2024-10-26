@@ -19,4 +19,7 @@
 	<AnAl_CreateChimera_Success>{INVOKER_nameDef} has completed {RITUAL_definite} ritual and created a chimera. The {MEATREFUNDED} excess meat have been converted into twisted meat.</AnAl_CreateChimera_Success>
 	<AnAl_CreateChimera_Nothing>{INVOKER_nameDef} has completed {RITUAL_definite} ritual, but there wasn't enough meat to create a chimera. The {MEATREFUNDED} meat have been converted into twisted meat instead.</AnAl_CreateChimera_Nothing>
 	<AnAl_CreateChimera_Failure>{INVOKER_nameDef} has completed {RITUAL_definite} ritual. However, something has gone horribly wrong, and {INVOKER_pronoun} created a hostile {FLESHBEAST_label} instead of a chimera! The {MEATREFUNDED} excess meat have still been converted into twisted meat.</AnAl_CreateChimera_Failure>
+	
+	<AnAl_CreateChimera_Multiple_Success>{INVOKER_nameDef} has completed {RITUAL_definite} ritual and created {CHIMERASCREATED} chimeras. The {MEATREFUNDED} excess meat have been converted into twisted meat.</AnAl_CreateChimera_Multiple_Success>
+	<AnAl_CreateChimera_Multiple_Failure>{INVOKER_nameDef} has completed {RITUAL_definite} ritual. However, something has gone horribly wrong, and {INVOKER_pronoun} created {FLESHBEASTSCREATED} hostile fleshbeasts instead of chimeras! The {MEATREFUNDED} excess meat have still been converted into twisted meat.</AnAl_CreateChimera_Multiple_Failure>
 </LanguageData>
