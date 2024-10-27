@@ -1,6 +1,7 @@
 ﻿using AnomalyAllies.DefOfs;
 using RimWorld;
 using Verse;
+using Verse.AI;
 
 namespace AnomalyAllies.ChimeraTame
 {
@@ -72,6 +73,11 @@ namespace AnomalyAllies.ChimeraTame
             }
             else
                 return base.PawnCannotDoReason(reason, context, pawn, target);
+        }
+
+        public override bool CanReach(Pawn pawn, TargetInfo target)
+        {
+            return pawn.CanReachNonLocal(target, PathEndMode.OnCell, Danger.Deadly, mode: TraverseMode.PassDoors);
         }
     }
 }

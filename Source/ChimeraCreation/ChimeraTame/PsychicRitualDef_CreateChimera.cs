@@ -1,10 +1,13 @@
 ﻿using AnomalyAllies.DefOfs;
 using AnomalyAllies.Misc;
 using RimWorld;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using UnityEngine;
 using Verse;
+using Verse.AI;
 using Verse.AI.Group;
 
 namespace AnomalyAllies.ChimeraTame
@@ -41,9 +44,19 @@ namespace AnomalyAllies.ChimeraTame
 
         public override List<PsychicRitualToil> CreateToils(PsychicRitual psychicRitual, PsychicRitualGraph graph)
         {
-            List<PsychicRitualToil> list = base.CreateToils(psychicRitual, graph);
-            list.Add(new PsychicRitualToil_CreateChimera(InvokerRole, TargetRole));
-            return list;
+            List<PsychicRitualToil> toilsList = base.CreateToils(psychicRitual, graph);
+            int indexOfGatherToil = toilsList.FindIndex((toil) => toil is PsychicRitualToil_GatherForInvocation);
+            if (indexOfGatherToil < 0)
+            {
+                AnomalyAlliesMod.Logger.Error($"Could not find index PsychicRitualToil_GatherForInvocation in base toils for {this.GetType()}. Using a default value of 0, which may work, but this needs to be looked into.");
+                indexOfGatherToil = 0;
+            }
+
+            IReadOnlyDictionary<PsychicRitualRoleDef, List<IntVec3>> rolePositions = this.ForceInvokeMethod<IReadOnlyDictionary<PsychicRitualRoleDef, List<IntVec3>>>("GenerateRolePositions", psychicRitual.assignments);
+            toilsList[indexOfGatherToil] = new PsychicRitualToil_GatherForChimeraCreation(psychicRitual, this, rolePositions);
+
+            toilsList.Add(new PsychicRitualToil_CreateChimera(InvokerRole, TargetRole));
+            return toilsList;
         }
 
         public override PsychicRitualCandidatePool FindCandidatePool()

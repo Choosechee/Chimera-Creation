@@ -46,6 +46,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BetrayalHungerBases\HediffGiver_BetrayalHunger.cs" />
+    <Compile Include="ChimeraTame\JobGiver_DeliverAnimalToPsychicRitualCell.cs" />
+    <Compile Include="ChimeraTame\PsychicRitualToil_AnimalCompatibleGoto.cs" />
+    <Compile Include="ChimeraTame\PsychicRitualToil_CarryNotPresentAndGoto.cs" />
+    <Compile Include="ChimeraTame\PsychicRitualToil_GatherForChimeraCreation.cs" />
     <Compile Include="Comps\CompTransformItem.cs" />
     <Compile Include="ChimeraTame\PsychicRitualDef_CreateChimera.cs" />
     <Compile Include="ChimeraTame\PsychicRitualRoleDef_CreateChimeraTarget.cs" />
@@ -57,6 +61,7 @@
     <Compile Include="Comps\HediffComp_ChangeOtherHediffSeverityOnDamaged.cs" />
     <Compile Include="DefModExtensions\EntityAnimal.cs" />
     <Compile Include="DefModExtensions\ChangeWildness.cs" />
+    <Compile Include="DefOfs\AnAl_DutyDefOf.cs" />
     <Compile Include="DefOfs\AnAl_RecipeDefOf.cs" />
     <Compile Include="DefOfs\AnAl_PsychicRitualDefOf.cs" />
     <Compile Include="DefOfs\AnAl_HediffDefOf.cs" />

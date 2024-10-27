@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<DutyDef>
+		<defName>AnAl_DeliverAnimalToPsychicRitualCell</defName>
+		<thinkNode Class="ThinkNode_Priority">
+			<subNodes>
+				<li Class="AnomalyAllies.ChimeraTame.JobGiver_DeliverAnimalToPsychicRitualCell">
+					<tag>carry</tag>
+					<exactCell>true</exactCell>
+					<locomotionUrgency>Jog</locomotionUrgency>
+					<wanderOnArrival>false</wanderOnArrival>
+					<skipIfTargetCanReach>true</skipIfTargetCanReach>
+				</li>
+				<li Class="JobGiver_GotoTravelDestination">
+					<tag>goto</tag>
+					<exactCell>true</exactCell>
+					<allowZeroLengthPaths>true</allowZeroLengthPaths>
+				</li>
+				<li Class="JobGiver_Idle" />
+			</subNodes>
+		</thinkNode>
+	</DutyDef>
+</Defs>
