@@ -77,6 +77,7 @@
     <Compile Include="Misc\RemoveLettersUtility.cs" />
     <Compile Include="Patches\Debug.cs" />
     <Compile Include="Patches\DumbStupidWildnessTraversalPatch.cs" />
+    <Compile Include="Patches\EntityAnimalBonds.cs" />
     <Compile Include="Patches\ForceAnimalPatch.cs" />
     <Compile Include="AnomalyAlliesMod.cs" />
     <Compile Include="BetrayalHungerBases\Alert_BetrayalHunger.cs" />
