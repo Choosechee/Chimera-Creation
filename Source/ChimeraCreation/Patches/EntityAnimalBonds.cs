@@ -10,7 +10,7 @@ using InterfacesForModularity;
 namespace AnomalyAllies.Patches
 {
     [HarmonyPatch(typeof(RelationsUtility), nameof(RelationsUtility.TryDevelopBondRelation))]
-    [HarmonyDebug]
+    //[HarmonyDebug]
     static class EntityAnimalBonds
     {
         private static MethodInfo inhumanizedMethod = typeof(AnomalyUtility).Method(nameof(AnomalyUtility.Inhumanized));
@@ -74,13 +74,13 @@ namespace AnomalyAllies.Patches
 
             if (codeMatcher.IsValid)
             {
-                AnomalyAlliesMod.Logger.Message("Valid");
+                //AnomalyAlliesMod.Logger.Message("Valid");
                 codeMatcher.Labels.Remove(unneededLabel);
                 codeMatcher.Advance(psychopathCheckStartPos - codeMatcher.Pos);
             }
             else
             {
-                AnomalyAlliesMod.Logger.Message("Invalid");
+                //AnomalyAlliesMod.Logger.Message("Invalid");
                 codeMatcher.Start();
                 codeMatcher.Advance(psychopathCheckStartPos);
             }
@@ -93,6 +93,8 @@ namespace AnomalyAllies.Patches
                 new CodeInstruction(OpCodes.Callvirt, entityAnimalMethod),
                 new CodeInstruction(OpCodes.Ldind_I1),
                 new CodeInstruction(OpCodes.Brtrue_S, nextCheckLabel),
+                new CodeInstruction(OpCodes.Ldc_I4_0),
+                new CodeInstruction(OpCodes.Ret)
             });
             codeMatcher.Insert(inhumanizedCheckMatcher.InstructionEnumeration());
 
