@@ -72,6 +72,7 @@
     <Compile Include="DefOfs\VanillaDefOf.cs" />
     <Compile Include="EasyReflection.cs" />
     <Compile Include="Misc\BondBreakHelper.cs" />
+    <Compile Include="Misc\IsExternalInit.cs" />
     <Compile Include="Misc\OpcodeUtility.cs" />
     <Compile Include="Misc\PatchOperationAttributeAddCustom.cs" />
     <Compile Include="Misc\RemoveLettersUtility.cs" />
