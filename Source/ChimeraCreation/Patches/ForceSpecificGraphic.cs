@@ -8,7 +8,7 @@ namespace AnomalyAllies.Patches
     {
         static bool Postfix(bool __result, Pawn pawn, ref AlternateGraphic ag, ref int index)
         {
-            int? potentialForcedGraphic = AnomalyAlliesMod.FieldProvider.ForcedGraphic(pawn);
+            int? potentialForcedGraphic = pawn.ForcedGraphic();
             if (potentialForcedGraphic.HasValue
                 && (pawn.kindDef.alternateGraphics is not null && pawn.kindDef.alternateGraphics.Count > 0))
             {

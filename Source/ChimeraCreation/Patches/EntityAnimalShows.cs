@@ -21,7 +21,7 @@ namespace AnomalyAllies.Patches
             static bool Postfix(bool __result, ITab_Pawn_Social __instance)
             {
                 Pawn selPawnForSocialInfo = __instance.ForceGetProperty<Pawn>("SelPawnForSocialInfo");
-                return __result || AnomalyAlliesMod.FieldProvider.EntityAnimal(selPawnForSocialInfo.RaceProps);
+                return __result || selPawnForSocialInfo.RaceProps.EntityAnimal();
             }
         }
 

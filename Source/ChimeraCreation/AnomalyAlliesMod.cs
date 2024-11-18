@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using Verse;
 
@@ -52,6 +53,7 @@ namespace AnomalyAllies
             if (fieldProviderType.Name.Contains("Dictionary"))
                 fieldProviderType = fieldProviderAssembly.ExportedTypes.ElementAt(1);
             fieldProvider = (ICustomFieldsProvider)Activator.CreateInstance(fieldProviderType, "AnAl");
+            FieldProviderAsExtension.InitializeDelegates(fieldProvider);
 
             modInstance = this;
 
@@ -232,5 +234,29 @@ namespace AnomalyAllies
         {
             modInstance.LogPatchedMethods(patchedMethods);
         }
+    }
+
+    internal static class FieldProviderAsExtension
+    {
+        internal static ICustomFieldsProvider fieldsProvider;
+
+        private delegate ref bool EntityAnimalSignature(RaceProperties raceProperties);
+        private delegate ref int? ForcedGraphicSignature(Pawn pawn);
+
+        private static EntityAnimalSignature EntityAnimalDelegate;
+        private static ForcedGraphicSignature ForcedGraphicDelegate;
+
+        internal static void InitializeDelegates(ICustomFieldsProvider fieldsProvider)
+        {
+            FieldProviderAsExtension.fieldsProvider = fieldsProvider;
+            EntityAnimalDelegate = fieldsProvider.EntityAnimal;
+            ForcedGraphicDelegate = fieldsProvider.ForcedGraphic;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ref bool EntityAnimal(this RaceProperties raceProperties) => ref EntityAnimalDelegate(raceProperties);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ref int? ForcedGraphic(this Pawn pawn) => ref ForcedGraphicDelegate(pawn);
     }
 }

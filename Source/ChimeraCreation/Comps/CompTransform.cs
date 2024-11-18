@@ -79,7 +79,7 @@ namespace AnomalyAllies.Comps
             if (Pawn.kindDef.alternateGraphics is not null && AlternateGraphicsEqual(Pawn.kindDef.alternateGraphics, newPawn.kindDef.alternateGraphics))
             {
                 int graphicIndex = Pawn.GetGraphicIndex();
-                AnomalyAlliesMod.FieldProvider.ForcedGraphic(newPawn) = graphicIndex;
+                newPawn.ForcedGraphic() = graphicIndex;
             }
             else
                 AnomalyAlliesMod.Logger.Error("The only transformable creature right now are the chimeras. Their alternateGraphics should be equal, so this should never appear.");

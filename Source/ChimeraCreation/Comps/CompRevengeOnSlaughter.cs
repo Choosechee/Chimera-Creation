@@ -45,7 +45,7 @@ namespace AnomalyAllies.Comps
             if (bond is not null)
             {
                 Pawn.relations.RemoveDirectRelation(bond);
-                if (AnomalyAlliesMod.FieldProvider.EntityAnimal(Pawn.RaceProps))
+                if (Pawn.RaceProps.EntityAnimal())
                     BondBreakHelper.TryGiveEntityBetrayalThought(executioner, Pawn);
                 else
                     executioner.needs.mood.thoughts.memories.TryGainMemory(AnAl_ThoughtDefOf.AnAl_BondedAnimalEntityBetrayed, Pawn);

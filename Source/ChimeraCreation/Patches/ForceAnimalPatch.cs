@@ -9,7 +9,7 @@ namespace AnomalyAllies.Patches
     {
         static bool Postfix(bool __result, RaceProperties __instance)
         {
-            return __result || AnomalyAlliesMod.FieldProvider.EntityAnimal(__instance);
+            return __result || __instance.EntityAnimal();
         }
     }
 
@@ -20,7 +20,7 @@ namespace AnomalyAllies.Patches
         {
             if (__instance.HasModExtension<EntityAnimal>() && __instance.race is not null)
             {
-                AnomalyAlliesMod.FieldProvider.EntityAnimal(__instance.race) = true;
+                __instance.race.EntityAnimal() = true;
                 Log.Message($"Set EntityAnimal to true for {__instance.defName}");
             }
         }

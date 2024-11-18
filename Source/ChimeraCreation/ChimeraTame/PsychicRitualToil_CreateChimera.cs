@@ -259,7 +259,7 @@ namespace AnomalyAllies.ChimeraTame
                     Pawn creation = PawnGenerator.GeneratePawn(pawnGenerationRequest);
                     creation.health.hediffSet.hediffs.RemoveAll(h => h.def.HasComp(typeof(HediffCompProperties_GetsPermanent)));
                     if (validForcedChimeraTypes.Count > 0)
-                        AnomalyAlliesMod.FieldProvider.ForcedGraphic(creation) = validForcedChimeraTypes.RandomElement();
+                        creation.ForcedGraphic() = validForcedChimeraTypes.RandomElement();
 
                     GenSpawn.Spawn(creation, spawningCell, invoker.Map);
 

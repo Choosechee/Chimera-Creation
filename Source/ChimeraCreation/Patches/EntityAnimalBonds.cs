@@ -20,7 +20,7 @@ namespace AnomalyAllies.Patches
 
         static void Prefix(Pawn humanlike, Pawn animal, ref float baseChance)
         {
-            if (AnomalyAlliesMod.FieldProvider.EntityAnimal(animal.RaceProps))
+            if (animal.RaceProps.EntityAnimal())
             {
                 if (humanlike.health.hediffSet.HasHediff(HediffDefOf.VoidTouched))
                     baseChance = float.PositiveInfinity;

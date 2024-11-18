@@ -26,7 +26,7 @@ namespace AnomalyAllies.Patches
         public static bool InhumanizedMasterAndEntityAnimal(Pawn master, Pawn animal)
         {
             // AnomalyAlliesMod.Logger.Message($"Master is {master}, animal is {animal}");
-            return AnomalyAlliesMod.FieldProvider.EntityAnimal(animal.RaceProps) && InhumanizedOrVoidTouched(master);
+            return animal.RaceProps.EntityAnimal() && InhumanizedOrVoidTouched(master);
         }
 
         [HarmonyPatch]
@@ -235,7 +235,7 @@ namespace AnomalyAllies.Patches
 
                 public static float NewTrainStat(float stat, Pawn trainer, Pawn animal)
                 {
-                    if (!AnomalyAlliesMod.FieldProvider.EntityAnimal(animal.RaceProps))
+                    if (!animal.RaceProps.EntityAnimal())
                         return stat;
 
                     if (trainer.health.hediffSet.HasHediff(HediffDefOf.VoidTouched))
@@ -273,7 +273,7 @@ namespace AnomalyAllies.Patches
 
                 public static float NewTameStat(float stat, Pawn trainer, Pawn animal)
                 {
-                    if (!AnomalyAlliesMod.FieldProvider.EntityAnimal(animal.RaceProps))
+                    if (!animal.RaceProps.EntityAnimal())
                         return stat;
 
                     if (trainer.health.hediffSet.HasHediff(HediffDefOf.VoidTouched))
