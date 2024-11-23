@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using AnomalyAllies.Misc;
+using RimWorld;
 using RimWorld.Planet;
 using System;
 using System.Collections.Generic;
@@ -120,14 +121,12 @@ namespace AnomalyAllies.Comps
             if (TransformedPawn is null)
                 transformedPawn = CreateTransformedPawn();
 
-            if (Pawn.Name is not null)
-                TransformedPawn.Name = new NameSingle(Pawn.Name.ToStringFull);
-            else
-                TransformedPawn.Name = null;
+            TransformedPawn.Name = Pawn.Name.GetCopy();
             CopyAge(Pawn, TransformedPawn);
             CopyHediffs(Pawn, TransformedPawn, Props.hediffDefsToDiscard);
             CopyNeeds(Pawn, TransformedPawn);
-            // CopyAbilities(Pawn, TransformedPawn);
+            if (Pawn.abilities?.abilities is not null && TransformedPawn.abilities?.abilities is not null)
+                CopyAbilities(Pawn, TransformedPawn);
             CopyRecords(Pawn, TransformedPawn);
             if (TransformedPawn.Faction != Pawn.Faction)
                 TransformedPawn.SetFaction(Pawn.Faction);

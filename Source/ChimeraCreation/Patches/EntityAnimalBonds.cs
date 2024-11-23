@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using InterfacesForModularity;
+using AnomalyAllies.Comps;
+using AnomalyAllies.DefOfs;
+using AnomalyAllies.ChimeraTame;
 
 namespace AnomalyAllies.Patches
 {
@@ -18,14 +21,23 @@ namespace AnomalyAllies.Patches
         private static MethodInfo fieldProviderGetter = typeof(AnomalyAlliesMod).PropertyGetter(nameof(AnomalyAlliesMod.FieldProvider));
         private static MethodInfo entityAnimalMethod = typeof(ICustomFieldsProvider).Method(nameof(ICustomFieldsProvider.EntityAnimal));
 
-        static void Prefix(Pawn humanlike, Pawn animal, ref float baseChance)
+        static void Prefix(Pawn humanlike, Pawn animal, ref float baseChance, ref List<CompBondsFromPastLife.BondFromPastLife> __state)
         {
             if (animal.RaceProps.EntityAnimal())
             {
                 if (humanlike.health.hediffSet.HasHediff(HediffDefOf.VoidTouched))
+                {
                     baseChance = float.PositiveInfinity;
+                }
                 else if (humanlike.Inhumanized())
                     baseChance *= 3f;
+            }
+
+            if (animal.TryGetComp(out CompBondsFromPastLife comp))
+            {
+                __state = comp.Bonds.FindAll((b) => b.PawnBondedTo == humanlike);
+                if (__state.Count > 0)
+                    baseChance *= 5f;
             }
         }
 
@@ -85,8 +97,8 @@ namespace AnomalyAllies.Patches
                 codeMatcher.Advance(psychopathCheckStartPos);
             }
 
-            inhumanizedCheckMatcher.Instructions().AddRange(new CodeInstruction[]
-            {
+            inhumanizedCheckMatcher.Instructions().AddRange(
+            [
                 new CodeInstruction(OpCodes.Call, fieldProviderGetter),
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Callvirt, racePropsGetter),
@@ -95,7 +107,7 @@ namespace AnomalyAllies.Patches
                 new CodeInstruction(OpCodes.Brtrue_S, nextCheckLabel),
                 new CodeInstruction(OpCodes.Ldc_I4_0),
                 new CodeInstruction(OpCodes.Ret)
-            });
+            ]);
             codeMatcher.Insert(inhumanizedCheckMatcher.InstructionEnumeration());
 
             codeMatcher.MatchStartBackwards(new CodeMatch(operand: psychopathCheckLabel));
@@ -103,6 +115,21 @@ namespace AnomalyAllies.Patches
             codeMatcher.Operand = inhumanizedCheckLabel;
 
             return codeMatcher.InstructionEnumeration();
+        }
+
+        static void Postfix(Pawn humanlike, Pawn animal, List<CompBondsFromPastLife.BondFromPastLife> __state, bool __result)
+        {
+            if (__state is not null && __state.Count > 0 && __result)
+            {
+                Thought_Memory_ChimeraRemembersBond memory = (Thought_Memory_ChimeraRemembersBond)ThoughtMaker.MakeThought(AnAl_ThoughtDefOf.AnAl_ChimeraRemembersBond, null);
+                foreach (CompBondsFromPastLife.BondFromPastLife bond in __state)
+                {
+                    humanlike.needs.mood.thoughts.memories.RemoveMemoriesOfDefWhereOtherPawnIs(VanillaDefOf.BondedAnimalDied, bond.PreviousSelf);
+                    memory.otherPawnPastSelves.Add(bond.PreviousSelf);
+                }
+
+                humanlike.needs.mood.thoughts.memories.TryGainMemory(memory, animal);
+            }
         }
     }
 }

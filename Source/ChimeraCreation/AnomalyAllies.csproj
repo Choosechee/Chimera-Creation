@@ -50,6 +50,8 @@
     <Compile Include="ChimeraTame\PsychicRitualToil_AnimalCompatibleGoto.cs" />
     <Compile Include="ChimeraTame\PsychicRitualToil_CarryNotPresentAndGoto.cs" />
     <Compile Include="ChimeraTame\PsychicRitualToil_GatherForChimeraCreation.cs" />
+    <Compile Include="ChimeraTame\Thought_Memory_ChimeraRemembersBond.cs" />
+    <Compile Include="Comps\CompBondsFromPastLife.cs" />
     <Compile Include="Comps\CompTransformItem.cs" />
     <Compile Include="ChimeraTame\PsychicRitualDef_CreateChimera.cs" />
     <Compile Include="ChimeraTame\PsychicRitualRoleDef_CreateChimeraTarget.cs" />
@@ -73,6 +75,7 @@
     <Compile Include="EasyReflection.cs" />
     <Compile Include="Misc\BondBreakHelper.cs" />
     <Compile Include="Misc\IsExternalInit.cs" />
+    <Compile Include="Misc\NameExtensions.cs" />
     <Compile Include="Misc\OpcodeUtility.cs" />
     <Compile Include="Misc\PatchOperationAttributeAddCustom.cs" />
     <Compile Include="Misc\RemoveLettersUtility.cs" />

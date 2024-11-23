@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<ThoughtDef>
+		<defName>AnAl_ChimeraRemembersBond</defName>
+		<thoughtClass>AnomalyAllies.ChimeraTame.Thought_Memory_ChimeraRemembersBond</thoughtClass>
+		<showBubble>false</showBubble>
+		<durationDays>10</durationDays>
+		<stackLimit>5</stackLimit>
+		<stackLimitForSameOtherPawn>1</stackLimitForSameOtherPawn>
+		<nullifyingTraits>
+			<li>Psychopath</li>
+		</nullifyingTraits>
+		<nullifyingHediffs>
+			<li>Inhumanized</li>
+		</nullifyingHediffs>
+		<stages>
+			<li>
+				<label>chimera of {0} bonded to me</label>
+				<description>Does {1_pronoun} remember me?</description>
+				<baseMoodEffect>5</baseMoodEffect>
+			</li>
+		</stages>
+	</ThoughtDef>
+</Defs>

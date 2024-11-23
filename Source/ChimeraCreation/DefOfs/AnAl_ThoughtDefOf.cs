@@ -11,6 +11,8 @@ namespace AnomalyAllies.DefOfs
         public static ThoughtDef AnAl_BondedAnimalEntityBetrayedVoidFascinated;
         public static ThoughtDef AnAl_BondedAnimalEntityBetrayedVoidFascinatedPsychopath;
 
+        public static ThoughtDef AnAl_ChimeraRemembersBond;
+
         static AnAl_ThoughtDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(AnAl_ThoughtDefOf));

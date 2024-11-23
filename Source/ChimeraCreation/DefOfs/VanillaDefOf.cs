@@ -13,6 +13,8 @@ namespace AnomalyAllies.DefOfs
 
         public static RecipeDef InstallBionicHeart;
 
+        public static ThoughtDef BondedAnimalDied;
+
         static VanillaDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(VanillaDefOf));

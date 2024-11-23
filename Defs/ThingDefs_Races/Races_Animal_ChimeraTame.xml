@@ -46,6 +46,9 @@
 				<chanceToRevengeOnSlaughter>1</chanceToRevengeOnSlaughter>
 				<chanceToRevengeOnSlaughterBonded>0.5</chanceToRevengeOnSlaughterBonded>
 			</li>
+			<li>
+				<compClass>AnomalyAllies.Comps.CompBondsFromPastLife</compClass>
+			</li>
 		</comps>
 		<modExtensions>
 			<li Class="AnomalyAllies.DefModExtensions.EntityAnimal"/>

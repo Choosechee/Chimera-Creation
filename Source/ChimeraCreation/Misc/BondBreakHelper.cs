@@ -10,6 +10,9 @@ namespace AnomalyAllies.Misc
     {
         public static string CreateBondedPawnsString(List<Pawn> pawns)
         {
+            if (pawns.Count == 1)
+                return pawns[0].LabelCap;
+            
             StringBuilder bondedPawnsString = new StringBuilder();
             for (int i = 0; i < pawns.Count; i++)
             {

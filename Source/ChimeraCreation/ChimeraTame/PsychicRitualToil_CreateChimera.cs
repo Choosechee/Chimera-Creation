@@ -1,5 +1,7 @@
-﻿using AnomalyAllies.DefOfs;
+﻿using AnomalyAllies.Comps;
+using AnomalyAllies.DefOfs;
 using AnomalyAllies.Patches;
+using LudeonTK;
 using RimWorld;
 using System;
 using System.Collections.Generic;
@@ -99,7 +101,7 @@ namespace AnomalyAllies.ChimeraTame
                     fleshbeastsForAnimals.Add(fleshbeastItem.fleshbeast);
             }
 
-            fleshbeastsForAnimals.Shuffle();
+            //fleshbeastsForAnimals.Shuffle();
             return fleshbeastsForAnimals;
         }
 
@@ -163,6 +165,34 @@ namespace AnomalyAllies.ChimeraTame
                 ApplyOutcome(psychicRitual, invoker, targets, meatYieldRequired, failureChance, def);
         }
 
+        /*
+        public override IEnumerable<Gizmo> GetBuildingGizmos(PsychicRitual psychicRitual, PsychicRitualGraph parent, Building building)
+        {
+            foreach (Gizmo gizmo in base.GetBuildingGizmos(psychicRitual, parent, building))
+                yield return gizmo;
+
+            if (DebugSettings.ShowDevGizmos)
+            {
+                Pawn invoker = psychicRitual.assignments.FirstAssignedPawn(invokerRole);
+                var targets = new List<Pawn>(psychicRitual.assignments.AssignedPawns(targetRole));
+
+                PsychicRitualDef_CreateChimera def = (PsychicRitualDef_CreateChimera)psychicRitual.def;
+                float meatYieldRequired = def.MeatYieldNeededForChimeraWithOffset;
+
+                Command_Action commandSuccess = new Command_Action();
+                commandSuccess.defaultLabel = "DEV: Instantly succeed ritual";
+                commandSuccess.action = () => ApplyOutcome(psychicRitual, invoker, targets, meatYieldRequired, 0f, def);
+
+                Command_Action commandFailure = new Command_Action();
+                commandFailure.defaultLabel = "DEV: Instantly fail ritual";
+                commandFailure.action = () => ApplyOutcome(psychicRitual, invoker, targets, meatYieldRequired, 1f, def);
+
+                yield return commandSuccess;
+                yield return commandFailure;
+            }
+        }
+        */
+
         private void ApplyOutcome(PsychicRitual psychicRitual, Pawn invoker, List<Pawn> targets, float meatYieldRequired, float failureChance, PsychicRitualDef_CreateChimera def)
         {
             float totalMeatYield = PsychicRitualDef_CreateChimera.TotalMeatYieldOfTargets(targets);
@@ -178,8 +208,16 @@ namespace AnomalyAllies.ChimeraTame
             else if (totalMeatYield >= meatYieldRequired)
                 numberOfChimerasToCreate = 1;
 
+            List<CompBondsFromPastLife.BondFromPastLife> targetBonds = new();
             foreach (Pawn target in targets)
+            {
+                List<Pawn> bondedPawns = new List<Pawn>();
+                target.relations.GetDirectRelations(PawnRelationDefOf.Bond, ref bondedPawns);
+                foreach (Pawn bondedPawn in bondedPawns)
+                    targetBonds.Add(new(target, bondedPawn));
+
                 target.DeSpawn();
+            }
 
             List<PawnGenerationRequest> pawnGenerationRequests = new List<PawnGenerationRequest>();
             LetterDef outcomeLetterDef;
@@ -201,7 +239,7 @@ namespace AnomalyAllies.ChimeraTame
                         for (int i = 0; i < chimeraTypeAnimals.Count; i++)
                         {
                             List<string> animalNameList = chimeraTypeAnimals[i];
-                            foreach (String animal in animalNameList)
+                            foreach (string animal in animalNameList)
                             {
                                 if (target.kindDef.defName.ToLower().Contains(animal))
                                 {
@@ -258,8 +296,12 @@ namespace AnomalyAllies.ChimeraTame
                 {
                     Pawn creation = PawnGenerator.GeneratePawn(pawnGenerationRequest);
                     creation.health.hediffSet.hediffs.RemoveAll(h => h.def.HasComp(typeof(HediffCompProperties_GetsPermanent)));
+
                     if (validForcedChimeraTypes.Count > 0)
                         creation.ForcedGraphic() = validForcedChimeraTypes.RandomElement();
+
+                    if (creation.TryGetComp(out CompBondsFromPastLife comp))
+                        comp.Bonds.AddRange(targetBonds);
 
                     GenSpawn.Spawn(creation, spawningCell, invoker.Map);
 
