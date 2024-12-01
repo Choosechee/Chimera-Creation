@@ -228,8 +228,9 @@ namespace AnomalyAllies.ChimeraTame
                 if (numberOfChimerasToCreate > 0)
                 {
                     totalMeatYield -= meatYieldRequired * numberOfChimerasToCreate;
+                    PawnKindDef chimeraTame = (Find.Anomaly.LevelDef != MonolithLevelDefOf.Disrupted) ? AlliedEntityDefOf.AnAl_ChimeraTame : AlliedEntityDefOf.AnAl_ChimeraTame_MonolithDisrupted;
                     for (int i = 0; i < numberOfChimerasToCreate; i++)
-                        pawnGenerationRequests.Add(new PawnGenerationRequest(AlliedEntityDefOf.AnAl_ChimeraTame, Faction.OfPlayer, fixedBiologicalAge: 0f, fixedChronologicalAge: 0f));
+                        pawnGenerationRequests.Add(new PawnGenerationRequest(chimeraTame, Faction.OfPlayer, fixedBiologicalAge: 0f, fixedChronologicalAge: 0f));
 
                     outcomeLetterDef = LetterDefOf.PositiveEvent;
                     deathMessage = DeathMessageOf.AnAl_MorphedIntoChimera;

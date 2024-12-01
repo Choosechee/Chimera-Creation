@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
+	<HediffDef ParentName="ImplantHediffBase">
+		<defName>AnAl_ImplantedMonolithFragment</defName>
+		<label>Implanted monolith fragment</label>
+		<description>An implanted monolith fragment that restores this entity's connection to the void.</description>
+		<spawnThingOnRemoved>MonolithFragment</spawnThingOnRemoved>
+		<modExtensions>
+			<li Class="AnomalyAllies.DefModExtensions.ConnectionToHorax"/>
+		</modExtensions>
+	</HediffDef>
+	
 	<ThingDef Name="AnAl_BodyPartChimeraBase" ParentName="BodyPartGhoulBase" Abstract="True">
 		<thingCategories Inherit="false">
 			<li>AnAl_BodyPartsChimera</li>

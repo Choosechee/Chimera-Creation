@@ -1,8 +1,9 @@
-﻿using Verse;
+﻿using AnomalyAllies.GeneralHediffs.BetrayalHungerBases;
+using Verse;
 
 namespace AnomalyAllies.ChimeraTame
 {
-    public class Alert_MeatHunger_Chimera : BetrayalHungerBases.Alert_BetrayalHunger
+    public class Alert_MeatHunger_Chimera : Alert_BetrayalHunger
     {
         public Alert_MeatHunger_Chimera() : base()
         {

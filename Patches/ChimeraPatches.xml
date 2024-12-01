@@ -4,8 +4,18 @@
 		<xpath>Defs/ThingDef[defName="Chimera"]/comps</xpath>
 		<value>
 			<li Class="AnomalyAllies.Comps.CompProperties_Transform">
-				<pawnKindToTransformInto>AnAl_ChimeraTame</pawnKindToTransformInto>
-				<initializeTransformedPawnOnCreation>false</initializeTransformedPawnOnCreation>
+				<transformations>
+					<li>
+						<pawnKind>AnAl_ChimeraTame</pawnKind>
+						<type>Friendly, MonolithActive</type>
+						<initializeOnCreation>false</initializeOnCreation>
+					</li>
+					<li>
+						<pawnKind>AnAl_ChimeraTame_MonolithDisrupted</pawnKind>
+						<type>Friendly, MonolithDisrupted</type>
+						<initializeOnCreation>false</initializeOnCreation>
+					</li>
+				</transformations>
 			</li>
 		</value>
 	</Operation>
@@ -34,7 +44,7 @@
 				<painFactor>0.2</painFactor>
 				<statFactors>
 					<MoveSpeed>1.5</MoveSpeed>
-					<StaggerDurationFactor>0</StaggerDurationFactor>
+					<StaggerDurationFactor>0.1</StaggerDurationFactor>
 				</statFactors>
 			</li>
 		</value>

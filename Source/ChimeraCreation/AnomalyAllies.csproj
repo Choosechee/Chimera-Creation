@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>portable</DebugType>
@@ -30,6 +31,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DebugSymbols>true</DebugSymbols>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <LangVersion>12.0</LangVersion>
@@ -45,13 +47,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BetrayalHungerBases\HediffGiver_BetrayalHunger.cs" />
     <Compile Include="ChimeraTame\JobGiver_DeliverAnimalToPsychicRitualCell.cs" />
     <Compile Include="ChimeraTame\PsychicRitualToil_AnimalCompatibleGoto.cs" />
     <Compile Include="ChimeraTame\PsychicRitualToil_CarryNotPresentAndGoto.cs" />
     <Compile Include="ChimeraTame\PsychicRitualToil_GatherForChimeraCreation.cs" />
     <Compile Include="ChimeraTame\Thought_Memory_ChimeraRemembersBond.cs" />
     <Compile Include="Comps\CompBondsFromPastLife.cs" />
+    <Compile Include="Comps\CompMaxExisting.cs" />
     <Compile Include="Comps\CompTransformItem.cs" />
     <Compile Include="ChimeraTame\PsychicRitualDef_CreateChimera.cs" />
     <Compile Include="ChimeraTame\PsychicRitualRoleDef_CreateChimeraTarget.cs" />
@@ -61,6 +63,7 @@
     <Compile Include="Comps\CompRevengeOnSlaughter.cs" />
     <Compile Include="Comps\CompTransform.cs" />
     <Compile Include="Comps\HediffComp_ChangeOtherHediffSeverityOnDamaged.cs" />
+    <Compile Include="DefModExtensions\ConnectionToHorax.cs" />
     <Compile Include="DefModExtensions\EntityAnimal.cs" />
     <Compile Include="DefModExtensions\ChangeWildness.cs" />
     <Compile Include="DefOfs\AnAl_DutyDefOf.cs" />
@@ -73,27 +76,32 @@
     <Compile Include="DefOfs\DeathMessageOf.cs" />
     <Compile Include="DefOfs\VanillaDefOf.cs" />
     <Compile Include="EasyReflection.cs" />
+    <Compile Include="GeneralHediffs\BetrayalHungerBases\Alert_BetrayalHunger.cs" />
+    <Compile Include="GeneralHediffs\BetrayalHungerBases\HediffGiver_BetrayalHunger.cs" />
+    <Compile Include="GeneralHediffs\BetrayalHungerBases\Hediff_BetrayalHunger.cs" />
     <Compile Include="Misc\BondBreakHelper.cs" />
+    <Compile Include="Misc\EntityPawnExtensions.cs" />
+    <Compile Include="Misc\GameComponent_DefChanges.cs" />
     <Compile Include="Misc\IsExternalInit.cs" />
     <Compile Include="Misc\NameExtensions.cs" />
     <Compile Include="Misc\OpcodeUtility.cs" />
     <Compile Include="Misc\PatchOperationAttributeAddCustom.cs" />
     <Compile Include="Misc\RemoveLettersUtility.cs" />
     <Compile Include="Patches\Debug.cs" />
+    <Compile Include="Patches\DisruptedMonolithPatches.cs" />
     <Compile Include="Patches\DumbStupidWildnessTraversalPatch.cs" />
     <Compile Include="Patches\EntityAnimalBonds.cs" />
     <Compile Include="Patches\ForceAnimalPatch.cs" />
     <Compile Include="AnomalyAlliesMod.cs" />
-    <Compile Include="BetrayalHungerBases\Alert_BetrayalHunger.cs" />
     <Compile Include="ChimeraTame\Alert_MeatHunger_Chimera.cs" />
     <Compile Include="ChimeraTame\Hediff_MeatHunger_Chimera.cs" />
     <Compile Include="DebugActions.cs" />
-    <Compile Include="BetrayalHungerBases\Hediff_BetrayalHunger.cs" />
     <Compile Include="Patches\EntityAnimalShows.cs" />
     <Compile Include="Patches\ForceSpecificGraphic.cs" />
     <Compile Include="Patches\InhumanizedCanTrainEntities.cs" />
     <Compile Include="Patches\ModCrossCompat.cs" />
     <Compile Include="Patches\PatchAfterStaticConstructors.cs" />
+    <Compile Include="Patches\ResetDefChangesOnQuit.cs" />
     <Compile Include="Patches\RevengeOnSlaughterPatch.cs" />
     <Compile Include="Patches\SaveNewFields.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -123,5 +131,6 @@
       <Name>InterfacesForModularity</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

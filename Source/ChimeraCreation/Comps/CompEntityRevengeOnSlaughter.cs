@@ -26,7 +26,7 @@ namespace AnomalyAllies.Comps
             if (victim.HasComp<CompTransform>())
             {
                 compTransform = victim.TryGetComp<CompTransform>();
-                victim = compTransform.TransformPawn();
+                victim = compTransform.TransformPawnHostile();
             }
             victim.SetFaction(Faction.OfEntities);
 

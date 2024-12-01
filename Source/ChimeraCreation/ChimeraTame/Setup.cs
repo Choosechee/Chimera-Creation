@@ -27,7 +27,7 @@ namespace AnomalyAllies.ChimeraTame
             ResolveSettings();
             ThinkTreeSetup();
             CopyBearRecipes();
-            RemoveInheritedCompTransform();
+            RemoveInheritedForChimeraMonolithDisrupted();
             AnomalyAlliesMod.Logger.Message("Setup was successful");
         }
 
@@ -122,17 +122,19 @@ namespace AnomalyAllies.ChimeraTame
             AlliedEntityDefOf.AnAl_ChimeraTame.race.GetType().GetField("allRecipesCached", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(AlliedEntityDefOf.AnAl_ChimeraTame.race, null);
         }
 
-        static void RemoveInheritedCompTransform()
+        static void RemoveInheritedForChimeraMonolithDisrupted()
         {
-            AnomalyAlliesMod.Logger.Message("Removing the CompProperties_Transform inherited from Chimera from AnAl_ChimeraTame");
-            List<CompProperties> comps = AlliedEntityDefOf.AnAl_ChimeraTame.race.comps;
-            CompProperties compToRemove = comps.Find((CompProperties comp) =>
-                comp is CompProperties_Transform compTransform
-                && compTransform.pawnKindToTransformInto == AlliedEntityDefOf.AnAl_ChimeraTame
-            );
+            AnomalyAlliesMod.Logger.Message("Removing the AnAl_MeatHungerGiverChimera inherited from AnAl_ChimeraTame from AnAl_ChimeraTame_MonolithDisrupted");
 
-            if (compToRemove is not null)
-                comps.Remove(compToRemove);
+            List<HediffGiverSetDef> hediffGiverSetDefs = AlliedEntityDefOf.AnAl_ChimeraTame_MonolithDisrupted.RaceProps.hediffGiverSets;
+            HediffGiverSetDef hediffGiverSetDefToRemove = hediffGiverSetDefs.Find((hgsf) => hgsf.defName == "AnAl_MeatHungerGiverChimera");
+            hediffGiverSetDefs.Remove(hediffGiverSetDefToRemove);
+
+            AnomalyAlliesMod.Logger.Message("Removing the CompProperties_RevengeOnSlaughter inherited from AnAl_ChimeraTame from AnAl_ChimeraTame_MonolithDisrupted");
+
+            List<CompProperties> compPropertiesList = AlliedEntityDefOf.AnAl_ChimeraTame_MonolithDisrupted.race.comps;
+            CompProperties compPropertiesToRemove = compPropertiesList.Find((comp) => comp is CompProperties_RevengeOnSlaughter);
+            compPropertiesList.Remove(compPropertiesToRemove);
         }
     }
 }

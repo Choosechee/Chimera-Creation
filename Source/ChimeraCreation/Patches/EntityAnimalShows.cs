@@ -41,7 +41,6 @@ namespace AnomalyAllies.Patches
 
                 codeMatcher.MatchStartBackwards(new CodeMatch((ci) => ci.opcode == OpCodes.Ldfld && !ci.OperandIs(raceField)));
                 codeMatcher.ThrowIfInvalid("Could not find parentDef field");
-                AnomalyAlliesMod.Logger.Message(codeMatcher.Instruction.operand);
                 CodeInstruction loadParentDef = codeMatcher.Instruction.Clone();
 
                 codeMatcher.MatchStartForward(CodeMatch.Calls(isAnomalyEntityGetter));

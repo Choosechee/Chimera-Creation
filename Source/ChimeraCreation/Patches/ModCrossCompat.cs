@@ -1,6 +1,7 @@
 ﻿using AnomalyAllies.Comps;
 using AnomalyAllies.DefOfs;
 using HarmonyLib;
+using JetBrains.Annotations;
 using RimWorld;
 using System;
 using System.Linq;
@@ -70,11 +71,11 @@ namespace AnomalyAllies.Patches
             static void Prefix(ref Thing target)
             {
                 Pawn pawn = target as Pawn;
-                if (pawn.kindDef == AlliedEntityDefOf.AnAl_ChimeraTame && pawn.Faction == Faction.OfEntities)
+                if (pawn.RaceProps.EntityAnimal())
                     pawn.SetFaction(null);
                 else if (pawn.IsEntity && pawn.TryGetComp(out CompTransform compTransform))
                 {
-                    pawn = compTransform.TransformPawn();
+                    pawn = compTransform.TransformPawnFriendly();
                     pawn.SetFaction(null);
                     target = pawn;
                 }

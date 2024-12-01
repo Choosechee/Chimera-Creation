@@ -3,7 +3,7 @@ using RimWorld.Planet;
 using System.Collections.Generic;
 using Verse;
 
-namespace AnomalyAllies.BetrayalHungerBases
+namespace AnomalyAllies.GeneralHediffs.BetrayalHungerBases
 {
     public abstract class Hediff_BetrayalHunger : Hediff_MeatHunger
     {
@@ -20,7 +20,7 @@ namespace AnomalyAllies.BetrayalHungerBases
 
             if (!pawn.health.capacities.CanBeAwake)
                 return;
-            
+
             int num = StageIndexToBetrayalMTBHours[CurStageIndex];
             if (num > 0 && Rand.MTBEventOccurs(num, 2500f, 1f) && pawn.Faction == Faction.OfPlayer)
             {

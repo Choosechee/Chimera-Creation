@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Verse;
 
-namespace AnomalyAllies.BetrayalHungerBases
+namespace AnomalyAllies.GeneralHediffs.BetrayalHungerBases
 {
     public abstract class Alert_BetrayalHunger : Alert_Critical
     {
@@ -48,6 +48,6 @@ namespace AnomalyAllies.BetrayalHungerBases
         public override AlertReport GetReport()
         {
             return AlertReport.CulpritsAre(BetrayalHungerPawns);
-    }
+        }
     }
 }

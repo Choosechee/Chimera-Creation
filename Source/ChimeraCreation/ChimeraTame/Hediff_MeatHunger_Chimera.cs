@@ -1,5 +1,6 @@
 ﻿using AnomalyAllies.Comps;
 using AnomalyAllies.DefOfs;
+using AnomalyAllies.GeneralHediffs.BetrayalHungerBases;
 using AnomalyAllies.Misc;
 using RimWorld;
 using RimWorld.Planet;
@@ -11,7 +12,7 @@ using Verse.AI.Group;
 
 namespace AnomalyAllies.ChimeraTame
 {
-    public class Hediff_MeatHunger_Chimera : BetrayalHungerBases.Hediff_BetrayalHunger
+    public class Hediff_MeatHunger_Chimera : Hediff_BetrayalHunger
     {
         protected override string BetrayalLabel
         {
@@ -185,7 +186,7 @@ namespace AnomalyAllies.ChimeraTame
         public static Pawn BetrayalHelper(Pawn pawn)
         {
             if (AnomalyAlliesMod.Settings.betrayalIsPermanent && pawn.TryGetComp(out CompTransform compTransform))
-                pawn = compTransform.TransformPawn();
+                pawn = compTransform.TransformPawnHostile();
             else
             {
                 Need_Food hunger = pawn.needs.food;

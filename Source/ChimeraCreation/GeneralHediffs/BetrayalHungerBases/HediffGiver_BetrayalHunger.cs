@@ -1,6 +1,6 @@
 ﻿using Verse;
 
-namespace AnomalyAllies.BetrayalHungerBases
+namespace AnomalyAllies.GeneralHediffs.BetrayalHungerBases
 {
     public class HediffGiver_BetrayalHunger : HediffGiver_MeatHunger
     {

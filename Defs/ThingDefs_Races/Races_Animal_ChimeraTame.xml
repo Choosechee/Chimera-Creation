@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-	<ThingDef ParentName="ChimeraThing">
+	<ThingDef ParentName="ChimeraThing" Name="AnAl_ChimeraTameThing">
 		<defName>AnAl_ChimeraTame</defName>
 		<description>A huge creature that resembles a disfigured combination of a bear and other animals. It is vicious without limit.\n\nIt's not known if this is a combination of natural animals or a poor imitation of animal life created by an insane machine mind.\n\nThis one was made using a ritual to serve a colony. If fed, it will continue to serve the colony. Otherwise, it will turn hostile.</description>
 		<statBases>
@@ -35,11 +35,22 @@
 		</recipes>
 		<comps>
 			<li Class="AnomalyAllies.Comps.CompProperties_Transform">
-				<pawnKindToTransformInto>Chimera</pawnKindToTransformInto>
-				<hediffDefsToDiscard>
-					<li>Malnutrition</li>
-					<li>AnAl_MeatHungerChimera</li>
-				</hediffDefsToDiscard>
+				<transformations>
+					<li>
+						<pawnKind>AnAl_ChimeraTame_MonolithDisrupted</pawnKind>
+						<type>Friendly, MonolithDisrupted</type>
+						<initializeOnCreation>false</initializeOnCreation>
+					</li>
+					<li>
+						<pawnKind>Chimera</pawnKind>
+						<type>Hostile</type>
+						<hediffDefsToDiscard>
+							<li>Malnutrition</li>
+							<li>AnAl_MeatHungerChimera</li>
+						</hediffDefsToDiscard>
+					</li>
+				</transformations>
+				<affectedByHoraxConnection>true</affectedByHoraxConnection>
 			</li>
 			<li Class="AnomalyAllies.Comps.CompProperties_RevengeOnSlaughter">
 				<compClass>AnomalyAllies.Comps.CompEntityRevengeOnSlaughter</compClass>
@@ -55,9 +66,41 @@
 		</modExtensions>
 	</ThingDef>
 	
-	<PawnKindDef ParentName="ChimeraKind">
+	<PawnKindDef ParentName="ChimeraKind" Name="AnAl_ChimeraTameKind">
 		<defName>AnAl_ChimeraTame</defName>
 		<race>AnAl_ChimeraTame</race>
 		<canArriveManhunter>false</canArriveManhunter>
+	</PawnKindDef>
+	
+	<ThingDef ParentName="AnAl_ChimeraTameThing">
+		<defName>AnAl_ChimeraTame_MonolithDisrupted</defName>
+		<race>
+			<wildness>0.65</wildness>
+			<manhunterOnTameFailChance>0.50</manhunterOnTameFailChance>
+		</race>
+		<comps>
+			<li Class="AnomalyAllies.Comps.CompProperties_Transform">
+				<transformations>
+					<li>
+						<pawnKind>AnAl_ChimeraTame</pawnKind>
+						<type>Friendly, MonolithActive</type>
+					</li>
+					<li>
+						<pawnKind>Chimera</pawnKind>
+						<type>Hostile</type>
+						<hediffDefsToDiscard>
+							<li>Malnutrition</li>
+							<li>AnAl_MeatHungerChimera</li>
+						</hediffDefsToDiscard>
+					</li>
+				</transformations>
+				<affectedByHoraxConnection>true</affectedByHoraxConnection>
+			</li>
+		</comps>
+	</ThingDef>
+	
+	<PawnKindDef ParentName="AnAl_ChimeraTameKind">
+		<defName>AnAl_ChimeraTame_MonolithDisrupted</defName>
+		<race>AnAl_ChimeraTame_MonolithDisrupted</race>
 	</PawnKindDef>
 </Defs>

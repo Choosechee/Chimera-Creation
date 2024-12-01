@@ -15,6 +15,8 @@ namespace AnomalyAllies.DefOfs
 
         public static ThoughtDef BondedAnimalDied;
 
+        public static DamageArmorCategoryDef Heat;
+
         static VanillaDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(VanillaDefOf));

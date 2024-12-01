@@ -3,7 +3,7 @@
 	<HediffGiverSetDef>
 		<defName>AnAl_MeatHungerGiverChimera</defName>
 		<hediffGivers>
-			<li Class="AnomalyAllies.BetrayalHungerBases.HediffGiver_BetrayalHunger">
+			<li Class="AnomalyAllies.GeneralHediffs.BetrayalHungerBases.HediffGiver_BetrayalHunger">
 				<hediff>AnAl_MeatHungerChimera</hediff>
 			</li>
 		</hediffGivers>
