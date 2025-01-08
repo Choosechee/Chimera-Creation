@@ -63,13 +63,13 @@
     <Compile Include="Comps\CompRevengeOnSlaughter.cs" />
     <Compile Include="Comps\CompTransform.cs" />
     <Compile Include="Comps\HediffComp_ChangeOtherHediffSeverityOnDamaged.cs" />
-    <Compile Include="DefModExtensions\ConnectionToHorax.cs" />
     <Compile Include="DefModExtensions\EntityAnimal.cs" />
     <Compile Include="DefModExtensions\ChangeWildness.cs" />
     <Compile Include="DefOfs\AnAl_DutyDefOf.cs" />
     <Compile Include="DefOfs\AnAl_RecipeDefOf.cs" />
     <Compile Include="DefOfs\AnAl_PsychicRitualDefOf.cs" />
     <Compile Include="DefOfs\AnAl_HediffDefOf.cs" />
+    <Compile Include="DefOfs\AnAl_ThinkTreeDefOf.cs" />
     <Compile Include="DefOfs\ChimeraTaleDefOf.cs" />
     <Compile Include="DefOfs\AnAl_ThoughtDefOf.cs" />
     <Compile Include="DefOfs\AlliedEntityDefOf.cs" />
@@ -79,6 +79,7 @@
     <Compile Include="GeneralHediffs\BetrayalHungerBases\Alert_BetrayalHunger.cs" />
     <Compile Include="GeneralHediffs\BetrayalHungerBases\HediffGiver_BetrayalHunger.cs" />
     <Compile Include="GeneralHediffs\BetrayalHungerBases\Hediff_BetrayalHunger.cs" />
+    <Compile Include="GeneralHediffs\Hediff_ReconnectToHorax.cs" />
     <Compile Include="Misc\BondBreakHelper.cs" />
     <Compile Include="Misc\EntityPawnExtensions.cs" />
     <Compile Include="Misc\GameComponent_DefChanges.cs" />

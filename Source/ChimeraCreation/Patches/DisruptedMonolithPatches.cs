@@ -41,7 +41,6 @@ namespace AnomalyAllies.Patches
             {
                 if (Find.Anomaly.LevelDef != MonolithLevelDefOf.Disrupted)
                     return;
-                AnomalyAlliesMod.Logger.Message($"Damage dealt to monolith: {dinfo.Amount} {dinfo.Def.armorCategory}");
 
                 float adjustedDamage = dinfo.Amount;
                 if (dinfo.Def.armorCategory == DamageArmorCategoryDefOf.Sharp && !dinfo.Def.isExplosive)

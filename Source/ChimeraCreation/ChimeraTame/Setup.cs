@@ -23,6 +23,7 @@ namespace AnomalyAllies.ChimeraTame
 
         public static void Run()
         {
+            SaveBeginningState();
             AnomalyAlliesMod.Logger.Message("Beginning setup");
             ResolveSettings();
             ThinkTreeSetup();
@@ -33,17 +34,18 @@ namespace AnomalyAllies.ChimeraTame
 
         static Setup()
         {
-            SaveBeginningState();
             Run();
         }
-
+        
         static void ResolveSettings()
         {
             AnomalyAlliesMod.Logger.Message("Applying saved settings");
             if (AnomalyAlliesMod.Settings.chimeraIsNormalCarnivore)
             {
-                AlliedEntityDefOf.AnAl_ChimeraTame.RaceProps.foodType =
+                foreach (PawnKindDef chimeraTameDef in AlliedEntityGroups.chimeraTameDefs)
+                    chimeraTameDef.RaceProps.foodType =
                     (FoodTypeFlags.CarnivoreAnimal | FoodTypeFlags.OvivoreAnimal);
+                
                 AnAl_HediffDefOf.AnAl_MeatHungerChimera.description = "AnAl_MeatHungerChimera_Description_ChimeraIsNormalCarnivore".Translate();
                 AnAl_HediffDefOf.AnAl_MeatHungerChimera.GetType().GetField("descriptionCached", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(AnAl_HediffDefOf.AnAl_MeatHungerChimera, null);
             }
@@ -61,7 +63,7 @@ namespace AnomalyAllies.ChimeraTame
         // move the new subNodes from AnAl_ChimeraTame to after the LordDuty node
         static void ThinkTreeMainRearranging()
         {
-            List<ThinkNode> thinkTreeSubNodes = AlliedEntityDefOf.AnAl_ChimeraTame.RaceProps.thinkTreeMain.thinkRoot.subNodes;
+            List<ThinkNode> thinkTreeSubNodes = AnAl_ThinkTreeDefOf.AnAl_ChimeraTame.thinkRoot.subNodes;
             int indexToInsertNewNodes = thinkTreeSubNodes.FindIndex(
                 (ThinkNode tn) => tn is ThinkNode_Subtree subtree
                 && subtree.ForceGetField<ThinkTreeDef>("treeDef").defName == "LordDuty")
@@ -90,10 +92,14 @@ namespace AnomalyAllies.ChimeraTame
             thinkTreeSubNodes.InsertRange(indexToInsertNewNodes, newNodes);
         }
 
-        // change any subNodes from AnAl_ChimeraTameConstant that are ThinkNode_ConditionalCanDoConstantThinkTreeJobNow to ThinkNode_ConditionalCanDoConstantThinkTreeJobNowEntity
+        // Change any subNodes from AnAl_ChimeraTameConstant that are
+        // ThinkNode_ConditionalCanDoConstantThinkTreeJobNow to
+        // ThinkNode_ConditionalCanDoConstantThinkTreeJobNowEntity
+        // This fixes chimeras running away while they are enemies
+        // when "Chimera betrayal is permanent" is disabled.
         static void ThinkTreeConstantSubNodeReplacing()
         {
-            List<ThinkNode> thinkTreeSubNodes = AlliedEntityDefOf.AnAl_ChimeraTame.RaceProps.thinkTreeConstant.thinkRoot.subNodes;
+            List<ThinkNode> thinkTreeSubNodes = AnAl_ThinkTreeDefOf.AnAl_ChimeraTameConstant.thinkRoot.subNodes;
             for (int i = 0; i < thinkTreeSubNodes.Count; i++)
             {
                 ThinkNode subNode = thinkTreeSubNodes[i];
@@ -108,18 +114,21 @@ namespace AnomalyAllies.ChimeraTame
 
         static void CopyBearRecipes()
         {
-            if (AlliedEntityDefOf.AnAl_ChimeraTame.race.recipes is null)
+            foreach (PawnKindDef chimeraTameDef in AlliedEntityGroups.chimeraTameDefs)
             {
-                AnomalyAlliesMod.Logger.Message("AnAl_ChimeraTame.recipes is null. Assigning a List instance to it");
-                AlliedEntityDefOf.AnAl_ChimeraTame.race.recipes = new List<RecipeDef>();
+                if (chimeraTameDef.race.recipes is null)
+                {
+                    AnomalyAlliesMod.Logger.Message($"{chimeraTameDef.race.defName}.recipes is null. Assigning a List instance to it");
+                    chimeraTameDef.race.recipes = new List<RecipeDef>();
+                }
+
+                AnomalyAlliesMod.Logger.Message($"Copying Bear_Grizzly recipes to {chimeraTameDef.race.defName}");
+                chimeraTameDef.race.recipes.AddRange(VanillaDefOf.Bear_Grizzly.recipes);
+
+                // set allRecipesCached to null so it will be recalculated
+                AnomalyAlliesMod.Logger.Message($"Recipe copying successful. Decaching {chimeraTameDef.race.defName}.allRecipesCached so it will be recalculated");
+                chimeraTameDef.race.GetType().GetField("allRecipesCached", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(chimeraTameDef.race, null);
             }
-
-            AnomalyAlliesMod.Logger.Message("Copying Bear_Grizzly recipes to AnAl_ChimeraTame");
-            AlliedEntityDefOf.AnAl_ChimeraTame.race.recipes.AddRange(VanillaDefOf.Bear_Grizzly.recipes);
-
-            // set allRecipesCached to null so it will be recalculated
-            AnomalyAlliesMod.Logger.Message("Recipe copying successful. Decaching AnAl_ChimeraTame.allRecipesCached so it will be recalculated");
-            AlliedEntityDefOf.AnAl_ChimeraTame.race.GetType().GetField("allRecipesCached", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(AlliedEntityDefOf.AnAl_ChimeraTame.race, null);
         }
 
         static void RemoveInheritedForChimeraMonolithDisrupted()

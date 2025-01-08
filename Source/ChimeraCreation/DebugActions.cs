@@ -1,4 +1,5 @@
 ﻿using AnomalyAllies.ChimeraTame;
+using AnomalyAllies.DefOfs;
 using LudeonTK;
 using RimWorld;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace AnomalyAllies
         [DebugAction("Anomaly", "Spawn tame chimera", requiresAnomaly = true, actionType = DebugActionType.ToolMap, allowedGameStates = AllowedGameStates.PlayingOnMap)]
         static void SpawnTameChimera()
         {
-            PawnKindDef chimeraDef = DefDatabase<PawnKindDef>.GetNamed("AnAl_ChimeraTame");
+            PawnKindDef chimeraDef = Find.Anomaly.LevelDef != MonolithLevelDefOf.Disrupted ? AlliedEntityDefOf.AnAl_ChimeraTame : AlliedEntityDefOf.AnAl_ChimeraTame_MonolithDisrupted;
             Pawn chimera = PawnGenerator.GeneratePawn(chimeraDef, Faction.OfPlayer);
             // ChimeraCreationMod.myLogger.Message(chimera.def.defName);
 

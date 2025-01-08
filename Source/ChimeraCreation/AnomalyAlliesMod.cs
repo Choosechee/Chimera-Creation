@@ -112,17 +112,16 @@ namespace AnomalyAllies
         {
             base.WriteSettings();
 
-            if (settings.chimeraIsNormalCarnivore)
-            {
-                AlliedEntityDefOf.AnAl_ChimeraTame.RaceProps.foodType =
-                    (FoodTypeFlags.CarnivoreAnimal | FoodTypeFlags.OvivoreAnimal);
-                AnAl_HediffDefOf.AnAl_MeatHungerChimera.description = "AnAl_MeatHungerChimera_Description_ChimeraIsNormalCarnivore".Translate();
-            }
-            else
-            {
-                AlliedEntityDefOf.AnAl_ChimeraTame.RaceProps.foodType = Setup.originalChimeraTameDiet;
-                AnAl_HediffDefOf.AnAl_MeatHungerChimera.description = Setup.originalMeatHungerChimeraDescription;
-            }
+            FoodTypeFlags newFoodType = (settings.chimeraIsNormalCarnivore)
+                ? (FoodTypeFlags.CarnivoreAnimal | FoodTypeFlags.OvivoreAnimal)
+                : Setup.originalChimeraTameDiet;
+            string newDescription = (settings.chimeraIsNormalCarnivore)
+                ? "AnAl_MeatHungerChimera_Description_ChimeraIsNormalCarnivore".Translate()
+                : Setup.originalMeatHungerChimeraDescription;
+                
+            foreach (PawnKindDef chimeraTameDef in AlliedEntityGroups.chimeraTameDefs)
+                chimeraTameDef.RaceProps.foodType = newFoodType;
+            AnAl_HediffDefOf.AnAl_MeatHungerChimera.description = newDescription;
 
             AnAl_HediffDefOf.AnAl_MeatHungerChimera.GetType().GetField("descriptionCached", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(AnAl_HediffDefOf.AnAl_MeatHungerChimera, null);
             AnAl_PsychicRitualDefOf.AnAl_CreateChimera.InvalidateTimeAndOfferingLabelCache();

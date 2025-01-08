@@ -32,25 +32,26 @@
 		<entityCodexEntry>Chimera</entityCodexEntry>
 		<recipes>
 			<li>AnAl_InstallAdrenalHeartChimera</li>
+			<li>AnAl_ImplantMonolithFragment</li>
+			<li>AnAl_RemoveMonolithFragment</li>
 		</recipes>
 		<comps>
 			<li Class="AnomalyAllies.Comps.CompProperties_Transform">
 				<transformations>
 					<li>
 						<pawnKind>AnAl_ChimeraTame_MonolithDisrupted</pawnKind>
-						<type>Friendly, MonolithDisrupted</type>
+						<monolithDependence>MonolithDisrupted</monolithDependence>
 						<initializeOnCreation>false</initializeOnCreation>
 					</li>
 					<li>
 						<pawnKind>Chimera</pawnKind>
-						<type>Hostile</type>
+						<allegianceChange>Hostile</allegianceChange>
 						<hediffDefsToDiscard>
 							<li>Malnutrition</li>
 							<li>AnAl_MeatHungerChimera</li>
 						</hediffDefsToDiscard>
 					</li>
 				</transformations>
-				<affectedByHoraxConnection>true</affectedByHoraxConnection>
 			</li>
 			<li Class="AnomalyAllies.Comps.CompProperties_RevengeOnSlaughter">
 				<compClass>AnomalyAllies.Comps.CompEntityRevengeOnSlaughter</compClass>
@@ -83,18 +84,17 @@
 				<transformations>
 					<li>
 						<pawnKind>AnAl_ChimeraTame</pawnKind>
-						<type>Friendly, MonolithActive</type>
+						<monolithDependence>MonolithActive</monolithDependence>
 					</li>
 					<li>
 						<pawnKind>Chimera</pawnKind>
-						<type>Hostile</type>
+						<allegianceChange>Hostile</allegianceChange>
 						<hediffDefsToDiscard>
 							<li>Malnutrition</li>
 							<li>AnAl_MeatHungerChimera</li>
 						</hediffDefsToDiscard>
 					</li>
 				</transformations>
-				<affectedByHoraxConnection>true</affectedByHoraxConnection>
 			</li>
 		</comps>
 	</ThingDef>

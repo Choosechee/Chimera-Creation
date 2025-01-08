@@ -1,6 +1,4 @@
-﻿using AnomalyAllies.DefOfs;
-using AnomalyAllies.Misc;
-using AnomalyAllies.Patches;
+﻿using AnomalyAllies.Misc;
 using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
@@ -11,17 +9,45 @@ using System.Reflection;
 using System.Threading;
 using Verse;
 
+using Transformation = AnomalyAllies.Comps.CompProperties_Transform.Transformation;
+using AllegianceChange = AnomalyAllies.Comps.CompProperties_Transform.Transformation.AllegianceChange;
+using MonolithDependence = AnomalyAllies.Comps.CompProperties_Transform.Transformation.MonolithDependence;
+
 namespace AnomalyAllies.Comps
 {
     public class CompTransform : ThingComp, ISignalReceiver
     {
-        public List<CompProperties_Transform.Transformation> Transformations => ((CompProperties_Transform)props).transformations;
-        public bool AffectedByHoraxConnection => ((CompProperties_Transform)props).affectedByHoraxConnection;
+        public List<Transformation> Transformations => ((CompProperties_Transform)props).transformations;
         public Pawn Pawn => (Pawn)parent;
+
+        private bool? affectedByHoraxConnectionCached;
+        public bool AffectedByHoraxConnection
+        {
+            get
+            {
+                if (affectedByHoraxConnectionCached is null)
+                {
+                    HashSet<AllegianceChange> validAllegianceChanges = new HashSet<AllegianceChange>()
+                    {
+                        AllegianceChange.None
+                    };
+                    HashSet<MonolithDependence> validMonolithDependencies = new HashSet<MonolithDependence>()
+                    {
+                        MonolithDependence.MonolithActive,
+                        MonolithDependence.MonolithDisrupted
+                    };
+
+                    Predicate<Transformation> affectedByHoraxPredicate = CompProperties_Transform.TransformationPredicate(validAllegianceChanges, validMonolithDependencies);
+                    affectedByHoraxConnectionCached = Transformations.Any(affectedByHoraxPredicate);
+                }
+
+                return affectedByHoraxConnectionCached.Value;
+            }
+        }
 
         protected Dictionary<int, Pawn> transformedPawns = new Dictionary<int, Pawn>();
         protected Dictionary<PawnKindDef, int> pawnKindTransformedPawnsIndex = new Dictionary<PawnKindDef, int>();
-        public Dictionary<int, Pawn> TransformedPawns
+        public Dictionary<int, Pawn> TransformedPawnsCopy
         {
             get
             {
@@ -32,14 +58,6 @@ namespace AnomalyAllies.Comps
 
         protected bool active;
         public bool Active => active;
-        protected bool wasConnectedToHorax;
-
-        public override void Initialize(CompProperties props)
-        {
-            base.Initialize(props);
-
-            wasConnectedToHorax = Pawn.IsConnectedToHorax();
-        }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
@@ -54,7 +72,7 @@ namespace AnomalyAllies.Comps
 
             for (int i = 0; i < Transformations.Count; i++)
             {
-                CompProperties_Transform.Transformation transformation = Transformations[i];
+                Transformation transformation = Transformations[i];
                 if (transformation.initializeOnCreation && !transformedPawns.ContainsKey(i))
                 {
                     CreateTransformedPawn(transformation);
@@ -73,7 +91,7 @@ namespace AnomalyAllies.Comps
 
         protected const string invalidTransformation = "Transformation {0} is not a transformation supported by this CompTransform";
 
-        public Pawn CreateTransformedPawn(CompProperties_Transform.Transformation transformation)
+        public Pawn CreateTransformedPawn(Transformation transformation)
         {
             int transformationIndex = Transformations.IndexOf(transformation);
             Pawn newPawn = null;
@@ -86,6 +104,7 @@ namespace AnomalyAllies.Comps
             }
             
             PawnKindDef transformedPawnKind = transformation.pawnKind;
+            // Get an existing pawn of the same kind if it's been initialized by an existing transformation
             foreach (Pawn transformedPawn in transformedPawns.Values)
             {
                 if (transformedPawn.TryGetComp(out CompTransform compTransform))
@@ -132,13 +151,14 @@ namespace AnomalyAllies.Comps
                     newPawn.Name = null;
             }
 
+            // Set uninitialized pawns of the same kind for existing transformations to the new pawn
             foreach (Pawn transformedPawn in transformedPawns.Values)
             {
                 if (transformedPawn.TryGetComp(out CompTransform compTransform))
                 {
                     for (int i = 0; i < compTransform.Transformations.Count; i++)
                     {
-                        CompProperties_Transform.Transformation otherTransformation = compTransform.Transformations[i];
+                        Transformation otherTransformation = compTransform.Transformations[i];
                         if (transformedPawnKind == otherTransformation.pawnKind)
                         {
                             if (!compTransform.pawnKindTransformedPawnsIndex.TryGetValue(transformedPawnKind, out int j))
@@ -153,12 +173,13 @@ namespace AnomalyAllies.Comps
                 }
             }
             
+            // Set transformations for the new pawn to existing pawns if available
             {
                 if (newPawn.TryGetComp(out CompTransform compTransform))
                 {
                     for (int i = 0; i < compTransform.Transformations.Count; i++)
                     {
-                        CompProperties_Transform.Transformation newPawnTransformation = compTransform.Transformations[i];
+                        Transformation newPawnTransformation = compTransform.Transformations[i];
                         if (newPawnTransformation.pawnKind == Pawn.kindDef)
                         {
                             compTransform.transformedPawns[i] = Pawn;
@@ -178,7 +199,7 @@ namespace AnomalyAllies.Comps
             return newPawn;
         }
 
-        public Pawn TransformPawn(CompProperties_Transform.Transformation transformation)
+        public Pawn TransformPawn(Transformation transformation)
         {
             if (!(Pawn.MapHeld is not null || Pawn.IsCaravanMember()))
             {
@@ -208,6 +229,7 @@ namespace AnomalyAllies.Comps
             CopySettings(Pawn, transformedPawn);
             CopyRecords(Pawn, transformedPawn);
             MoveRelationships(Pawn, transformedPawn);
+            MoveOwnership(Pawn, transformedPawn);
 
             Selector selector = Find.Selector;
             bool pawnSelected = selector.IsSelected(Pawn); // I have to do this here because despawning unselects them
@@ -249,39 +271,25 @@ namespace AnomalyAllies.Comps
             return transformedPawn;
         }
 
-        public Pawn TransformPawnHostile()
+        protected Pawn TransformPawnAllegiance(AllegianceChange allegianceChange, bool noneMonolithDependenceAcceptable)
         {
-            CompProperties_Transform.Transformation.Type[] typesForTransformation =
+            MonolithDependence monolithDependence = Pawn.IsConnectedToHorax() ? MonolithDependence.MonolithActive : MonolithDependence.MonolithDisrupted;
+            Predicate<Transformation> allegianceTransformationPredicate = CompProperties_Transform.TransformationPredicate(allegianceChange, monolithDependence);
+            Transformation allegianceTransformation = Transformations.Find(allegianceTransformationPredicate);
+            if (allegianceTransformation is null && noneMonolithDependenceAcceptable)
             {
-                CompProperties_Transform.Transformation.Type.Hostile,
-                (Pawn.IsConnectedToHorax()) ? CompProperties_Transform.Transformation.Type.MonolithActive : CompProperties_Transform.Transformation.Type.MonolithDisrupted
-            };
-
-            CompProperties_Transform.Transformation hostileTransformation = Transformations.Find(CompProperties_Transform.TransformationWithTypesPredicate(typesForTransformation));
-            if (hostileTransformation is null)
-                hostileTransformation = Transformations.Find(CompProperties_Transform.TransformationWithTypesPredicate(typesForTransformation[0]));
-            if (hostileTransformation is /*still*/ null)
+                allegianceTransformationPredicate = CompProperties_Transform.TransformationPredicate(allegianceChange, MonolithDependence.None);
+                allegianceTransformation = Transformations.Find(allegianceTransformationPredicate);
+            }
+            if (allegianceTransformation is /*still*/ null)
                 return null;
 
-            return TransformPawn(hostileTransformation);
+            return TransformPawn(allegianceTransformation);
         }
 
-        public Pawn TransformPawnFriendly()
-        {
-            CompProperties_Transform.Transformation.Type[] typesForTransformation =
-            {
-                CompProperties_Transform.Transformation.Type.Friendly,
-                (Pawn.IsConnectedToHorax()) ? CompProperties_Transform.Transformation.Type.MonolithActive : CompProperties_Transform.Transformation.Type.MonolithDisrupted
-            };
-
-            CompProperties_Transform.Transformation friendlyTransformation = Transformations.Find(CompProperties_Transform.TransformationWithTypesPredicate(typesForTransformation));
-            if (friendlyTransformation is null)
-                friendlyTransformation = Transformations.Find(CompProperties_Transform.TransformationWithTypesPredicate(typesForTransformation[0]));
-            if (friendlyTransformation is /*still*/ null)
-                return null;
-
-            return TransformPawn(friendlyTransformation);
-        }
+        public Pawn TransformPawnFriendly() => TransformPawnAllegiance(AllegianceChange.Friendly, true);
+        public Pawn TransformPawnHostile() => TransformPawnAllegiance(AllegianceChange.Hostile, true);
+        public Pawn TransformPawnHoraxConnectionChange() => TransformPawnAllegiance(AllegianceChange.None, false);
 
         protected static bool AlternateGraphicsEqual(List<AlternateGraphic> alternateGraphics1, List<AlternateGraphic> alternateGraphics2)
         {
@@ -328,7 +336,7 @@ namespace AnomalyAllies.Comps
                 {
                     Hediff hediffCopy = HediffMaker.MakeHediff(hediff.def, secondPawn, hediff.Part);
                     hediffCopy.CopyFrom(hediff);
-                    secondPawn.health.hediffSet.AddDirect(hediffCopy);
+                    secondPawn.health.AddHediff(hediffCopy);
                 }
             }
         }
@@ -440,6 +448,37 @@ namespace AnomalyAllies.Comps
             secondPawn.relations.VirtualRelations.AddRange(firstPawnVirtualRelationsCopy);
         }
 
+        protected static void MoveOwnership(Pawn firstPawn, Pawn secondPawn)
+        {
+            Pawn_Ownership firstPawnOwnership = firstPawn.ownership;
+            Pawn_Ownership secondPawnOwnership = secondPawn.ownership;
+
+            if (firstPawnOwnership.OwnedBed is not null)
+                secondPawnOwnership.ClaimBedIfNonMedical(firstPawnOwnership.OwnedBed);
+            else
+                secondPawnOwnership.UnclaimBed();
+
+            if (firstPawnOwnership.AssignedGrave is not null)
+                secondPawnOwnership.ClaimGrave(firstPawnOwnership.AssignedGrave);
+            else
+                secondPawnOwnership.UnclaimGrave();
+
+            if (firstPawnOwnership.AssignedThrone is not null)
+                secondPawnOwnership.ClaimThrone(firstPawnOwnership.AssignedThrone);
+            else
+                secondPawnOwnership.UnclaimThrone();
+
+            if (firstPawnOwnership.AssignedMeditationSpot is not null)
+                secondPawnOwnership.ClaimMeditationSpot(firstPawnOwnership.AssignedMeditationSpot);
+            else
+                secondPawnOwnership.UnclaimMeditationSpot();
+
+            if (firstPawnOwnership.AssignedDeathrestCasket is not null)
+                secondPawnOwnership.ClaimDeathrestCasket(firstPawnOwnership.AssignedDeathrestCasket);
+            else
+                secondPawnOwnership.UnclaimDeathrestCasket();
+        }
+
         public const string monolithFragmentImplantedSignal = "AnAl_MonolithFragmentImplanted";
         public static readonly HashSet<string> signalsToReceive = new HashSet<string>()
         {
@@ -449,16 +488,10 @@ namespace AnomalyAllies.Comps
         {
             base.Notify_SignalReceived(signal);
 
-            if (signalsToReceive.Contains(signal.tag) && Pawn.IsConnectedToHorax() != wasConnectedToHorax)
+            if (signalsToReceive.Contains(signal.tag))
             {
-                var transFormationType = (Pawn.IsConnectedToHorax()) ? CompProperties_Transform.Transformation.Type.MonolithActive : CompProperties_Transform.Transformation.Type.MonolithDisrupted;
-                var transformationPredicate = CompProperties_Transform.TransformationWithTypesPredicate(transFormationType);
-                
-                var monolithDisruptedTransformation = Transformations.Find(transformationPredicate);
-                if (monolithDisruptedTransformation is not null)
-                    TransformPawn(monolithDisruptedTransformation);
+                TransformPawnHoraxConnectionChange();
             }
-            wasConnectedToHorax = Pawn.IsConnectedToHorax();
         }
 
         public override void Notify_Downed()
@@ -477,7 +510,7 @@ namespace AnomalyAllies.Comps
             if (!DebugSettings.ShowDevGizmos)
                 yield break;
 
-            foreach (CompProperties_Transform.Transformation transformation in Transformations)
+            foreach (Transformation transformation in Transformations)
             {
                 Command_Action transformAction = new Command_Action();
                 transformAction.defaultLabel = $"Transform pawn into {transformation.pawnKind}";
@@ -506,44 +539,45 @@ namespace AnomalyAllies.Comps
     {
         public class Transformation
         {
-            [Flags]
-            public enum Type : byte
+            public enum AllegianceChange : byte
             {
-                Misc = 1,
-                Hostile = 2,
-                Friendly = 4,
-                MonolithActive = 8,
-                MonolithDisrupted = 16
+                None,
+                Friendly,
+                Hostile
+            }
+            
+            public enum MonolithDependence : byte
+            {
+                None,
+                MonolithActive,
+                MonolithDisrupted
             }
             
             public PawnKindDef pawnKind;
-            public Type type = Type.Misc;
             public bool initializeOnCreation = true;
             public List<HediffDef> hediffDefsToDiscard = new List<HediffDef>();
+
+            public AllegianceChange allegianceChange = AllegianceChange.None;
+            public MonolithDependence monolithDependence = MonolithDependence.None;
 
             public Transformation()
             {
             }
 
-            public Transformation(PawnKindDef pawnKind)
+            public Transformation(PawnKindDef pawnKind, AllegianceChange allegianceChange = AllegianceChange.None, MonolithDependence monolithDependence = MonolithDependence.None)
             {
                 this.pawnKind = pawnKind;
-            }
-
-            public Transformation(PawnKindDef pawnKind, Type type)
-            {
-                this.pawnKind = pawnKind;
-                this.type = type;
+                this.allegianceChange = allegianceChange;
+                this.monolithDependence = monolithDependence;
             }
 
             public override string ToString()
             {
-                return $"(PawnKindDef: {pawnKind}, Type: {type})";
+                return $"(PawnKindDef: {pawnKind}, AllegianceChange: {allegianceChange} MonolithDependence: {monolithDependence})";
             }
         }
         
         public List<Transformation> transformations = new List<Transformation>();
-        public bool affectedByHoraxConnection;
 
         public CompProperties_Transform()
         {
@@ -555,17 +589,14 @@ namespace AnomalyAllies.Comps
             this.compClass = compClass;
         }
 
-        public static Predicate<Transformation> TransformationWithTypesPredicate(params Transformation.Type[] types)
+        public static Predicate<Transformation> TransformationPredicate(ICollection<AllegianceChange> validAllegianceChanges, ICollection<MonolithDependence> validMonolithDependencies)
         {
-            return (t) =>
-            {
-                foreach (Transformation.Type type in types)
-                {
-                    if (!t.type.HasFlag(type))
-                        return false;
-                }
-                return true;
-            };
+            return (t) => validAllegianceChanges.Contains(t.allegianceChange) && validMonolithDependencies.Contains(t.monolithDependence);
+        }
+
+        public static Predicate<Transformation> TransformationPredicate(AllegianceChange allegianceChange, MonolithDependence monolithDependence)
+        {
+            return (t) => t.allegianceChange == allegianceChange && t.monolithDependence == monolithDependence;
         }
 
         public override IEnumerable<string> ConfigErrors(ThingDef parentDef)
@@ -574,9 +605,7 @@ namespace AnomalyAllies.Comps
                 yield return error;
 
             if (transformations.Empty())
-            {
                 yield return "There are no specified transformations";
-            }
             else
             {
                 for (int i = 0; i < transformations.Count; i++)

@@ -4,11 +4,56 @@
 		<defName>AnAl_ImplantedMonolithFragment</defName>
 		<label>Implanted monolith fragment</label>
 		<description>An implanted monolith fragment that restores this entity's connection to the void.</description>
+		<hediffClass>AnomalyAllies.GeneralHediffs.Hediff_ReconnectToHorax</hediffClass>
 		<spawnThingOnRemoved>MonolithFragment</spawnThingOnRemoved>
-		<modExtensions>
-			<li Class="AnomalyAllies.DefModExtensions.ConnectionToHorax"/>
-		</modExtensions>
 	</HediffDef>
+	
+	<RecipeDef ParentName="SurgeryInstallImplantBase">
+		<defName>AnAl_ImplantMonolithFragment</defName>
+		<label>implant monolith fragment</label>
+		<description>Implant a monolith fragment.</description>
+		<descriptionHyperlinks>
+			<ThingDef>MonolithFragment</ThingDef>
+			<HediffDef>AnAl_ImplantedMonolithFragment</HediffDef>
+		</descriptionHyperlinks>
+		<jobString>Implanting monolith fragment.</jobString>
+		<humanlikeOnly>false</humanlikeOnly>
+		<recipeUsers IsNull="True"/>
+		<dontShowIfAnyIngredientMissing>true</dontShowIfAnyIngredientMissing>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>MonolithFragment</li>
+					</thingDefs>
+				</filter>
+				<count>1</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>MonolithFragment</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<appliedOnFixedBodyParts>
+			<li>Body</li>
+		</appliedOnFixedBodyParts>
+		<addsHediff>AnAl_ImplantedMonolithFragment</addsHediff>
+	</RecipeDef>
+	
+	<RecipeDef ParentName="SurgeryRemoveImplantBase">
+		<defName>AnAl_RemoveMonolithFragment</defName>
+		<label>remove monolith fragment</label>
+		<description>Remove a monolith fragment.</description>
+		<descriptionHyperlinks>
+			<ThingDef>MonolithFragment</ThingDef>
+			<HediffDef>AnAl_ImplantedMonolithFragment</HediffDef>
+		</descriptionHyperlinks>
+		<jobString>Removing monolith fragment.</jobString>
+		<humanlikeOnly>false</humanlikeOnly>
+		<recipeUsers IsNull="True"/>
+		<removesHediff>AnAl_ImplantedMonolithFragment</removesHediff>
+	</RecipeDef>
 	
 	<ThingDef Name="AnAl_BodyPartChimeraBase" ParentName="BodyPartGhoulBase" Abstract="True">
 		<thingCategories Inherit="false">

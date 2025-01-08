@@ -7,12 +7,14 @@
 				<transformations>
 					<li>
 						<pawnKind>AnAl_ChimeraTame</pawnKind>
-						<type>Friendly, MonolithActive</type>
+						<allegianceChange>Friendly</allegianceChange>
+						<monolithDependence>MonolithActive</monolithDependence>
 						<initializeOnCreation>false</initializeOnCreation>
 					</li>
 					<li>
 						<pawnKind>AnAl_ChimeraTame_MonolithDisrupted</pawnKind>
-						<type>Friendly, MonolithDisrupted</type>
+						<allegianceChange>Friendly</allegianceChange>
+						<monolithDependence>MonolithDisrupted</monolithDependence>
 						<initializeOnCreation>false</initializeOnCreation>
 					</li>
 				</transformations>
